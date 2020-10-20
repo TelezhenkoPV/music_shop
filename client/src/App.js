@@ -1,9 +1,10 @@
 import React from 'react';
+import Header from './components/Header';
 
-function App() {
+function App () {
   return (
     <div>
-      Final project!
+      <Header />
     </div>
   );
 }
