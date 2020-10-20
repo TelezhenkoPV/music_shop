@@ -74,6 +74,11 @@
     "prettier": "^2.1.2",
     "standard": "^14.3.4"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "lint-staged": {
     "*.{js, jsx}": [
       "node_modules/.bin/eslint --max-warnings=0",
