@@ -16,24 +16,6 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
-    "axios": "^0.20.0",
-    "material": "^0.4.3",
-    "node-sass": "^4.14.1",
-    "npm-run-all": "^4.1.1",
-    "npm-watch": "^0.3.0",
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0",
-    "react-scripts": "3.4.3",
-    "redux": "^4.0.5",
-    "redux-thunk": "^2.3.0",
-    "stylelint": "^13.7.2",
-    "stylelint-config-rational-order": "^0.1.2",
-    "stylelint-order": "^4.1.0"
-  },
   "scripts": {
     "all": "concurrently \"(npm run server --prefix ../)\" \"(npm run start)\"",
     "start-js": "react-scripts start",
@@ -41,7 +23,7 @@
     "build": "npm run eslint && npm run stylelint-build && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "stylelint-dev": "stylelint src/**/*.scss --cache --cache-location './.stylelintcache'; exit 0",
+    "stylelint-dev": "stylelint \"src/**/*.scss\" --cache --cache-location \".stylelintcache\" exit 0",
     "stylelint-build": "stylelint src/**/*.scss",
     "stylelint-fix-sass": "stylelint --fix src/**/*.scss",
     "watch-sass-js": "npm-watch",
@@ -63,7 +45,23 @@
       "last 1 safari version"
     ]
   },
+  "dependencies": {
+    "axios": "^0.20.0",
+    "material": "^0.4.3",
+    "node-sass": "^4.14.1",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
+    "react-scripts": "3.4.3",
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0"
+  },
   "devDependencies": {
+    "concurrently": "^5.3.0",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "npm-run-all": "^4.1.1",
+    "npm-watch": "^0.3.0",
     "eslint": "^6.6.0",
     "eslint-config-prettier": "^6.13.0",
     "eslint-plugin-import": "^2.22.1",
@@ -72,7 +70,10 @@
     "husky": "^4.3.0",
     "lint-staged": "^10.4.2",
     "prettier": "^2.1.2",
-    "standard": "^14.3.4"
+    "standard": "^14.3.4",
+    "stylelint": "^13.7.2",
+    "stylelint-config-rational-order": "^0.1.2",
+    "stylelint-order": "^4.1.0"
   },
   "husky": {
     "hooks": {
