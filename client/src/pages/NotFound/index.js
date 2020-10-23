@@ -8,7 +8,7 @@ import Container from '@material-ui/core/Container'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: '100vh',
+    height: '90%',
   },
   errorContainer: {
     width: '100%',

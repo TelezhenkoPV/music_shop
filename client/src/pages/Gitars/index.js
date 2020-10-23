@@ -6,7 +6,7 @@ import Paper from '@material-ui/core/Paper'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: '100vh',
+    height: '90%',
   },
 }))
 
