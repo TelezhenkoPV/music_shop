@@ -1,5 +1,6 @@
 import React from 'react'
 import Header from './components/Header'
+
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles'
 import theme from './theme/Theme'
 import Footer from './components/Footer'
