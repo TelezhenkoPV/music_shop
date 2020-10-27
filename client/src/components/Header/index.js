@@ -1,4 +1,6 @@
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import { fade, makeStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
@@ -16,6 +18,9 @@ import NotificationsIcon from '@material-ui/icons/Notifications'
 import MoreIcon from '@material-ui/icons/MoreVert'
 import useScrollTrigger from '@material-ui/core/useScrollTrigger'
 import Box from '@material-ui/core/Box'
+
+import { logoutUser } from '../../store/user/userActions'
+import { isAuthenticatedSelector } from '../../store/user/userSelectors'
 
 function ElevationScroll(props) {
   const { children } = props
@@ -103,6 +108,10 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function PrimarySearchAppBar() {
+  const history = useHistory()
+  const dispatch = useDispatch()
+  const isAuthenticated = useSelector(isAuthenticatedSelector)
+
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = React.useState(null)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null)
@@ -140,6 +149,41 @@ export default function PrimarySearchAppBar() {
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem
+        onClick={() => {
+          handleMenuClose()
+          history.push('/userprofile')
+        }}
+      >
+        UserProfile Protected
+      </MenuItem>
+      <MenuItem
+        onClick={() => {
+          handleMenuClose()
+          history.push('/adminpanel')
+        }}
+      >
+        AdminPanel Protected Admin only
+      </MenuItem>
+      <MenuItem
+        onClick={() => {
+          handleMenuClose()
+          history.push('/login')
+        }}
+        disabled={isAuthenticated}
+      >
+        Login
+      </MenuItem>
+      <MenuItem
+        onClick={() => {
+          handleMenuClose()
+          dispatch(logoutUser())
+          history.push('/')
+        }}
+        disabled={!isAuthenticated}
+      >
+        Login Out
+      </MenuItem>
     </Menu>
   )
 
@@ -198,7 +242,14 @@ export default function PrimarySearchAppBar() {
               >
                 <MenuIcon />
               </IconButton>
-              <Typography className={classes.title} variant="h6" noWrap>
+              <Typography
+                className={classes.title}
+                variant="h6"
+                noWrap
+                onClick={() => {
+                  history.push('/')
+                }}
+              >
                 Material-UI
               </Typography>
               <div className={classes.search}>
