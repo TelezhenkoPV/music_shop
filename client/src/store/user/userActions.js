@@ -21,7 +21,7 @@ export const loginUser = ({ loginOrEmail, password }) => (dispatch) => {
         if (loginResult.data.success) {
           const { token } = loginResult.data
           dispatch({ type: LOGIN, payload: token })
-          dispatch(getCustomer(token))
+          // dispatch(getCustomer(token))
         }
       }
     })
@@ -40,7 +40,7 @@ export const logoutUser = () => (dispatch) => {
   dispatch({ type: LOGOUT })
 }
 
-export const getCustomer = (token) => (dispatch) => {
+export const getCustomer = ({ token }) => (dispatch) => {
   dispatch({ type: GET_CUSTOMER_isPROCEED, payload: true })
   var authOptions = {
     headers: {
