@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-function Gitars() {
+function Accessories() {
   const classes = useStyles()
 
   return (
@@ -36,4 +36,4 @@ function Gitars() {
   )
 }
 
-export default Gitars
+export default Accessories
