@@ -1,3 +1,2 @@
-export const tokenSelector = (store) => store.user.token
-export const isAuthenticatedSelector = (store) => store.user.isAutenticated
-export const isAdminSelector = (store) => store.user.data.isAdmin
+export const getIsAuthenticated = (store) => !!store.user.token
+export const getIsAdmin = (store) => store.user.data.isAdmin

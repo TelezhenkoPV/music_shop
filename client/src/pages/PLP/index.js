@@ -9,12 +9,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-function PLP() {
+function PLP(props) {
   const classes = useStyles()
+
+  const { product } = props
 
   return (
     <Container className={classes.root}>
-      <Paper>Products list page!!!</Paper>
+      <Paper>Products list page!!! => {product}</Paper>
     </Container>
   )
 }

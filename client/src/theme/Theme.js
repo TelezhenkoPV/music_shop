@@ -20,4 +20,9 @@ export default createMuiTheme({
       black: '#040404',
     },
   },
+  basicFlex: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 })

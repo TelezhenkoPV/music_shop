@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import Header from './components/Header'
 
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles'
@@ -6,6 +7,7 @@ import theme from './theme/Theme'
 import Footer from './components/Footer'
 import Box from '@material-ui/core/Box'
 import MainRoutes from './routes/MainRoutes'
+import { getCustomer } from './store/user/userActions'
 
 const useStyles = makeStyles((theme) => ({
   mainBlock: {
@@ -15,6 +17,11 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {
   const classes = useStyles()
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(getCustomer())
+  })
+
   return (
     <Box component={'div'} className={classes.mainBlock} bgcolor="garys.gray">
       <ThemeProvider theme={theme}>

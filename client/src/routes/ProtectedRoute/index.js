@@ -1,24 +1,29 @@
 import React from 'react'
 import { Redirect, Route } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { isAuthenticatedSelector } from '../../store/user/userSelectors'
+import { getIsAuthenticated, getIsAdmin } from '../../store/user/userSelectors'
+import Prohibited from '../../pages/Prohibited'
 
-const ProtectedRoute = ({ children, isAdminOnly, ...rest }) => {
-  const isAuthenticated = useSelector(isAuthenticatedSelector)
+const ProtectedRoute = ({ children, adminOnly = false, ...rest }) => {
+  const isAuthenticated = useSelector(getIsAuthenticated)
+  const isAdmin = useSelector(getIsAdmin)
 
   return (
     <Route
       {...rest}
-      render={({ location }) => {
+      render={() => {
         return isAuthenticated ? (
-          children
+          adminOnly ? (
+            isAdmin ? (
+              children
+            ) : (
+              <Prohibited />
+            )
+          ) : (
+            children
+          )
         ) : (
-          <Redirect
-            to={{
-              pathname: '/login',
-              state: { from: location },
-            }}
-          />
+          <Redirect to="/login" />
         )
       }}
     />

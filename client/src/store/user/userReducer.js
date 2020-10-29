@@ -1,15 +1,16 @@
 import {
+  SIGNUP_PROCEED,
   LOGIN,
   LOGOUT,
-  LOGIN_isPROCEED,
-  GET_CUSTOMER_isPROCEED,
+  LOGIN_PROCEED,
+  GET_CUSTOMER_PROCEED,
   SAVE_USER_DATA,
 } from './userConstants'
 
 const initialStore = {
-  isAutenticated: false,
   isLoginProceed: false,
-  token: null,
+  isSignUp_Proceed: false,
+  isGetCustomerProceed: false,
   data: {
     isAdmin: false,
   },
@@ -18,11 +19,18 @@ const initialStore = {
 
 const reducer = (store = initialStore, action) => {
   switch (action.type) {
+    // Начало или окончание процесса регистрации нового пользователя
+    case SIGNUP_PROCEED:
+      return {
+        ...store,
+        isSignUp_Proceed: action.payload,
+      }
+
     // Авторизация пользователя успешна, получен токен
     case LOGIN:
       return {
         ...store,
-        isAutenticated: true,
+        // isAutenticated: true,
         token: action.payload,
       }
 
@@ -33,17 +41,17 @@ const reducer = (store = initialStore, action) => {
       }
 
     // Начало или окончание процесса логина пользователя
-    case LOGIN_isPROCEED:
+    case LOGIN_PROCEED:
       return {
         ...store,
         isLoginProceed: action.payload,
       }
 
     // Начало или окончание процесса получения данных о пользователе
-    case GET_CUSTOMER_isPROCEED:
+    case GET_CUSTOMER_PROCEED:
       return {
         ...store,
-        isGET_CUSTOMERProceed: action.payload,
+        isGetCustomerProceed: action.payload,
       }
 
     // Сохранить данные о пользователе
