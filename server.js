@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const path = require('path');
 require('dotenv').config();
+const cors = require('cors')
 
 const globalConfigs = require('./routes/globalConfigs');
 const customers = require('./routes/customers');
@@ -26,6 +27,9 @@ const partners = require('./routes/partners');
 const mainRoute = require('./routes/index');
 
 const app = express();
+
+//fix problems with CORS
+app.use(cors())
 
 // Body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
