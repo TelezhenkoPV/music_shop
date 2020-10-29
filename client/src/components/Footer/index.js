@@ -1,39 +1,39 @@
-import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
+import React, { useEffect } from 'react'
 import Container from '@material-ui/core/Container'
 import Grid from '@material-ui/core/Grid'
-import Paper from '@material-ui/core/Paper'
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    height: '80px',
-    width: '100%',
-    backgroundColor: theme.palette.primary.main,
-  },
-}))
+import { Typography } from '@material-ui/core'
+import useStyles from './styles'
+import logo from '../../assets/logo-footer.svg'
+import axios from 'axios'
 
 function Footer() {
   const classes = useStyles()
 
+  useEffect(() => {
+    axios
+      .get('http://localhost:5000/api/links')
+      .then((links) => {
+        console.log(links)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  })
+
   return (
     <footer className={classes.root}>
-      <Container>
+      <Container className={classes.container}>
         <Grid container spacing={2} direction={'row'} justify={'center'}>
-          <Grid item>
-            <Paper elevation={3} component={'div'}>
-              point 1
-            </Paper>
+          <Grid item className={classes.box}>
+            <Typography className={classes.title} noWrap>
+              Sound Tower
+            </Typography>
+            <img alt="company logo" src={logo} className={classes.logo} />
+            <Typography className={classes.logoName} variant="subtitle22">
+              Музыкальный интернет-гипермаркет
+            </Typography>
           </Grid>
-          <Grid item>
-            <Paper elevation={3} component={'div'}>
-              point 2
-            </Paper>
-          </Grid>
-          <Grid item>
-            <Paper elevation={3} component={'div'}>
-              point 3
-            </Paper>
-          </Grid>
+          <Grid item className={classes.box}></Grid>
         </Grid>
       </Container>
     </footer>
