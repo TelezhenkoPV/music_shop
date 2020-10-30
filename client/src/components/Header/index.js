@@ -25,7 +25,6 @@ const Header = () => {
   const dispatch = useDispatch()
   // to adjust the logic for authorized
   const authorized = false
-
   const handleChange = (event, newValue) => setValue(newValue)
 
   useEffect(() => {
