@@ -20,7 +20,6 @@ import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { useTheme } from '@material-ui/core/styles'
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
 import MenuIcon from '@material-ui/icons/Menu'
-import IconButton from '@material-ui/core/IconButton'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
@@ -119,116 +118,44 @@ const Header = () => {
       >
         <div className={classes.toolbarMargin}></div>
         <List disablePadding>
-          <ListItem
-            component={Link}
-            to={'/'}
-            divider
-            button
-            onClick={() => {
-              setOpenDrawer(false)
-              setValue(0)
-            }}
-            selected={value === 0}
-            classes={{ selected: classes.drawerItemSelected }}
-          >
-            <ListItemText disableTypography className={classes.drawerItem}>
-              Home
-            </ListItemText>
-          </ListItem>
-          <ListItem
-            component={Link}
-            to={'/services'}
-            divider
-            button
-            onClick={() => {
-              setOpenDrawer(false)
-              setValue(1)
-            }}
-            selected={value === 1}
-            classes={{ selected: classes.drawerItemSelected }}
-          >
-            <ListItemText disableTypography className={classes.drawerItem}>
-              Services
-            </ListItemText>
-          </ListItem>
-          <ListItem
-            component={Link}
-            to={'/revolution'}
-            divider
-            button
-            onClick={() => {
-              setOpenDrawer(false)
-              setValue(2)
-            }}
-            selected={value === 2}
-            classes={{ selected: classes.drawerItemSelected }}
-          >
-            <ListItemText disableTypography className={classes.drawerItem}>
-              The Revolution
-            </ListItemText>
-          </ListItem>
-          <ListItem
-            component={Link}
-            to={'/about'}
-            divider
-            button
-            onClick={() => {
-              setOpenDrawer(false)
-              setValue(3)
-            }}
-            selected={value === 3}
-            classes={{ selected: classes.drawerItemSelected }}
-          >
-            <ListItemText disableTypography className={classes.drawerItem}>
-              About Us
-            </ListItemText>
-          </ListItem>
-          <ListItem
-            component={Link}
-            to={'/contact'}
-            divider
-            button
-            onClick={() => {
-              setOpenDrawer(false)
-              setValue(4)
-            }}
-            selected={value === 4}
-            classes={{ selected: classes.drawerItemSelected }}
-          >
-            <ListItemText disableTypography className={classes.drawerItem}>
-              Contact Us
-            </ListItemText>
-          </ListItem>
-          <ListItem
-            component={Link}
-            to={'/estimate'}
-            divider
-            button
-            onClick={() => {
-              setOpenDrawer(false)
-              setValue(5)
-            }}
-            selected={value === 5}
-            classes={{
-              root: classes.drawerItemEstimate,
-              selected: classes.drawerItemSelected,
-            }}
-          >
-            <ListItemText disableTypography className={classes.drawerItem}>
-              Free estimate
-            </ListItemText>
-          </ListItem>
+          {tabLinks.map((tab, index) => (
+            <ListItem
+              key={tab + index}
+              component={Link}
+              to={tab.to}
+              divider
+              button
+              onClick={() => {
+                setOpenDrawer(false)
+                setValue(index)
+              }}
+              selected={value === index}
+              classes={{ selected: classes.drawerItemSelected }}
+            >
+              <ListItemText disableTypography className={classes.drawerItem}>
+                {tab.label}
+              </ListItemText>
+            </ListItem>
+          ))}
         </List>
       </SwipeableDrawer>
-      <IconButton
-        className={classes.drawerIconContainer}
-        onClick={() => {
-          setOpenDrawer(!openDrawer)
-        }}
-        disableRipple
-      >
-        <MenuIcon className={classes.drawerIcon} />
-      </IconButton>
+      <Grid container className={classes.searchContainer}>
+        <Grid item container xs={10} justify={'center'}>
+          <SearchBar />
+        </Grid>
+        <Grid item xs={1} container justify={'flex-end'}>
+          <Button
+            style={{ padding: 0 }}
+            className={classes.drawerIconContainer}
+            onClick={() => {
+              setOpenDrawer(!openDrawer)
+            }}
+            disableRipple
+          >
+            <MenuIcon className={classes.drawerIcon} />
+          </Button>
+        </Grid>
+      </Grid>
     </>
   )
 
@@ -236,7 +163,7 @@ const Header = () => {
     <>
       <ElevationScroll>
         <div>
-          <AppBar position="fixed">
+          <AppBar position="fixed" className={classes.appBar}>
             <Toolbar disableGutters={true}>
               <Grid container>
                 <Grid
@@ -249,6 +176,7 @@ const Header = () => {
                 >
                   <Grid item>
                     <Button
+                      style={{ padding: 0 }}
                       component={Link}
                       to={'/'}
                       className={classes.logoContainer}
@@ -263,11 +191,16 @@ const Header = () => {
                     </Button>
                   </Grid>
                   <Grid item className={classes.iconContainer}>
-                    <SearchBar />
+                    {matches ? null : <SearchBar />}
                   </Grid>
                   <Grid item className={classes.iconContainer}>
                     <Grid item className={classes.iconContainer}>
-                      <Button component={Link} to={'/basket'} disableRipple>
+                      <Button
+                        style={{ padding: 0 }}
+                        component={Link}
+                        to={'/basket'}
+                        disableRipple
+                      >
                         <ShoppingBasketIcon
                           className={classes.headerIcon}
                           onClick={() => console.log('shopping basket clicked')}
@@ -275,7 +208,7 @@ const Header = () => {
                       </Button>
                     </Grid>
                     <Grid item className={classes.iconContainer}>
-                      <Button>
+                      <Button style={{ padding: 0 }}>
                         {authorized ? (
                           <FavoriteIcon
                             className={classes.headerIcon}

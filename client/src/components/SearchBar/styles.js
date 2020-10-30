@@ -3,17 +3,18 @@ import { makeStyles } from '@material-ui/core/styles'
 const useStyles = makeStyles((theme) => ({
   searchBar: {
     margin: '0 auto',
-    minWidth: 700,
+    minWidth: 800,
     [theme.breakpoints.down('md')]: {
-      minWidth: 500,
+      minWidth: 650,
       height: 40,
     },
     [theme.breakpoints.down('sm')]: {
-      minWidth: 300,
+      minWidth: 485,
       height: 35,
     },
     [theme.breakpoints.down('xs')]: {
-      minWidth: 200,
+      minWidth: 300,
+      height: 30,
     },
   },
 }))

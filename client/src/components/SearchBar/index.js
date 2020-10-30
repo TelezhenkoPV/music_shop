@@ -8,6 +8,7 @@ function Search() {
 
   return (
     <SearchBar
+      style={{ margin: 0 }}
       value={value}
       className={classes.searchBar}
       onChange={(newValue) => setValue(newValue)}

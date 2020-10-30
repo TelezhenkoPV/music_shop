@@ -8,16 +8,16 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   downBar: {
-    paddingBottom: '1rem',
+    paddingBottom: '0.5rem',
   },
   toolbarMargin: {
     ...theme.mixins.toolbar,
-    marginBottom: '7.5em',
+    marginBottom: '90px',
     [theme.breakpoints.down('md')]: {
-      marginBottom: '4em',
+      marginBottom: '62px',
     },
     [theme.breakpoints.down('xs')]: {
-      marginBottom: '3em',
+      marginBottom: '52px',
     },
   },
   logo: {
@@ -31,6 +31,15 @@ const useStyles = makeStyles((theme) => ({
   },
   iconContainer: {
     ...theme.basicFlex,
+    padding: 0,
+  },
+  searchContainer: {
+    ...theme.basicFlex,
+    justifyContent: 'space-between',
+    padding: '0rem 1rem 0.5rem 1rem',
+    [theme.breakpoints.down('md')]: {
+      padding: '0rem 0.5rem 0.25rem 0.5rem',
+    },
   },
   headerIcon: {
     color: theme.palette.primary.contrastText,
@@ -47,6 +56,42 @@ const useStyles = makeStyles((theme) => ({
   tab: {
     textTransform: 'capitalize',
     fontSize: '1.25rem',
+    [theme.breakpoints.down('md')]: {
+      fontSize: '1rem',
+    },
+  },
+  drawer: {
+    backgroundColor: theme.palette.primary.main,
+  },
+  drawerIcon: {
+    height: '50px',
+    width: '50px',
+    color: theme.palette.primary.contrastText,
+    [theme.breakpoints.down('xs')]: {
+      height: '40px',
+      width: '40px',
+    },
+  },
+  drawerIconContainer: {
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
+  },
+  appBar: {
+    zIndex: theme.zIndex.modal + 1,
+  },
+  drawerList: {
+    backgoundColor: 'red',
+  },
+  drawerItem: {
+    ...theme.typography.tab,
+    color: 'white',
+    opacity: 0.7,
+  },
+  drawerItemSelected: {
+    '& .MuiListItemText-root': {
+      opacity: 1,
+    },
   },
 }))
 
