@@ -6,18 +6,22 @@ const SignUp = () => {
   const dispatch = useDispatch()
 
   const [userData, setUserData] = useState({
-    firstName: 'ТестовоеИмя',
-    lastName: 'ТестоваяФамилия',
-    login: 'testtest',
-    email: 'test@gmail.com',
-    password: 'testtest',
-    telephone: '+380121112233',
-    gender: 'male',
+    firstName: '',
+    lastName: '',
+    login: '',
+    email: '',
+    password: '',
+    telephone: '',
+    gender: '',
     isAdmin: false,
   })
 
   const handleChange = (event) => {
-    setUserData({ ...userData, [event.target.name]: event.target.value })
+    const value =
+      event.target.type === 'checkbox'
+        ? event.target.checked
+        : event.target.value
+    setUserData({ ...userData, [event.target.name]: value })
   }
 
   const handleSubmit = (event) => {

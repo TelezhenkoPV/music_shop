@@ -32,8 +32,8 @@ export default function SignIn() {
   const dispatch = useDispatch()
 
   const [formData, setFormData] = useState({
-    loginOrEmail: 'test@gmail.com',
-    password: 'testtest',
+    loginOrEmail: '',
+    password: '',
     remember: false,
   })
 
@@ -53,15 +53,8 @@ export default function SignIn() {
 
   // Только для теста - на Проде удалить
   const isAuthenticated = useSelector(getIsAuthenticated)
-  const handleClickAdmin = () => {
-    isAuthenticated
-      ? dispatch(signOut())
-      : dispatch(
-          signIn({
-            loginOrEmail: 'mikhail.scherbina@gmail.com',
-            password: '123456789',
-          })
-        )
+  const handleClickSignOut = () => {
+    dispatch(signOut())
     dispatch(closeModal())
   }
 
@@ -120,14 +113,17 @@ export default function SignIn() {
           </Button>
 
           {/* Только для теста - на Проде удалить */}
-          <Button
-            fullWidth
-            variant="contained"
-            color="primary"
-            onClick={handleClickAdmin}
-          >
-            {isAuthenticated ? 'Выход' : 'Вход как Админ'}
-          </Button>
+          {isAuthenticated ? (
+            <Button
+              fullWidth
+              variant="contained"
+              color="primary"
+              onClick={handleClickSignOut}
+            >
+              {' '}
+              Выход{' '}
+            </Button>
+          ) : null}
         </form>
       </div>
     </Container>
