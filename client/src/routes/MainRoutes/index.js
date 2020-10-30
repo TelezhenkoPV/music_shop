@@ -1,8 +1,12 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
-import Main from '../../pages/Main/index'
-import NotFound from '../../pages/NotFound/index'
-import Accessories from '../../pages/Accessories/index'
+import ProtectedRoute from '../ProtectedRoute'
+import UserProfile from '../../pages/Protected/UserProfile'
+import AdminPanel from '../../pages/AdminOnly/AdminPanel'
+import Main from '../../pages/Main'
+import NotFound from '../../pages/NotFound'
+import Prohibited from '../../pages/Prohibited'
+import Accessories from '../../pages/Accessories'
 import Basket from '../../pages/Basket'
 import PDP from '../../pages/PDP'
 import PLP from '../../pages/PLP'
@@ -33,6 +37,15 @@ const MainRoutes = () => {
         <Route exact path="/basket" render={() => <Basket />} />
         <Route exact path="/product-details" render={() => <PDP />} />
         <Route exact path="/products-list" render={() => <PLP />} />
+
+        <ProtectedRoute path="/protected">
+          <UserProfile />
+        </ProtectedRoute>
+        <ProtectedRoute path="/admin" adminOnly>
+          <AdminPanel />
+        </ProtectedRoute>
+        <Route exact path="/prohibited" render={() => <Prohibited />} />
+
         <Route exact path="*" render={() => <NotFound />} />
       </Switch>
     </>
