@@ -9,6 +9,7 @@ import Box from '@material-ui/core/Box'
 import MainRoutes from './routes/MainRoutes'
 import { getCustomer } from './store/user/userActions'
 import Modal from './components/Modal'
+import { getDataFromServe } from './func'
 
 const useStyles = makeStyles((theme) => ({
   mainBlock: {
@@ -23,6 +24,8 @@ function App() {
   useEffect(() => {
     dispatch(getCustomer())
   })
+
+  getDataFromServe('http://localhost:5000/api/products/filter?&color=red')
 
   return (
     <Box component={'div'} className={classes.mainBlock} bgcolor="garys.gray">
