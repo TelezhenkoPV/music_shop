@@ -1,12 +1,18 @@
-import { makeStyles, fade } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
+  topBar: {
+    padding: '1rem 1rem 0.5rem 1rem',
+    [theme.breakpoints.down('md')]: {
+      padding: '0.5rem 0.5rem 0.25rem 0.5rem',
+    },
+  },
+  downBar: {
+    paddingBottom: '1rem',
   },
   toolbarMargin: {
     ...theme.mixins.toolbar,
-    marginBottom: '6em',
+    marginBottom: '7.5em',
     [theme.breakpoints.down('md')]: {
       marginBottom: '4em',
     },
@@ -16,50 +22,31 @@ const useStyles = makeStyles((theme) => ({
   },
   logo: {
     height: '4.5rem',
+    [theme.breakpoints.down('md')]: {
+      height: '4em',
+    },
+    [theme.breakpoints.down('xs')]: {
+      height: '3em',
+    },
   },
   iconContainer: {
     ...theme.basicFlex,
   },
   headerIcon: {
     color: theme.palette.primary.contrastText,
+    marginLeft: '1.25rem',
     fontSize: '3.5rem',
-  },
-  search: {
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
+    [theme.breakpoints.down('md')]: {
+      fontSize: '3rem',
+      marginLeft: 0,
     },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
-      width: 'auto',
+    [theme.breakpoints.down('xs')]: {
+      fontSize: '2rem',
     },
   },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  inputRoot: {
-    color: 'white',
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font  size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
-    },
+  tab: {
+    textTransform: 'capitalize',
+    fontSize: '1.25rem',
   },
 }))
 

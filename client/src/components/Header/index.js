@@ -16,15 +16,27 @@ import FavoriteIcon from '@material-ui/icons/Favorite'
 import { useDispatch } from 'react-redux'
 import { toggleModal } from '../../store/modal/modalAction'
 import Modal from '../Modal'
-import SearchIcon from '@material-ui/icons/Search'
-import InputBase from '@material-ui/core/InputBase'
+import SearchBar from '../SearchBar'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
+import { useTheme } from '@material-ui/core/styles'
+import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
+import MenuIcon from '@material-ui/icons/Menu'
+import IconButton from '@material-ui/core/IconButton'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
 
 const Header = () => {
   const classes = useStyles()
-  const [value, setValue] = useState(0)
   const dispatch = useDispatch()
   // to adjust the logic for authorized
   const authorized = false
+  const theme = useTheme()
+  const matches = useMediaQuery(theme.breakpoints.down('sm'))
+  const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent)
+
+  const [value, setValue] = useState(0)
+  const [openDrawer, setOpenDrawer] = useState(false)
 
   const handleChange = (event, newValue) => setValue(newValue)
 
@@ -70,14 +82,167 @@ const Header = () => {
     }
   }, [value])
 
+  const downTab = (
+    <>
+      <Grid
+        className={classes.downBar}
+        item
+        container
+        xs={12}
+        justify={'center'}
+        alignItems={'center'}
+      >
+        <Tabs indicatorColor={'primary'} onChange={handleChange} value={value}>
+          {tabLinks.map((tab, index) => {
+            return (
+              <Tab
+                key={`${tab}${index}`}
+                className={classes.tab}
+                component={Link}
+                to={tab.to}
+                label={tab.label}
+              />
+            )
+          })}
+        </Tabs>
+      </Grid>
+    </>
+  )
+
+  const drawer = (
+    <>
+      <SwipeableDrawer
+        disableBackdropTransition={!iOS}
+        disableDiscovery={iOS}
+        open={openDrawer}
+        onClose={() => setOpenDrawer(false)}
+        onOpen={() => setOpenDrawer(true)}
+        classes={{ paper: classes.drawer }}
+      >
+        <div className={classes.toolbarMargin}></div>
+        <List disablePadding>
+          <ListItem
+            component={Link}
+            to={'/'}
+            divider
+            button
+            onClick={() => {
+              setOpenDrawer(false)
+              setValue(0)
+            }}
+            selected={value === 0}
+            classes={{ selected: classes.drawerItemSelected }}
+          >
+            <ListItemText disableTypography className={classes.drawerItem}>
+              Home
+            </ListItemText>
+          </ListItem>
+          <ListItem
+            component={Link}
+            to={'/services'}
+            divider
+            button
+            onClick={() => {
+              setOpenDrawer(false)
+              setValue(1)
+            }}
+            selected={value === 1}
+            classes={{ selected: classes.drawerItemSelected }}
+          >
+            <ListItemText disableTypography className={classes.drawerItem}>
+              Services
+            </ListItemText>
+          </ListItem>
+          <ListItem
+            component={Link}
+            to={'/revolution'}
+            divider
+            button
+            onClick={() => {
+              setOpenDrawer(false)
+              setValue(2)
+            }}
+            selected={value === 2}
+            classes={{ selected: classes.drawerItemSelected }}
+          >
+            <ListItemText disableTypography className={classes.drawerItem}>
+              The Revolution
+            </ListItemText>
+          </ListItem>
+          <ListItem
+            component={Link}
+            to={'/about'}
+            divider
+            button
+            onClick={() => {
+              setOpenDrawer(false)
+              setValue(3)
+            }}
+            selected={value === 3}
+            classes={{ selected: classes.drawerItemSelected }}
+          >
+            <ListItemText disableTypography className={classes.drawerItem}>
+              About Us
+            </ListItemText>
+          </ListItem>
+          <ListItem
+            component={Link}
+            to={'/contact'}
+            divider
+            button
+            onClick={() => {
+              setOpenDrawer(false)
+              setValue(4)
+            }}
+            selected={value === 4}
+            classes={{ selected: classes.drawerItemSelected }}
+          >
+            <ListItemText disableTypography className={classes.drawerItem}>
+              Contact Us
+            </ListItemText>
+          </ListItem>
+          <ListItem
+            component={Link}
+            to={'/estimate'}
+            divider
+            button
+            onClick={() => {
+              setOpenDrawer(false)
+              setValue(5)
+            }}
+            selected={value === 5}
+            classes={{
+              root: classes.drawerItemEstimate,
+              selected: classes.drawerItemSelected,
+            }}
+          >
+            <ListItemText disableTypography className={classes.drawerItem}>
+              Free estimate
+            </ListItemText>
+          </ListItem>
+        </List>
+      </SwipeableDrawer>
+      <IconButton
+        className={classes.drawerIconContainer}
+        onClick={() => {
+          setOpenDrawer(!openDrawer)
+        }}
+        disableRipple
+      >
+        <MenuIcon className={classes.drawerIcon} />
+      </IconButton>
+    </>
+  )
+
   return (
     <>
       <ElevationScroll>
-        <div className={classes.root}>
+        <div>
           <AppBar position="fixed">
             <Toolbar disableGutters={true}>
               <Grid container>
                 <Grid
+                  className={classes.topBar}
                   item
                   container
                   xs={12}
@@ -100,21 +265,7 @@ const Header = () => {
                     </Button>
                   </Grid>
                   <Grid item className={classes.iconContainer}>
-                    <Grid item className={classes.iconContainer}>
-                      <div className={classes.search}>
-                        <div className={classes.searchIcon}>
-                          <SearchIcon />
-                        </div>
-                        <InputBase
-                          placeholder="Search…"
-                          classes={{
-                            root: classes.inputRoot,
-                            input: classes.inputInput,
-                          }}
-                          inputProps={{ 'aria-label': 'search' }}
-                        />
-                      </div>
-                    </Grid>
+                    <SearchBar />
                   </Grid>
                   <Grid item className={classes.iconContainer}>
                     <Grid item className={classes.iconContainer}>
@@ -142,31 +293,7 @@ const Header = () => {
                     </Grid>
                   </Grid>
                 </Grid>
-                <Grid
-                  item
-                  container
-                  xs={12}
-                  justify={'center'}
-                  alignItems={'center'}
-                >
-                  <Tabs
-                    indicatorColor={'primary'}
-                    onChange={handleChange}
-                    value={value}
-                  >
-                    {tabLinks.map((tab, index) => {
-                      return (
-                        <Tab
-                          key={`${tab}${index}`}
-                          className={classes.tab}
-                          component={Link}
-                          to={tab.to}
-                          label={tab.label}
-                        />
-                      )
-                    })}
-                  </Tabs>
-                </Grid>
+                {matches ? drawer : downTab}
               </Grid>
             </Toolbar>
           </AppBar>
