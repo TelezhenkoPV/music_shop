@@ -26,7 +26,7 @@ export const signUp = (userData) => (dispatch) => {
     })
 }
 
-export const loginUser = ({ loginOrEmail, password }) => (dispatch) => {
+export const signIn = ({ loginOrEmail, password, remember }) => (dispatch) => {
   const userData = {
     loginOrEmail,
     password,
@@ -39,7 +39,10 @@ export const loginUser = ({ loginOrEmail, password }) => (dispatch) => {
       if (loginResult.status === 200) {
         if (loginResult.data.success) {
           const { token } = loginResult.data
-          localStorage.setItem('token', token)
+
+          if (remember) localStorage.setItem('token', token)
+          sessionStorage.setItem('token', token)
+
           dispatch({ type: LOGIN, payload: token })
           dispatch(getCustomer())
         }
@@ -50,20 +53,22 @@ export const loginUser = ({ loginOrEmail, password }) => (dispatch) => {
       const { loginOrEmail, password } = data
       if (loginOrEmail) console.log('LoginOrEmail incorrect: ', loginOrEmail)
       if (password) console.log('Password incorrect: ', password)
-      dispatch(logoutUser())
+      dispatch(signOut())
     })
     .finally(() => {
       dispatch({ type: LOGIN_PROCEED, payload: false })
     })
 }
 
-export const logoutUser = () => (dispatch) => {
+export const signOut = () => (dispatch) => {
   localStorage.removeItem('token')
+  sessionStorage.removeItem('token')
   dispatch({ type: LOGOUT })
 }
 
 export const getCustomer = () => (dispatch) => {
-  const token = localStorage.token
+  const token = sessionStorage.token || localStorage.token || null
+
   if (token) {
     dispatch({ type: GET_CUSTOMER_PROCEED, payload: true })
     var authOptions = {
@@ -85,7 +90,7 @@ export const getCustomer = () => (dispatch) => {
       .catch(({ response: { status, data } }) => {
         console.log('Server Error with Status Code', status)
         console.log('Error: ', data)
-        dispatch(logoutUser())
+        dispatch(signOut())
       })
       .finally(() => {
         dispatch({ type: GET_CUSTOMER_PROCEED, payload: false })

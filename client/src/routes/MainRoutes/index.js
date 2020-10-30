@@ -1,8 +1,6 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 import ProtectedRoute from '../ProtectedRoute'
-import Login from '../../components/Login'
-import SignUp from '../../components/SignUp'
 import UserProfile from '../../pages/Protected/UserProfile'
 import AdminPanel from '../../pages/AdminOnly/AdminPanel'
 import Main from '../../pages/Main'
@@ -40,8 +38,6 @@ const MainRoutes = () => {
         <Route exact path="/product-details" render={() => <PDP />} />
         <Route exact path="/products-list" render={() => <PLP />} />
 
-        <Route exact path="/login" render={() => <Login />} />
-        <Route exact path="/signup" render={() => <SignUp />} />
         <ProtectedRoute path="/protected">
           <UserProfile />
         </ProtectedRoute>

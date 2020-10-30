@@ -8,6 +8,7 @@ import Footer from './components/Footer'
 import Box from '@material-ui/core/Box'
 import MainRoutes from './routes/MainRoutes'
 import { getCustomer } from './store/user/userActions'
+import Modal from './components/Modal'
 
 const useStyles = makeStyles((theme) => ({
   mainBlock: {
@@ -18,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
 function App() {
   const classes = useStyles()
   const dispatch = useDispatch()
+
   useEffect(() => {
     dispatch(getCustomer())
   })
@@ -28,6 +30,7 @@ function App() {
         <Header />
         <MainRoutes />
         <Footer />
+        <Modal />
       </ThemeProvider>
     </Box>
   )

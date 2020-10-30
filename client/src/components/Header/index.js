@@ -15,7 +15,6 @@ import PersonIcon from '@material-ui/icons/Person'
 import FavoriteIcon from '@material-ui/icons/Favorite'
 import { useDispatch } from 'react-redux'
 import { toggleModal } from '../../store/modal/modalAction'
-import Modal from '../Modal'
 import SearchIcon from '@material-ui/icons/Search'
 import InputBase from '@material-ui/core/InputBase'
 
@@ -135,7 +134,7 @@ const Header = () => {
                         ) : (
                           <PersonIcon
                             className={classes.headerIcon}
-                            onClick={() => dispatch(toggleModal())}
+                            onClick={() => dispatch(toggleModal('login'))}
                           />
                         )}
                       </Button>
@@ -173,7 +172,6 @@ const Header = () => {
         </div>
       </ElevationScroll>
       <div className={classes.toolbarMargin} />
-      <Modal />
     </>
   )
 }

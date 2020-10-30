@@ -1,12 +1,16 @@
 import React from 'react'
 import { Redirect, Route } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getIsAuthenticated, getIsAdmin } from '../../store/user/userSelectors'
+import { openModal } from '../../store/modal/modalAction'
 import Prohibited from '../../pages/Prohibited'
 
 const ProtectedRoute = ({ children, adminOnly = false, ...rest }) => {
+  const dispatch = useDispatch()
   const isAuthenticated = useSelector(getIsAuthenticated)
   const isAdmin = useSelector(getIsAdmin)
+
+  if (!isAuthenticated) dispatch(openModal('login'))
 
   return (
     <Route
@@ -23,7 +27,7 @@ const ProtectedRoute = ({ children, adminOnly = false, ...rest }) => {
             children
           )
         ) : (
-          <Redirect to="/login" />
+          <Redirect to="/" />
         )
       }}
     />
