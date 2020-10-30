@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const path = require('path');
+const cors = require('cors');
 require('dotenv').config();
-const cors = require('cors')
 
 const globalConfigs = require('./routes/globalConfigs');
 const customers = require('./routes/customers');
@@ -26,8 +26,28 @@ const paymentMethods = require('./routes/paymentMethods');
 const partners = require('./routes/partners');
 const mainRoute = require('./routes/index');
 
+// const allowedOrigins = [
+//   'http://localhost:3000',
+//   'http://127.0.0.1:3000'
+// ];
+
 const app = express();
 
+// app.use(cors({
+//   origin: function (origin, callback) {
+//     // allow requests with no origin
+//     // (like mobile apps or curl requests)
+//     if (!origin) {
+//       return callback(null, true);
+//     }
+//     if (allowedOrigins.indexOf(origin) === -1) {
+//       const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+//       return callback(new Error(msg), false);
+//     }
+//     return callback(null, true);
+//   },
+//   credentials: true
+// }));
 //fix problems with CORS
 app.use(cors())
 
