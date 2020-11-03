@@ -6,7 +6,6 @@ import AdminPanel from '../../pages/AdminOnly/AdminPanel'
 import Main from '../../pages/Main'
 import NotFound from '../../pages/NotFound'
 import Prohibited from '../../pages/Prohibited'
-import Accessories from '../../pages/Accessories'
 import Basket from '../../pages/Basket'
 import PDP from '../../pages/PDP'
 import PLP from '../../pages/PLP'
@@ -33,7 +32,11 @@ const MainRoutes = () => {
           path="/keybords"
           render={() => <PLP product={'keybords'} />}
         />
-        <Route exact path="/accessories" render={() => <Accessories />} />
+        <Route
+          exact
+          path="/accessories"
+          render={() => <PLP product={'accessories'} />}
+        />
         <Route exact path="/basket" render={() => <Basket />} />
         <Route exact path="/product-details" render={() => <PDP />} />
         <Route exact path="/products-list" render={() => <PLP />} />
