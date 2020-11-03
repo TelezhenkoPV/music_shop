@@ -4,7 +4,7 @@ import Slides from '.'
 import { slidesProduct } from '../../store/slides/slidesSelectors'
 
 export default function ProductSlides() {
-  const prodSlides = useSelector(slidesProduct)
+  const items = useSelector(slidesProduct)
 
-  return <Slides items={prodSlides} />
+  return <Slides items={items} />
 }

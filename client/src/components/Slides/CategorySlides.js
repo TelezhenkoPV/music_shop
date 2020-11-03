@@ -3,8 +3,8 @@ import { useSelector } from 'react-redux'
 import Slides from '.'
 import { slidesCategory } from '../../store/slides/slidesSelectors'
 
-export default function ProductSlides() {
-  const categorySlides = useSelector(slidesCategory)
+export default function CategorySlides() {
+  const items = useSelector(slidesCategory)
 
-  return <Slides items={categorySlides} />
+  return <Slides items={items} />
 }
