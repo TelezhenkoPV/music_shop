@@ -15,16 +15,26 @@ import PersonIcon from '@material-ui/icons/Person'
 import FavoriteIcon from '@material-ui/icons/Favorite'
 import { useDispatch } from 'react-redux'
 import { toggleModal } from '../../store/modal/modalAction'
-import SearchIcon from '@material-ui/icons/Search'
-import InputBase from '@material-ui/core/InputBase'
+import SearchBar from '../SearchBar'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
+import { useTheme } from '@material-ui/core/styles'
+import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
+import MenuIcon from '@material-ui/icons/Menu'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
 
 const Header = () => {
   const classes = useStyles()
-  const [value, setValue] = useState(0)
   const dispatch = useDispatch()
   // to adjust the logic for authorized
   const authorized = false
+  const theme = useTheme()
+  const matches = useMediaQuery(theme.breakpoints.down('sm'))
+  const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent)
 
+  const [value, setValue] = useState(0)
+  const [openDrawer, setOpenDrawer] = useState(false)
   const handleChange = (event, newValue) => setValue(newValue)
 
   useEffect(() => {
@@ -69,14 +79,95 @@ const Header = () => {
     }
   }, [value])
 
+  const downTab = (
+    <>
+      <Grid
+        className={classes.downBar}
+        item
+        container
+        xs={12}
+        justify={'center'}
+        alignItems={'center'}
+      >
+        <Tabs indicatorColor={'primary'} onChange={handleChange} value={value}>
+          {tabLinks.map((tab, index) => {
+            return (
+              <Tab
+                key={`${tab}${index}`}
+                className={classes.tab}
+                component={Link}
+                to={tab.to}
+                label={tab.label}
+              />
+            )
+          })}
+        </Tabs>
+      </Grid>
+    </>
+  )
+
+  const drawer = (
+    <>
+      <SwipeableDrawer
+        disableBackdropTransition={!iOS}
+        disableDiscovery={iOS}
+        open={openDrawer}
+        onClose={() => setOpenDrawer(false)}
+        onOpen={() => setOpenDrawer(true)}
+        classes={{ paper: classes.drawer }}
+      >
+        <div className={classes.toolbarMargin}></div>
+        <List disablePadding>
+          {tabLinks.map((tab, index) => (
+            <ListItem
+              key={tab + index}
+              component={Link}
+              to={tab.to}
+              divider
+              button
+              onClick={() => {
+                setOpenDrawer(false)
+                setValue(index)
+              }}
+              selected={value === index}
+              classes={{ selected: classes.drawerItemSelected }}
+            >
+              <ListItemText disableTypography className={classes.drawerItem}>
+                {tab.label}
+              </ListItemText>
+            </ListItem>
+          ))}
+        </List>
+      </SwipeableDrawer>
+      <Grid container className={classes.searchContainer}>
+        <Grid item container xs={10} justify={'center'}>
+          <SearchBar />
+        </Grid>
+        <Grid item xs={1} container justify={'flex-end'}>
+          <Button
+            style={{ padding: 0 }}
+            className={classes.drawerIconContainer}
+            onClick={() => {
+              setOpenDrawer(!openDrawer)
+            }}
+            disableRipple
+          >
+            <MenuIcon className={classes.drawerIcon} />
+          </Button>
+        </Grid>
+      </Grid>
+    </>
+  )
+
   return (
     <>
       <ElevationScroll>
-        <div className={classes.root}>
-          <AppBar position="fixed">
+        <div>
+          <AppBar position="fixed" className={classes.appBar}>
             <Toolbar disableGutters={true}>
               <Grid container>
                 <Grid
+                  className={classes.topBar}
                   item
                   container
                   xs={12}
@@ -85,6 +176,7 @@ const Header = () => {
                 >
                   <Grid item>
                     <Button
+                      style={{ padding: 0 }}
                       component={Link}
                       to={'/'}
                       className={classes.logoContainer}
@@ -99,25 +191,16 @@ const Header = () => {
                     </Button>
                   </Grid>
                   <Grid item className={classes.iconContainer}>
-                    <Grid item className={classes.iconContainer}>
-                      <div className={classes.search}>
-                        <div className={classes.searchIcon}>
-                          <SearchIcon />
-                        </div>
-                        <InputBase
-                          placeholder="Search…"
-                          classes={{
-                            root: classes.inputRoot,
-                            input: classes.inputInput,
-                          }}
-                          inputProps={{ 'aria-label': 'search' }}
-                        />
-                      </div>
-                    </Grid>
+                    {matches ? null : <SearchBar />}
                   </Grid>
                   <Grid item className={classes.iconContainer}>
                     <Grid item className={classes.iconContainer}>
-                      <Button component={Link} to={'/basket'} disableRipple>
+                      <Button
+                        style={{ padding: 0 }}
+                        component={Link}
+                        to={'/basket'}
+                        disableRipple
+                      >
                         <ShoppingBasketIcon
                           className={classes.headerIcon}
                           onClick={() => console.log('shopping basket clicked')}
@@ -125,7 +208,7 @@ const Header = () => {
                       </Button>
                     </Grid>
                     <Grid item className={classes.iconContainer}>
-                      <Button>
+                      <Button style={{ padding: 0 }}>
                         {authorized ? (
                           <FavoriteIcon
                             className={classes.headerIcon}
@@ -141,31 +224,7 @@ const Header = () => {
                     </Grid>
                   </Grid>
                 </Grid>
-                <Grid
-                  item
-                  container
-                  xs={12}
-                  justify={'center'}
-                  alignItems={'center'}
-                >
-                  <Tabs
-                    indicatorColor={'primary'}
-                    onChange={handleChange}
-                    value={value}
-                  >
-                    {tabLinks.map((tab, index) => {
-                      return (
-                        <Tab
-                          key={`${tab}${index}`}
-                          className={classes.tab}
-                          component={Link}
-                          to={tab.to}
-                          label={tab.label}
-                        />
-                      )
-                    })}
-                  </Tabs>
-                </Grid>
+                {matches ? drawer : downTab}
               </Grid>
             </Toolbar>
           </AppBar>
