@@ -2,9 +2,9 @@ import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: '356px',
     width: '100%',
     backgroundColor: theme.palette.primary.dark,
+    color: 'white',
   },
   container: {
     [theme.breakpoints.down('sm')]: {
@@ -25,11 +25,23 @@ const useStyles = makeStyles((theme) => ({
   },
   logo: {
     width: '50px',
+    margin: '10px',
   },
   logoName: {
     color: 'grey',
     width: '152px',
     textAlign: 'center',
+  },
+  boxLinks: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'left',
+    alignItems: 'left',
+  },
+  titleLinks: {
+    fontSize: '15px',
+    fontWeight: 'bold',
+    color: 'white',
   },
 }))
 
