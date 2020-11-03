@@ -6,7 +6,7 @@ import Breadcrumbs from '@material-ui/core/Breadcrumbs'
 import Link from '@material-ui/core/Link'
 import Container from '@material-ui/core/Container'
 import Grid from '@material-ui/core/Grid'
-import cart_icon from '../../assets/cart_logo.svg'
+import cart_icon from '../../assets/cart_icon.svg'
 import Button from '@material-ui/core/Button'
 
 const useStyles = makeStyles((theme) => ({
