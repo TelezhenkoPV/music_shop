@@ -1,102 +1,41 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import Header from './components/Header'
-import { ProductCard } from './components/ProductCard/ProductCard'
 
-const getData = (
-  title,
-  img,
-  status,
-  price,
-  rating,
-  type,
-  body,
-  griff,
-  fretboard,
-  availableColors
-) => {
-  return {
-    title,
-    img,
-    status,
-    price,
-    rating,
-    type,
-    body,
-    griff,
-    fretboard,
-    availableColors,
-  }
-}
+import { makeStyles, ThemeProvider } from '@material-ui/core/styles'
+import theme from './theme/Theme'
+import Footer from './components/Footer'
+import Box from '@material-ui/core/Box'
+import MainRoutes from './routes/MainRoutes'
+import { getCustomer } from './store/user/userActions'
+import Modal from './components/Modal'
+import { getDataFromServe } from './func'
 
-const data = [
-  getData(
-    'Гитара',
-    '/guitar.jpg',
-    'New',
-    2500,
-    [1, 2, 3],
-    'Гриф на болтах',
-    'Дерево',
-    'Клен',
-    'Палисангдр',
-    ['red', 'blue']
-  ),
-  getData(
-    'Гитара',
-    '/guitar.jpg',
-    'New',
-    2500,
-    [1, 2, 3],
-    'Гриф на болтах',
-    'Дерево',
-    'Клен',
-    'Палисангдр',
-    ['red', 'blue', 'black']
-  ),
-  getData(
-    'Гитара',
-    '/guitar.jpg',
-    'New',
-    2500,
-    [1, 2, 3],
-    'Гриф на болтах',
-    'Дерево',
-    'Клен',
-    'Палисангдр',
-    ['red', 'blue', 'green']
-  ),
-  getData(
-    'Гитара',
-    '/guitar.jpg',
-    'New',
-    2500,
-    [1, 2, 3],
-    'Гриф на болтах',
-    'Дерево',
-    'Клен',
-    'Палисангдр',
-    ['red', 'blue']
-  ),
-  getData(
-    'Гитара',
-    '/guitar.jpg',
-    'New',
-    2500,
-    [1, 2, 3, 4],
-    'Гриф на болтах',
-    'Дерево',
-    'Клен',
-    'Палисангдр',
-    ['red', 'blue']
-  ),
-]
+const useStyles = makeStyles((theme) => ({
+  mainBlock: {
+    height: '100vh',
+  },
+}))
 
 function App() {
+  const classes = useStyles()
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getCustomer())
+  })
+
+  getDataFromServe('http://localhost:5000/api/products/filter?&color=red')
+
   return (
-    <div>
-      <Header />
-      {data && data.map((e) => <ProductCard guitar={e} />)}
-    </div>
+    <Box component={'div'} className={classes.mainBlock} bgcolor="garys.gray">
+      <ThemeProvider theme={theme}>
+        <Header />
+        <MainRoutes />
+        <Footer />
+        <Modal />
+      </ThemeProvider>
+    </Box>
   )
 }
 
