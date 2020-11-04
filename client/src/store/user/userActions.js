@@ -87,9 +87,8 @@ export const getCustomer = () => (dispatch) => {
           dispatch({ type: SAVE_USER_DATA, payload: data })
         }
       })
-      .catch(({ response: { status, data } }) => {
-        console.log('Server Error with Status Code', status)
-        console.log('Error: ', data)
+      .catch((error) => {
+        console.log('Error: ', error)
         dispatch(signOut())
       })
       .finally(() => {
