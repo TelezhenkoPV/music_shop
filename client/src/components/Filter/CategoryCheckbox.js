@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import axios from 'axios'
 import FormGroup from '@material-ui/core/FormGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
@@ -8,28 +9,45 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   toggleFilterCategoryAction,
   toggleFilterCategoryCheckboxAction,
+  setFilterProductsDataAction,
 } from '../../store/filters/filtersAction'
-import { filtersCategoriesCheckboxesSelector } from '../../store/filters/filtersSelectors'
+import {
+  filtersCategoriesCheckboxesSelector,
+  filtersCategoriesSelector,
+} from '../../store/filters/filtersSelectors'
+import { createUrlWithManyValues } from '../../func'
 
 export default function CategoryCheckbox(props) {
-  const { categoryName } = props
+  // const { categoryName } = props
   const dispatch = useDispatch()
 
   const filtersCategoriesCheckboxes = useSelector(
     filtersCategoriesCheckboxesSelector
   )
+  const filtersCategories = useSelector(filtersCategoriesSelector)
 
-  if (filtersCategoriesCheckboxes[categoryName] === false) {
-    // изменить значение на противоположное
-    // setState({...state, [categoryName]: !state[categoryName]})
-  }
+  // if (filtersCategoriesCheckboxes[categoryName] === false) {
+  //   dispatch(toggleFilterCategoryAction(categoryName))
+  //   dispatch(clearFilterCategoriesCheckboxesAction())
+  //   dispatch(toggleFilterCategoryCheckboxAction(categoryName))
+  // }
 
   useEffect(() => {})
 
   const handleChange = (event) => {
     dispatch(toggleFilterCategoryCheckboxAction(event.target.name))
-
     dispatch(toggleFilterCategoryAction(event.target.name))
+
+    const linkForProductsInStoreUpdate = createUrlWithManyValues(
+      'http://localhost:5000/api/products/filter',
+      'categories',
+      filtersCategories
+    )
+    axios(linkForProductsInStoreUpdate)
+      .then((response) => {
+        dispatch(setFilterProductsDataAction(response.data))
+      })
+      .catch((e) => console.log(e))
   }
 
   return (
@@ -37,9 +55,9 @@ export default function CategoryCheckbox(props) {
       <FormControlLabel
         control={
           <Checkbox
-            checked={filtersCategoriesCheckboxes.gitars}
+            checked={filtersCategoriesCheckboxes.gitar}
             onChange={handleChange}
-            name="gitars"
+            name="gitar"
           />
         }
         label="Гитары"
