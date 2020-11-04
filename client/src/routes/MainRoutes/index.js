@@ -76,11 +76,6 @@ const MainRoutes = () => {
         />
         <Route
           exact
-          path="/accessories"
-          render={() => <PLP product={'accessories'} />}
-        />
-        <Route
-          exact
           path="/about-us/about-our-team"
           render={() => <AboutOurTeam />}
         />
@@ -112,7 +107,11 @@ const MainRoutes = () => {
           path="/popular-tags/accessories"
           render={() => <PLP product={'accessories'} />}
         />
-        <Route exact path="/accessories" render={() => <Accessories />} />
+        <Route
+          exact
+          path="/accessories"
+          render={() => <PLP product={'accessories'} />}
+        />
         <Route exact path="/basket" render={() => <Basket />} />
         <Route exact path="/product-details" render={() => <PDP />} />
         <Route exact path="/products-list" render={() => <PLP />} />
