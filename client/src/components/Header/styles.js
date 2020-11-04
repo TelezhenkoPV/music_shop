@@ -1,64 +1,96 @@
-import { makeStyles, fade } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
+  topBar: {
+    padding: '1rem 1rem 0.5rem 1rem',
+    [theme.breakpoints.down('md')]: {
+      padding: '0.5rem 0.5rem 0.25rem 0.5rem',
+    },
+  },
+  downBar: {
+    paddingBottom: '0.5rem',
   },
   toolbarMargin: {
     ...theme.mixins.toolbar,
-    marginBottom: '6em',
+    marginBottom: '90px',
     [theme.breakpoints.down('md')]: {
-      marginBottom: '4em',
+      marginBottom: '62px',
     },
     [theme.breakpoints.down('xs')]: {
-      marginBottom: '3em',
+      marginBottom: '52px',
     },
   },
   logo: {
     height: '4.5rem',
+    [theme.breakpoints.down('md')]: {
+      height: '4em',
+    },
+    [theme.breakpoints.down('xs')]: {
+      height: '3em',
+    },
   },
   iconContainer: {
     ...theme.basicFlex,
+    padding: 0,
+  },
+  searchContainer: {
+    ...theme.basicFlex,
+    justifyContent: 'space-between',
+    padding: '0rem 1rem 0.5rem 1rem',
+    [theme.breakpoints.down('md')]: {
+      padding: '0rem 0.5rem 0.25rem 0.5rem',
+    },
   },
   headerIcon: {
     color: theme.palette.primary.contrastText,
+    marginLeft: '1.25rem',
     fontSize: '3.5rem',
+    [theme.breakpoints.down('md')]: {
+      fontSize: '3rem',
+      marginLeft: 0,
+    },
+    [theme.breakpoints.down('xs')]: {
+      fontSize: '2rem',
+    },
   },
-  search: {
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
+  tab: {
+    textTransform: 'capitalize',
+    fontSize: '1.25rem',
+    [theme.breakpoints.down('md')]: {
+      fontSize: '1rem',
+    },
+  },
+  drawer: {
+    backgroundColor: theme.palette.primary.main,
+  },
+  drawerIcon: {
+    height: '50px',
+    width: '50px',
+    color: theme.palette.primary.contrastText,
+    [theme.breakpoints.down('xs')]: {
+      height: '40px',
+      width: '40px',
+    },
+  },
+  drawerIconContainer: {
     '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
-      width: 'auto',
+      backgroundColor: 'transparent',
     },
   },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+  appBar: {
+    zIndex: theme.zIndex.modal + 1,
   },
-  inputRoot: {
+  drawerList: {
+    backgoundColor: 'red',
+  },
+  drawerItem: {
+    ...theme.typography.tab,
     color: 'white',
+    opacity: 0.7,
   },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
+  drawerItemSelected: {
+    '& .MuiListItemText-root': {
+      opacity: 1,
     },
   },
 }))

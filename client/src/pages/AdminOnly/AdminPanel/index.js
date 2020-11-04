@@ -1,11 +1,8 @@
-import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
-import { getSlides } from '../../store/slides/slidesActions'
-import ProductSlides from '../../components/Slides/ProductSlides'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -13,29 +10,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-function Main() {
-  const dispatch = useDispatch()
+function AdminPanel() {
   const classes = useStyles()
-
-  useEffect(() => dispatch(getSlides()), [dispatch])
 
   return (
     <Container className={classes.root}>
-      <ProductSlides />
       <Grid container spacing={2}>
         <Grid item>
           <Paper elevation={3} component={'div'}>
-            main1
+            AdminPanel 1
           </Paper>
         </Grid>
         <Grid item>
           <Paper elevation={3} component={'div'}>
-            main2
+            AdminPanel 2
           </Paper>
         </Grid>
         <Grid item>
           <Paper elevation={3} component={'div'}>
-            main3
+            AdminPanel 3
           </Paper>
         </Grid>
       </Grid>
@@ -43,4 +36,4 @@ function Main() {
   )
 }
 
-export default Main
+export default AdminPanel

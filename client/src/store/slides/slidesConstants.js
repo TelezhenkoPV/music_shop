@@ -1,0 +1,2 @@
+export const SAVE_SLIDES = 'SAVE_SLIDES'
+export const SLIDES_LOADING = 'SLIDES_LOADING'

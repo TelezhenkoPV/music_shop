@@ -23,6 +23,15 @@ const tabLinks = [
     label: 'Аксессуары',
     to: '/accessories',
   },
+  // Тестовые пункты меню, для проверки защищенных роутов
+  // {
+  //   label: 'Protected',
+  //   to: '/protected',
+  // },
+  // {
+  //   label: 'Admin',
+  //   to: '/admin',
+  // },
 ]
 
 export default tabLinks
