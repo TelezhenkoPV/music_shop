@@ -23,6 +23,7 @@ import MenuIcon from '@material-ui/icons/Menu'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
+import Login from '../Login'
 
 const Header = () => {
   const classes = useStyles()
@@ -217,7 +218,7 @@ const Header = () => {
                         ) : (
                           <PersonIcon
                             className={classes.headerIcon}
-                            onClick={() => dispatch(toggleModal('login'))}
+                            onClick={() => dispatch(toggleModal(<Login />))}
                           />
                         )}
                       </Button>

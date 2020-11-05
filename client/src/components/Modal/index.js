@@ -1,33 +1,20 @@
 import React from 'react'
 import Modal from '@material-ui/core/Modal'
-import Backdrop from '@material-ui/core/Backdrop'
 import Fade from '@material-ui/core/Fade'
 import { useSelector, useDispatch } from 'react-redux'
-import { toggleModal, closeModal } from '../../store/modal/modalAction'
 import useStyles from './styles'
-
-import Login from '../Login'
+import { closeModal } from '../../store/modal/modalAction'
 
 export default function TransitionsModal() {
-  const open = useSelector((store) => store.modalStatus.isOpen)
-  const modalData = useSelector((store) => store.modalStatus)
-
-  let component
-  switch (modalData.content) {
-    case 'login':
-      component = <Login />
-      break
-    default:
-      component = null
-  }
-
   const dispatch = useDispatch()
   const classes = useStyles()
 
-  if (open && !component) dispatch(closeModal())
+  const { isOpen, component } = useSelector((store) => store.modalStatus)
+
+  if (isOpen && !component) dispatch(closeModal())
 
   const handleClose = () => {
-    dispatch(toggleModal())
+    dispatch(closeModal())
   }
 
   return (
@@ -35,15 +22,11 @@ export default function TransitionsModal() {
       <Modal
         aria-describedby="transition-modal-description"
         className={classes.modal}
-        open={open}
+        open={isOpen}
         onClose={handleClose}
-        // closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
+        closeAfterTransition
       >
-        <Fade in={open}>
+        <Fade in={isOpen}>
           <div className={classes.paper}>{component}</div>
         </Fade>
       </Modal>
