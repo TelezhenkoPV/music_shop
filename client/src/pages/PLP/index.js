@@ -4,7 +4,7 @@ import Paper from '@material-ui/core/Paper'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   getDataForFilterAction,
-  toggleFilterCategoryAction,
+  // toggleFilterCategoryAction,
   clearFilterCategoriesAction,
 } from '../../store/filters/filtersAction'
 import { ProductCard } from '../../components/ProductCard/ProductCard'
@@ -55,9 +55,7 @@ function PLP(props) {
         categories: product,
       })
     )
-
-    dispatch(toggleFilterCategoryAction(product))
-  }, [dispatch, product, filtersData.length])
+  }, [dispatch, product])
 
   return (
     <div className={classes.root}>
