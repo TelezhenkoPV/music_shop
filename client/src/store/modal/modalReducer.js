@@ -8,9 +8,9 @@ const initialState = {
 const modalReducer = (store = initialState, action) => {
   switch (action.type) {
     case MODAL_OPEN:
-      return { isOpen: true, content: action.payload }
+      return { isOpen: true, component: action.payload }
     case MODAL_TOGGLE:
-      return { isOpen: !store.isOpen, content: action.payload }
+      return { isOpen: !store.isOpen, component: action.payload }
     case MODAL_CLOSE:
       return { ...initialState }
     default:

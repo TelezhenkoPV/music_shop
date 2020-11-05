@@ -1,20 +1,26 @@
 import {
   SIGNUP_PROCEED,
-  LOGIN,
-  LOGOUT,
-  LOGIN_PROCEED,
+  SIGNIN,
+  SIGNOUT,
+  SIGNIN_PROCEED,
+  SIGNIN_ERROR,
   GET_CUSTOMER_PROCEED,
   SAVE_USER_DATA,
 } from './userConstants'
 
 const initialStore = {
-  isLoginProceed: false,
+  isSignInProceed: false,
   isSignUp_Proceed: false,
   isGetCustomerProceed: false,
+  token: null,
   data: {
     isAdmin: false,
   },
-  // error: null
+  errors: {
+    signIn: null,
+    signUp: null,
+    getCustomer: null,
+  },
 }
 
 const reducer = (store = initialStore, action) => {
@@ -27,24 +33,32 @@ const reducer = (store = initialStore, action) => {
       }
 
     // Авторизация пользователя успешна, получен токен
-    case LOGIN:
+    case SIGNIN:
       return {
         ...store,
-        // isAutenticated: true,
         token: action.payload,
-      }
-
-    // Разлогинивание пользователя
-    case LOGOUT:
-      return {
-        ...initialStore,
+        errors: { ...store.errors, signIn: null },
       }
 
     // Начало или окончание процесса логина пользователя
-    case LOGIN_PROCEED:
+    case SIGNIN_PROCEED:
       return {
         ...store,
-        isLoginProceed: action.payload,
+        isSignInProceed: action.payload,
+      }
+
+    // Начало или окончание процесса логина пользователя
+    case SIGNIN_ERROR:
+      return {
+        ...store,
+        errors: { ...store.errors, signIn: action.payload },
+      }
+
+    // Разлогинивание пользователя
+    case SIGNOUT:
+      return {
+        ...store,
+        token: null,
       }
 
     // Начало или окончание процесса получения данных о пользователе
