@@ -56,6 +56,8 @@ export default function CategoryCheckbox(props) {
         control={
           <Checkbox
             checked={filtersCategoriesCheckboxes.gitar}
+            icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
+            checkedIcon={<CheckBoxIcon fontSize="small" />}
             onChange={handleChange}
             name="gitar"
           />
@@ -67,8 +69,9 @@ export default function CategoryCheckbox(props) {
           <Checkbox
             checked={filtersCategoriesCheckboxes.booster}
             onChange={handleChange}
+            icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
+            checkedIcon={<CheckBoxIcon fontSize="small" />}
             name="booster"
-            color="primary"
           />
         }
         label="Усилители"
@@ -77,6 +80,8 @@ export default function CategoryCheckbox(props) {
         control={
           <Checkbox
             onChange={handleChange}
+            icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
+            checkedIcon={<CheckBoxIcon fontSize="small" />}
             checked={filtersCategoriesCheckboxes.percussion}
             name="percussion"
           />
@@ -84,11 +89,11 @@ export default function CategoryCheckbox(props) {
         label="Перкуссия"
       />
       <FormControlLabel
-        // disabled
         control={
           <Checkbox
             checked={filtersCategoriesCheckboxes.bass}
             icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
+            checkedIcon={<CheckBoxIcon fontSize="small" />}
             onChange={handleChange}
             name="bass"
           />
@@ -96,10 +101,8 @@ export default function CategoryCheckbox(props) {
         label="Басс"
       />
       <FormControlLabel
-        // disabled
         control={
           <Checkbox
-            // checked
             name="keybords"
             icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
             checkedIcon={<CheckBoxIcon fontSize="small" />}

@@ -54,8 +54,6 @@ const reducer = (store = initialStore, action) => {
     case FILTER_SET_PRODUCTS_DATA:
       return { ...store, data: action.payload }
     case FILTER_TOGGLE_CATEGORY_CHECKBOX:
-      // const copy = {...store}
-      // store.categoriesCheckboxes[action.payload] = !store.categoriesCheckboxes[action.payload]
       return {
         ...store,
         categoriesCheckboxes: {

@@ -55,9 +55,7 @@ function PLP(props) {
         categories: product,
       })
     )
-
-    // dispatch(toggleFilterCategoryAction(product))
-  }, [dispatch, product, filtersData.length])
+  }, [dispatch, product])
 
   return (
     <div className={classes.root}>
