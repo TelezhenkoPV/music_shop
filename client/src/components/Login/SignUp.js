@@ -1,6 +1,26 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
+
+// import * as yup from 'yup'
+// import { Formik, Form, Field } from 'formik'
+// import { TextField, CheckboxWithLabel } from 'formik-material-ui'
+
+// import { makeStyles } from '@material-ui/core/styles'
+// import Container from '@material-ui/core/Container'
+// import Button from '@material-ui/core/Button'
+// import InputAdornment from '@material-ui/core/InputAdornment'
+// import LinearProgress from '@material-ui/core/LinearProgress'
+// import IconButton from '@material-ui/core/IconButton'
+// import Visibility from '@material-ui/icons/Visibility'
+// import VisibilityOff from '@material-ui/icons/VisibilityOff'
+
 import { signUp } from '../../store/user/userActions'
+// import { closeModal } from '../../store/modal/modalAction'
+
+// import {
+//   getIsSignUpProceed,
+//   getSignUpError,
+// } from '../../store/user/userSelectors'
 
 const SignUp = () => {
   const dispatch = useDispatch()
