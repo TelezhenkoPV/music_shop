@@ -3,3 +3,5 @@ export const filtersDataLoadingSelector = (store) => store.filters.loading
 export const filtersCategoriesCheckboxesSelector = (store) =>
   store.filters.categoriesCheckboxes
 export const filtersCategoriesSelector = (store) => store.filters.categories
+export const filterPricesIntervalSelector = (store) =>
+  store.filters.pricesInterval

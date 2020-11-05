@@ -10,15 +10,17 @@ import {
   toggleFilterCategoryAction,
   toggleFilterCategoryCheckboxAction,
   setFilterProductsDataAction,
-} from '../../store/filters/filtersAction'
+  clearFilterCategoriesCheckboxesAction,
+  setFilterCategoryAction,
+} from '../../../store/filters/filtersAction'
 import {
   filtersCategoriesCheckboxesSelector,
   filtersCategoriesSelector,
-} from '../../store/filters/filtersSelectors'
-import { createUrlWithManyValues } from '../../func'
+} from '../../../store/filters/filtersSelectors'
+import { createUrlWithManyValues } from '../../../func'
 
-export default function CategoryCheckbox(props) {
-  // const { categoryName } = props
+export default function FilterCategoryCheckbox(props) {
+  const { categoryName } = props
   const dispatch = useDispatch()
 
   const filtersCategoriesCheckboxes = useSelector(
@@ -26,7 +28,11 @@ export default function CategoryCheckbox(props) {
   )
   const filtersCategories = useSelector(filtersCategoriesSelector)
 
-  useEffect(() => {})
+  useEffect(() => {
+    dispatch(clearFilterCategoriesCheckboxesAction())
+    dispatch(toggleFilterCategoryCheckboxAction(categoryName))
+    dispatch(setFilterCategoryAction(categoryName))
+  }, [categoryName, dispatch])
 
   const handleChange = (event) => {
     dispatch(toggleFilterCategoryCheckboxAction(event.target.name))
@@ -37,6 +43,7 @@ export default function CategoryCheckbox(props) {
       'categories',
       filtersCategories
     )
+
     axios(linkForProductsInStoreUpdate)
       .then((response) => {
         dispatch(setFilterProductsDataAction(response.data))

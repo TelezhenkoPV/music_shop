@@ -2,16 +2,13 @@ import React, { useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  getDataForFilterAction,
-  // toggleFilterCategoryAction,
-  clearFilterCategoriesAction,
-} from '../../store/filters/filtersAction'
+import { getDataForFilterAction } from '../../store/filters/filtersAction'
 import { ProductCard } from '../../components/ProductCard/ProductCard'
+import CatalogProductBar from '../../components/CatalogProductBar/CatalogProductBar'
+import FilterCategoryCheckbox from '../../components/Filter/FilterCategoryCheckbox'
+import FilterPriceSlider from '../../components/Filter/FilterPriceSlider'
 import { Grid, Typography } from '@material-ui/core'
 import guitarHeader from '../../assets/guitar-header.png'
-import CatalogProductBar from '../../components/CatalogProductBar/CatalogProductBar'
-import CategoryCheckbox from '../../components/Filter/CategoryCheckbox'
 import { getFiltersDataSelector } from '../../store/filters/filtersSelectors'
 
 const useStyles = makeStyles((theme) => ({
@@ -23,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
   filterBlock: {
     width: '30%',
     height: '30%',
+    // padding: 30,
   },
   productBlock: {
     width: '65%',
@@ -48,8 +46,6 @@ function PLP(props) {
   const { product, title, description } = props
 
   useEffect(() => {
-    dispatch(clearFilterCategoriesAction())
-
     dispatch(
       getDataForFilterAction({
         categories: product,
@@ -72,7 +68,8 @@ function PLP(props) {
       <Grid className={classes.mainContainer}>
         <div className={classes.filterBlock}>
           <Paper>
-            <CategoryCheckbox categoryName={product} />
+            <FilterCategoryCheckbox categoryName={product} />
+            <FilterPriceSlider />
           </Paper>
         </div>
         <div className={classes.productBlock}>
