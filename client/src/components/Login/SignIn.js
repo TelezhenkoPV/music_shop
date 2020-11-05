@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     minWidth: '320px',
   },
-  submit: {
+  button: {
     margin: theme.spacing(3, 0, 2),
   },
   marginBottom: {
@@ -165,7 +165,7 @@ export default function SignIn() {
 
               {isAuthenticated ? (
                 <Button
-                  className={classes.marginLR}
+                  className={classes.button}
                   variant="contained"
                   fullWidth
                   color="primary"
@@ -176,7 +176,7 @@ export default function SignIn() {
                 </Button>
               ) : (
                 <Button
-                  className={classes.marginLR}
+                  className={classes.button}
                   variant="contained"
                   fullWidth
                   color="primary"

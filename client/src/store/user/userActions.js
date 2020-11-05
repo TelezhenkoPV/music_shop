@@ -1,6 +1,8 @@
 import axios from 'axios'
 import {
+  SIGNUP,
   SIGNUP_PROCEED,
+  SIGNUP_ERROR,
   SIGNIN,
   SIGNOUT,
   SIGNIN_PROCEED,
@@ -16,14 +18,19 @@ export const signUp = (userData) => (dispatch) => {
     .then((signUpResult) => {
       if (signUpResult.status === 200) {
         console.log(signUpResult.data)
+        dispatch({ type: SIGNUP })
       }
     })
     .catch(({ response: { status, data } }) => {
-      console.log('Error', data)
       console.log('Server Error with Status Code', status)
+      console.log('Error', data)
+      dispatch({ type: SIGNUP_ERROR, payload: data })
     })
     .finally(() => {
-      dispatch({ type: SIGNUP_PROCEED, payload: false })
+      // Фейковая задержка для демонстрации спинера
+      setTimeout(() => {
+        dispatch({ type: SIGNUP_PROCEED, payload: false })
+      }, 3000)
     })
 }
 
@@ -47,18 +54,19 @@ export const signIn = ({ loginOrEmail, password, rememberMe }) => (
           sessionStorage.setItem('token', token)
 
           // Фейковая задержка для демонстрации спинера
-          setTimeout(() => {
-            dispatch({ type: SIGNIN, payload: token })
-          }, 3000)
+          // setTimeout(() => {
+          dispatch({ type: SIGNIN, payload: token })
+          // }, 3000)
           // dispatch(getCustomer())
         }
       }
     })
     .catch(({ response: { status, data } }) => {
       console.log('Server Error with Status Code', status)
-      const { loginOrEmail, password } = data
-      if (loginOrEmail) console.log('LoginOrEmail incorrect: ', loginOrEmail)
-      if (password) console.log('Password incorrect: ', password)
+      console.log('Error', data)
+      // const { loginOrEmail, password } = data
+      // if (loginOrEmail) console.log('LoginOrEmail incorrect: ', loginOrEmail)
+      // if (password) console.log('Password incorrect: ', password)
       dispatch({ type: SIGNIN_ERROR, payload: data })
       dispatch(signOut())
     })
