@@ -41,7 +41,7 @@ const reducer = (store = initialStore, action) => {
         isSignUp_Proceed: action.payload,
       }
 
-    // Ошибки процесса авторизации пользователя
+    // Ошибки процесса регистрации пользователя
     case SIGNUP_ERROR:
       return {
         ...store,
