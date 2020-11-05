@@ -1,4 +1,7 @@
+export const SIGNUP = 'SIGNUP'
 export const SIGNUP_PROCEED = 'SIGNUP_PROCEED'
+export const SIGNUP_ERROR = 'SIGNUP_ERROR'
+
 export const SIGNIN = 'SIGNIN'
 export const SIGNIN_PROCEED = 'SIGNIN_PROCEED'
 export const SIGNIN_ERROR = 'SIGNIN_ERROR'
