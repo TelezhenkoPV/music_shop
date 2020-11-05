@@ -20,6 +20,8 @@ const useStyles = makeStyles((theme) => ({
   Tab: {
     color: theme.palette.grays.black,
     flexDirection: 'row',
+    boxShadow: 'inset 0px -6px 8px -5px rgba(0,0,0,1)',
+    fontWeight: 'bold',
   },
   iconLabelWrapper: {
     flexDirection: 'row',
@@ -83,7 +85,7 @@ function Login() {
           }}
           variant="contained"
           icon={<InputIcon className={classes.tabIcon} />}
-          label="LOGIN"
+          label="ВХОД"
         />
         <Tab
           classes={{
@@ -93,7 +95,7 @@ function Login() {
           }}
           variant="contained"
           icon={<PersonPinIcon className={classes.tabIcon} />}
-          label="SIGNUP"
+          label="РЕГИСТРАЦИЯ"
         />
       </Tabs>
 
