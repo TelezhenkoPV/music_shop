@@ -26,12 +26,6 @@ export default function CategoryCheckbox(props) {
   )
   const filtersCategories = useSelector(filtersCategoriesSelector)
 
-  // if (filtersCategoriesCheckboxes[categoryName] === false) {
-  //   dispatch(toggleFilterCategoryAction(categoryName))
-  //   dispatch(clearFilterCategoriesCheckboxesAction())
-  //   dispatch(toggleFilterCategoryCheckboxAction(categoryName))
-  // }
-
   useEffect(() => {})
 
   const handleChange = (event) => {
