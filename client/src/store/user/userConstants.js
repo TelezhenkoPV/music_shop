@@ -1,8 +1,9 @@
 export const SIGNUP_PROCEED = 'SIGNUP_PROCEED'
-export const LOGIN = 'LOGIN'
-export const LOGIN_PROCEED = 'LOGIN_PROCEED'
+export const SIGNIN = 'SIGNIN'
+export const SIGNIN_PROCEED = 'SIGNIN_PROCEED'
+export const SIGNIN_ERROR = 'SIGNIN_ERROR'
 
-export const LOGOUT = 'LOGOUT'
+export const SIGNOUT = 'SIGNOUT'
 
 export const GET_CUSTOMER_PROCEED = 'GET_CUSTOMER_PROCEED'
 export const SAVE_USER_DATA = 'SAVE_USER_DATA'

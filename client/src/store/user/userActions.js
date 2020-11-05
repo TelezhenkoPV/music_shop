@@ -1,9 +1,10 @@
 import axios from 'axios'
 import {
   SIGNUP_PROCEED,
-  LOGIN,
-  LOGOUT,
-  LOGIN_PROCEED,
+  SIGNIN,
+  SIGNOUT,
+  SIGNIN_PROCEED,
+  SIGNIN_ERROR,
   GET_CUSTOMER_PROCEED,
   SAVE_USER_DATA,
 } from './userConstants'
@@ -26,13 +27,15 @@ export const signUp = (userData) => (dispatch) => {
     })
 }
 
-export const signIn = ({ loginOrEmail, password, remember }) => (dispatch) => {
+export const signIn = ({ loginOrEmail, password, rememberMe }) => (
+  dispatch
+) => {
   const userData = {
     loginOrEmail,
     password,
   }
 
-  dispatch({ type: LOGIN_PROCEED, payload: true })
+  dispatch({ type: SIGNIN_PROCEED, payload: true })
   axios
     .post('http://localhost:5000/api/customers/login', userData)
     .then((loginResult) => {
@@ -40,11 +43,14 @@ export const signIn = ({ loginOrEmail, password, remember }) => (dispatch) => {
         if (loginResult.data.success) {
           const { token } = loginResult.data
 
-          if (remember) localStorage.setItem('token', token)
+          if (rememberMe) localStorage.setItem('token', token)
           sessionStorage.setItem('token', token)
 
-          dispatch({ type: LOGIN, payload: token })
-          dispatch(getCustomer())
+          // Фейковая задержка для демонстрации спинера
+          setTimeout(() => {
+            dispatch({ type: SIGNIN, payload: token })
+          }, 3000)
+          // dispatch(getCustomer())
         }
       }
     })
@@ -53,17 +59,21 @@ export const signIn = ({ loginOrEmail, password, remember }) => (dispatch) => {
       const { loginOrEmail, password } = data
       if (loginOrEmail) console.log('LoginOrEmail incorrect: ', loginOrEmail)
       if (password) console.log('Password incorrect: ', password)
+      dispatch({ type: SIGNIN_ERROR, payload: data })
       dispatch(signOut())
     })
     .finally(() => {
-      dispatch({ type: LOGIN_PROCEED, payload: false })
+      // Фейковая задержка для демонстрации спинера
+      setTimeout(() => {
+        dispatch({ type: SIGNIN_PROCEED, payload: false })
+      }, 3000)
     })
 }
 
 export const signOut = () => (dispatch) => {
   localStorage.removeItem('token')
   sessionStorage.removeItem('token')
-  dispatch({ type: LOGOUT })
+  dispatch({ type: SIGNOUT })
 }
 
 export const getCustomer = () => (dispatch) => {
@@ -83,7 +93,7 @@ export const getCustomer = () => (dispatch) => {
         if (loggedInCustomer.status === 200) {
           console.log('HTTP Request Status 200 - OK')
           const { data } = loggedInCustomer
-          dispatch({ type: LOGIN, payload: token })
+          dispatch({ type: SIGNIN, payload: token })
           dispatch({ type: SAVE_USER_DATA, payload: data })
         }
       })
