@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { SAVE_SLIDES, SLIDES_LOADING } from './slidesConstants'
+import { notificate } from '../notification/notificationActions'
 
 export const getSlides = () => (dispatch) => {
   dispatch({ type: SLIDES_LOADING, payload: true })
@@ -7,7 +8,6 @@ export const getSlides = () => (dispatch) => {
     .get('http://localhost:5000/api/slides')
     .then((response) => {
       if (response.status === 200) {
-        // console.log('Slides', response.data)
         const slidesProduct = response.data
           .filter((slide) => 'product' in slide)
           .map((slide) => {
@@ -22,8 +22,6 @@ export const getSlides = () => (dispatch) => {
                 : `/${slide.category.parentId}/${slide.category.id}`
             return { ...slide, slideUrl }
           })
-        // console.log('Product Slides',slidesProduct)
-        // console.log('Category Slides',slidesCategory)
         dispatch({
           type: SAVE_SLIDES,
           payload: {
@@ -34,7 +32,7 @@ export const getSlides = () => (dispatch) => {
       }
     })
     .catch((error) => {
-      console.dir('Error loading Carousel data', error)
+      dispatch(notificate({ variant: 'error', data: error.message }))
     })
     .finally(() => {
       dispatch({ type: SLIDES_LOADING, payload: false })
