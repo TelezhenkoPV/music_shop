@@ -35,15 +35,19 @@ exports.createCustomer = (req, res, next) => {
     .then(customer => {
       if (customer) {
         if (customer.email === req.body.email) {
-          return res
-            .status(400)
-            .json({ message: `Email ${customer.email} already exists"` });
+          // return res
+          //   .status(400)
+          //   .json({ message: `Email ${customer.email} already exists` });
+            errors.email = `Email ${customer.email} уже существует`;
+            return res.status(400).json(errors);
         }
 
         if (customer.login === req.body.login) {
-          return res
-            .status(400)
-            .json({ message: `Login ${customer.login} already exists` });
+          // return res
+          //   .status(400)
+          //   .json({ message: `Login ${customer.login} already exists` });
+          errors.login = `Логин ${customer.login} уже существует`;
+          return res.status(400).json(errors);
         }
       }
 
@@ -54,8 +58,8 @@ exports.createCustomer = (req, res, next) => {
         bcrypt.hash(newCustomer.password, salt, (err, hash) => {
           if (err) {
             res
-              .status(400)
-              .json({ message: `Error happened on server: ${err}` });
+              .status(500)
+              .json({ message: `На сервере произошла непредвиденная ошибка: ${err}` });
 
             return;
           }
@@ -65,16 +69,16 @@ exports.createCustomer = (req, res, next) => {
             .save()
             .then(customer => res.json(customer))
             .catch(err =>
-              res.status(400).json({
-                message: `Error happened on server: "${err}" `
+              res.status(500).json({
+                message: `На сервере произошла непредвиденная ошибка: "${err}" `
               })
             );
         });
       });
     })
     .catch(err =>
-      res.status(400).json({
-        message: `Error happened on server: "${err}" `
+      res.status(500).json({
+        message: `На сервере произошла непредвиденная ошибка: "${err}" `
       })
     );
 };
@@ -99,7 +103,7 @@ exports.loginCustomer = async (req, res, next) => {
     .then(customer => {
       // Check for customer
       if (!customer) {
-        errors.loginOrEmail = "Customer not found";
+        errors.loginOrEmail = "Пользователь, с таким логином или Email не найден";
         return res.status(404).json(errors);
       }
 
@@ -127,14 +131,14 @@ exports.loginCustomer = async (req, res, next) => {
             }
           );
         } else {
-          errors.password = "Password incorrect";
+          errors.password = "Пароль неверный";
           return res.status(400).json(errors);
         }
       });
     })
     .catch(err =>
-      res.status(400).json({
-        message: `Error happened on server: "${err}" `
+      res.status(500).json({
+        message: `На сервере произошла непредвиденная ошибка: "${err}" `
       })
     );
 };
@@ -159,7 +163,7 @@ exports.editCustomerInfo = (req, res) => {
   Customer.findOne({ _id: req.user.id })
     .then(customer => {
       if (!customer) {
-        errors.id = "Customer not found";
+        errors.id = "Пользователь не найден";
         return res.status(404).json(errors);
       }
 
@@ -174,7 +178,7 @@ exports.editCustomerInfo = (req, res) => {
         if (currentEmail !== newEmail) {
           Customer.findOne({ email: newEmail }).then(customer => {
             if (customer) {
-              errors.email = `Email ${newEmail} is already exists`;
+              errors.email = `Email ${newEmail} уже существует`;
               res.status(400).json(errors);
               return;
             }
@@ -188,7 +192,7 @@ exports.editCustomerInfo = (req, res) => {
         if (currentLogin !== newLogin) {
           Customer.findOne({ login: newLogin }).then(customer => {
             if (customer) {
-              errors.login = `Login ${newLogin} is already exists`;
+              errors.login = `Логин ${newLogin} уже существует`;
               res.status(400).json(errors);
               return;
             }
@@ -206,14 +210,14 @@ exports.editCustomerInfo = (req, res) => {
       )
         .then(customer => res.json(customer))
         .catch(err =>
-          res.status(400).json({
-            message: `Error happened on server: "${err}" `
+          res.status(500).json({
+            message: `На сервере произошла непредвиденная ошибка: "${err}" `
           })
         );
     })
     .catch(err =>
-      res.status(400).json({
-        message: `Error happened on server:"${err}" `
+      res.status(500).json({
+        message: `На сервере произошла непредвиденная ошибка:"${err}" `
       })
     );
 };
@@ -233,7 +237,7 @@ exports.updatePassword = (req, res) => {
 
     customer.comparePassword(oldPassword, function(err, isMatch) {
       if (!isMatch) {
-        errors.password = "Password does not match";
+        errors.password = "Старый пароль не совпадает";
         res.json(errors);
       } else {
         let newPassword = req.body.newPassword;
@@ -253,13 +257,13 @@ exports.updatePassword = (req, res) => {
             )
               .then(customer => {
                 res.json({
-                  message: "Password successfully changed",
+                  message: "Пароль успешно изменен",
                   customer: customer
                 });
               })
               .catch(err =>
-                res.status(400).json({
-                  message: `Error happened on server: "${err}" `
+                res.status(500).json({
+                  message: `На сервере произошла непредвиденная ошибка: "${err}" `
                 })
               );
           });

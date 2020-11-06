@@ -1,12 +1,16 @@
 import axios from 'axios'
 import {
+  SIGNUP,
   SIGNUP_PROCEED,
-  LOGIN,
-  LOGOUT,
-  LOGIN_PROCEED,
+  SIGNUP_ERROR,
+  SIGNIN,
+  SIGNOUT,
+  SIGNIN_PROCEED,
+  SIGNIN_ERROR,
   GET_CUSTOMER_PROCEED,
   SAVE_USER_DATA,
 } from './userConstants'
+import { notificate } from '../notification/notificationActions'
 
 export const signUp = (userData) => (dispatch) => {
   dispatch({ type: SIGNUP_PROCEED, payload: true })
@@ -15,24 +19,36 @@ export const signUp = (userData) => (dispatch) => {
     .then((signUpResult) => {
       if (signUpResult.status === 200) {
         console.log(signUpResult.data)
+        dispatch({ type: SIGNUP })
+        dispatch(
+          notificate({
+            variant: 'success',
+            data: 'Успешная регистрация на сервере.',
+          })
+        )
       }
     })
     .catch(({ response: { status, data } }) => {
-      console.log('Error', data)
-      console.log('Server Error with Status Code', status)
+      dispatch({ type: SIGNUP_ERROR, payload: data })
+      dispatch(notificate({ variant: 'error', data }))
     })
     .finally(() => {
-      dispatch({ type: SIGNUP_PROCEED, payload: false })
+      // Фейковая задержка для демонстрации спинера
+      setTimeout(() => {
+        dispatch({ type: SIGNUP_PROCEED, payload: false })
+      }, 3000)
     })
 }
 
-export const signIn = ({ loginOrEmail, password, remember }) => (dispatch) => {
+export const signIn = ({ loginOrEmail, password, rememberMe }) => (
+  dispatch
+) => {
   const userData = {
     loginOrEmail,
     password,
   }
 
-  dispatch({ type: LOGIN_PROCEED, payload: true })
+  dispatch({ type: SIGNIN_PROCEED, payload: true })
   axios
     .post('http://localhost:5000/api/customers/login', userData)
     .then((loginResult) => {
@@ -40,30 +56,36 @@ export const signIn = ({ loginOrEmail, password, remember }) => (dispatch) => {
         if (loginResult.data.success) {
           const { token } = loginResult.data
 
-          if (remember) localStorage.setItem('token', token)
+          if (rememberMe) localStorage.setItem('token', token)
           sessionStorage.setItem('token', token)
 
-          dispatch({ type: LOGIN, payload: token })
-          dispatch(getCustomer())
+          dispatch({ type: SIGNIN, payload: token })
+          dispatch(
+            notificate({
+              variant: 'success',
+              data: 'Успешная авторизация на сервере.',
+            })
+          )
         }
       }
     })
     .catch(({ response: { status, data } }) => {
-      console.log('Server Error with Status Code', status)
-      const { loginOrEmail, password } = data
-      if (loginOrEmail) console.log('LoginOrEmail incorrect: ', loginOrEmail)
-      if (password) console.log('Password incorrect: ', password)
+      dispatch({ type: SIGNIN_ERROR, payload: data })
+      dispatch(notificate({ variant: 'error', data }))
       dispatch(signOut())
     })
     .finally(() => {
-      dispatch({ type: LOGIN_PROCEED, payload: false })
+      // Фейковая задержка для демонстрации спинера
+      setTimeout(() => {
+        dispatch({ type: SIGNIN_PROCEED, payload: false })
+      }, 1000)
     })
 }
 
 export const signOut = () => (dispatch) => {
   localStorage.removeItem('token')
   sessionStorage.removeItem('token')
-  dispatch({ type: LOGOUT })
+  dispatch({ type: SIGNOUT })
 }
 
 export const getCustomer = () => (dispatch) => {
@@ -79,16 +101,21 @@ export const getCustomer = () => (dispatch) => {
     axios
       .get('http://localhost:5000/api/customers/customer', authOptions)
       .then((loggedInCustomer) => {
-        console.log('Login Result', loggedInCustomer)
         if (loggedInCustomer.status === 200) {
-          console.log('HTTP Request Status 200 - OK')
           const { data } = loggedInCustomer
-          dispatch({ type: LOGIN, payload: token })
+
+          dispatch({ type: SIGNIN, payload: token })
           dispatch({ type: SAVE_USER_DATA, payload: data })
+          dispatch(
+            notificate({
+              variant: 'success',
+              data: 'Успешная авторизация на сервере.',
+            })
+          )
         }
       })
       .catch((error) => {
-        console.log('Error: ', error)
+        dispatch(notificate({ variant: 'error', data: error.message }))
         dispatch(signOut())
       })
       .finally(() => {
