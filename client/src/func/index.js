@@ -1,7 +1,11 @@
 import axios from 'axios'
 
-export const getDataFromServe = (link) => {
+export const getDataFromServe = async (link) => {
   axios(link)
-    .then((response) => console.log(response.data))
+    .then((response) => response.data)
     .catch((e) => console.log(e))
+}
+
+export const createUrlWithManyValues = (linkBase, urlKey, array) => {
+  return `${linkBase}?${urlKey}=${array.join(',')}`
 }
