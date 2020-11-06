@@ -31,9 +31,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
   },
   formWrapper: {
-    [theme.breakpoints.down('xs')]: {
-      padding: '15px',
-    },
+    padding: '15px',
   },
   form: {
     width: '100%',
