@@ -101,6 +101,7 @@ export const ProductCard = (props) => {
           >
             В корзину
           </Button>
+
           <IconButton
             aria-label="like"
             style={{ width: 50 }}
