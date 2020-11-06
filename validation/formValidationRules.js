@@ -7,152 +7,152 @@ const formValidationRules = [
     field: "firstName",
     method: FormValidator.isEmpty,
     validWhen: false,
-    message: "First Name is required."
+    message: "Имя обязательно для заполнения."
   },
   {
     field: "firstName",
     method: "matches",
     validWhen: true,
-    args: [/^[a-zA-Zа-яА-Я]+$/],
-    message: "Allowed characters for First Name is a-z, A-Z, а-я, А-Я."
+    args: [/^[a-zA-Zа-яА-ЯёiїєЁІЇЄ']+$/],
+    message: "Разрешенные символы: a-zA-Zа-яА-ЯёiїєЁІЇЄ'."
   },
   {
     field: "firstName",
     method: "isLength",
     validWhen: true,
     args: [{ min: 2, max: 25 }],
-    message: "First Name must be between 2 and 25 characters"
+    message: "Длина имени должна быть от 2 до 25 символов."
   },
   {
     field: "lastName",
     method: FormValidator.isEmpty,
     validWhen: false,
-    message: "Last Name is required."
+    message: "Фамилия обязательна для заполнения."
   },
   {
     field: "lastName",
     method: "matches",
     validWhen: true,
-    args: [/^[a-zA-Zа-яА-Я]+$/],
-    message: "Allowed characters for Last Name is a-z, A-Z, а-я, А-Я."
+    args: [/^[a-zA-Zа-яА-ЯёiїєЁІЇЄ']+$/],
+    message: "Разрешенные символы: a-zA-Zа-яА-ЯёiїєЁІЇЄ'."
   },
   {
     field: "lastName",
     method: "isLength",
     validWhen: true,
     args: [{ min: 2, max: 25 }],
-    message: "Last Name must be between 2 and 25 characters"
+    message: "Длина фамилии должна быть от 2 до 25 символов"
   },
   {
     field: "email",
     method: FormValidator.isEmpty,
     validWhen: false,
-    message: "Email is required."
+    message: "Email обязательный для заполнения."
   },
   {
     field: "email",
     method: "isEmail",
     validWhen: true,
-    message: "That is not a valid email."
+    message: "Адрес электронной почты введен некорректно."
   },
   {
     field: "login",
     method: FormValidator.isEmpty,
     validWhen: false,
-    message: "Login is required."
+    message: "Логин обязательный для заполнения."
   },
   {
     field: "login",
     method: "matches",
     validWhen: true,
     args: [/^[a-zA-Z0-9]+$/],
-    message: "Allowed characters for login is a-z, A-Z, 0-9."
+    message: "Разрешенные символы: a-z, A-Z, 0-9."
   },
   {
     field: "login",
     method: "isLength",
     validWhen: true,
     args: [{ min: 3, max: 10 }],
-    message: "Login must be between 3 and 10 characters"
+    message: "Длина логина должна быть от 3 до 10 символов"
   },
   {
     field: "loginOrEmail",
     method: FormValidator.isEmpty,
     validWhen: false,
-    message: "Login or Email is required."
+    message: "Это поле обязательно для заполнения."
   },
   {
     field: "password",
     method: FormValidator.isEmpty,
     validWhen: false,
-    message: "Password is required."
+    message: "Пароль обязательный для заполнения."
   },
   {
     field: "password",
     method: "matches",
     validWhen: true,
     args: [/^[a-zA-Z0-9]+$/],
-    message: "Allowed characters for password is a-z, A-Z, 0-9."
+    message: "Разрешенные символы: a-z, A-Z, 0-9."
   },
   {
     field: "password",
     method: "isLength",
     validWhen: true,
     args: [{ min: 7, max: 30 }],
-    message: "Password must be between 7 and 30 characters"
+    message: "Длина пароля должна быть от 7 до 30 символов."
   },
   {
     field: "newPassword",
     method: FormValidator.isEmpty,
     validWhen: false,
-    message: "New Password is required."
+    message: "Необходимо указать новый пароль."
   },
   {
     field: "newPassword",
     method: "matches",
     validWhen: true,
     args: [/^[a-zA-Z0-9]+$/],
-    message: "Allowed characters for password is a-z, A-Z, 0-9."
+    message: "Разрешенные символы: a-z, A-Z, 0-9."
   },
   {
     field: "newPassword",
     method: "isLength",
     validWhen: true,
     args: [{ min: 7, max: 30 }],
-    message: "Password must be between 7 and 30 characters"
+    message: "Длина пароля должна быть от 7 до 30 символов."
   },
   {
     field: "telephone",
     method: "matches",
     args: [/^\+380\d{3}\d{2}\d{2}\d{2}$/],
     validWhen: true,
-    message: "That is not a valid phone number."
+    message: "Используйте формат +380XXXXXXXXX."
   },
   {
     field: "isAdmin",
     method: "isBoolean",
     validWhen: true,
-    message: "isAdmin field must be true or false"
+    message: "isAdmin может быть true или false"
   },
   {
     field: "enabled",
     method: "isBoolean",
     validWhen: true,
-    message: "isAdmin field must be true or false"
+    message: "isBoolean может быть true или false"
   },
   {
     field: "letterSubject",
     method: FormValidator.isEmpty,
     validWhen: false,
     message:
-      "This operation involves sending a letter to the client. Please provide field 'letterSubject' for the letter."
+      "Эта операция инициирует отправку писма клиенту. Необходимо заполнить поле 'letterSubject'."
   },
   {
     field: "letterHtml",
     method: FormValidator.isEmpty,
     validWhen: false,
     message:
-      "This operation involves sending a letter to the client. Please provide field 'letterHtml' for the letter."
+      "Эта операция инициирует отправку писма клиенту. Необходимо заполнить поле 'letterHtml'."
   }
 ];
 
