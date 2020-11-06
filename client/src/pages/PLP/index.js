@@ -1,15 +1,16 @@
 import React, { useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import Paper from '@material-ui/core/Paper'
 import { useDispatch, useSelector } from 'react-redux'
+import { Grid, Typography } from '@material-ui/core'
+import Paper from '@material-ui/core/Paper'
 import { getDataForFilterAction } from '../../store/filters/filtersAction'
 import { ProductCard } from '../../components/ProductCard/ProductCard'
 import CatalogProductBar from '../../components/CatalogProductBar/CatalogProductBar'
 import FilterCategoryCheckbox from '../../components/Filter/FilterCategoryCheckbox'
 import FilterPriceSlider from '../../components/Filter/FilterPriceSlider'
-import { Grid, Typography } from '@material-ui/core'
 import guitarHeader from '../../assets/guitar-header.png'
 import { getFiltersDataSelector } from '../../store/filters/filtersSelectors'
+import { addProductToBasket } from '../../store/basket/basketAction'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
   filterBlock: {
     width: '30%',
     height: '30%',
-    // padding: 30,
   },
   productBlock: {
     width: '65%',
@@ -53,6 +53,10 @@ function PLP(props) {
     )
   }, [dispatch, product])
 
+  const handleAddProductToBasket = (elem) => {
+    dispatch(addProductToBasket(elem))
+  }
+
   return (
     <div className={classes.root}>
       <div className={classes.pageHeader}>
@@ -79,7 +83,11 @@ function PLP(props) {
           <CatalogProductBar />
           {filtersData.products &&
             filtersData.products.map((e) => (
-              <ProductCard key={e._id} element={e} />
+              <ProductCard
+                key={e._id}
+                element={e}
+                onClickAddProduct={handleAddProductToBasket}
+              />
             ))}
         </div>
       </Grid>

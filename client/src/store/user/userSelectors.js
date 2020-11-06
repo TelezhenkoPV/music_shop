@@ -6,3 +6,5 @@ export const getSignInError = (store) => store.user.errors.signIn
 
 export const getIsSignUpProceed = (store) => store.user.isSignUpProceed
 export const getSignUpError = (store) => store.user.errors.signUp
+export const getIsSignUpSuccessful = (store) =>
+  store.user.errors.signUp === null
