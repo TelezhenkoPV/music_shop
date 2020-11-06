@@ -5,6 +5,7 @@ import {
   FILTER_CLEAR_CATEGORIES,
   FILTERS_TOGGLE_CATEGORY,
   FILTER_TOGGLE_CATEGORY_CHECKBOX,
+  FILTER_SET_PRODUCTS_DATA,
 } from '../actionTypes'
 
 const initialStore = {
@@ -12,7 +13,7 @@ const initialStore = {
   categories: ['bass'],
   data: [],
   categoriesCheckboxes: {
-    gitars: false,
+    gitar: false,
     booster: false,
     percussion: false,
     bass: false,
@@ -50,9 +51,9 @@ const reducer = (store = initialStore, action) => {
         store.categoriesCheckboxes[key] = false
       }
       return { ...store }
+    case FILTER_SET_PRODUCTS_DATA:
+      return { ...store, data: action.payload }
     case FILTER_TOGGLE_CATEGORY_CHECKBOX:
-      // const copy = {...store}
-      // store.categoriesCheckboxes[action.payload] = !store.categoriesCheckboxes[action.payload]
       return {
         ...store,
         categoriesCheckboxes: {
