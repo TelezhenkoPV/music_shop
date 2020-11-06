@@ -12,7 +12,7 @@ import {
 
 const initialStore = {
   isSignInProceed: false,
-  isSignUp_Proceed: false,
+  isSignUpProceed: false,
   isGetCustomerProceed: false,
   token: null,
   data: {
@@ -38,7 +38,7 @@ const reducer = (store = initialStore, action) => {
     case SIGNUP_PROCEED:
       return {
         ...store,
-        isSignUp_Proceed: action.payload,
+        isSignUpProceed: action.payload,
       }
 
     // Ошибки процесса регистрации пользователя
