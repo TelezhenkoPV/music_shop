@@ -51,11 +51,21 @@ const useStyles = makeStyles((theme) => ({
 
 export const ProductCard = (props) => {
   const classes = useStyles()
-  const { element } = props
+  const { element, onClickAddProduct } = props
   const [isFavorite, setFavorite] = React.useState(false)
 
   const handleFavorite = () => {
     setFavorite(!isFavorite)
+  }
+
+  const onAddProduct = () => {
+    const { _id, name, currentPrice } = element
+    const productObj = {
+      _id,
+      name,
+      currentPrice,
+    }
+    onClickAddProduct(productObj)
   }
 
   return (
@@ -87,6 +97,7 @@ export const ProductCard = (props) => {
             size="small"
             className={classes.button}
             startIcon={<ShoppingCartIcon style={{ color: '#fff' }} />}
+            onClick={onAddProduct}
           >
             В корзину
           </Button>

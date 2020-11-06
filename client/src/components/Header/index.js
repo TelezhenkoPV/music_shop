@@ -13,7 +13,7 @@ import logo from '../../assets/logo.svg'
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket'
 import PersonIcon from '@material-ui/icons/Person'
 import FavoriteIcon from '@material-ui/icons/Favorite'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { toggleModal } from '../../store/modal/modalAction'
 import SearchBar from '../SearchBar'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
@@ -24,10 +24,15 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import Login from '../Login'
+import { Badge } from '@material-ui/core'
 
 const Header = () => {
   const classes = useStyles()
   const dispatch = useDispatch()
+  // logic for basket
+  const { totalCount } = useSelector(({ basket }) => ({
+    totalCount: basket.totalCount,
+  }))
   // to adjust the logic for authorized
   const authorized = false
   const theme = useTheme()
@@ -202,10 +207,14 @@ const Header = () => {
                         to={'/basket'}
                         disableRipple
                       >
-                        <ShoppingBasketIcon
-                          className={classes.headerIcon}
-                          onClick={() => console.log('shopping basket clicked')}
-                        />
+                        <Badge badgeContent={totalCount} color="secondary">
+                          <ShoppingBasketIcon
+                            className={classes.headerIcon}
+                            onClick={() =>
+                              console.log('shopping basket clicked')
+                            }
+                          />
+                        </Badge>
                       </Button>
                     </Grid>
                     <Grid item className={classes.iconContainer}>
