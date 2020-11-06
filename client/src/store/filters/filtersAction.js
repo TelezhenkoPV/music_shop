@@ -6,6 +6,7 @@ import {
   FILTER_CLEAR_CATEGORIES,
   FILTER_CLEAR_CATEGORIES_CHECKBOXES,
   FILTER_TOGGLE_CATEGORY_CHECKBOX,
+  FILTER_SET_PRODUCTS_DATA,
 } from '../actionTypes'
 const qs = require('qs')
 
@@ -40,3 +41,6 @@ export const toggleFilterCategoryCheckboxAction = (categoryName) => (
 ) => {
   dispatch({ type: FILTER_TOGGLE_CATEGORY_CHECKBOX, payload: categoryName })
 }
+
+export const setFilterProductsDataAction = (data) => (dispatch) =>
+  dispatch({ type: FILTER_SET_PRODUCTS_DATA, payload: data })
