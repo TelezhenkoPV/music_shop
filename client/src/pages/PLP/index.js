@@ -13,6 +13,7 @@ import guitarHeader from '../../assets/guitar-header.png'
 import CatalogProductBar from '../../components/CatalogProductBar/CatalogProductBar'
 import CategoryCheckbox from '../../components/Filter/CategoryCheckbox'
 import { getFiltersDataSelector } from '../../store/filters/filtersSelectors'
+import { addProductToBasket } from '../../store/basket/basketAction'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -57,6 +58,10 @@ function PLP(props) {
     )
   }, [dispatch, product])
 
+  const handleAddProductToBasket = (elem) => {
+    dispatch(addProductToBasket(elem))
+  }
+
   return (
     <div className={classes.root}>
       <div className={classes.pageHeader}>
@@ -82,7 +87,11 @@ function PLP(props) {
           <CatalogProductBar />
           {filtersData.products &&
             filtersData.products.map((e) => (
-              <ProductCard key={e._id} element={e} />
+              <ProductCard
+                key={e._id}
+                element={e}
+                onClickAddProduct={handleAddProductToBasket}
+              />
             ))}
         </div>
       </Grid>

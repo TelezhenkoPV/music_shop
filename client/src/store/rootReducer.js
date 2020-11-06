@@ -5,6 +5,7 @@ import modalReducer from './modal/modalReducer'
 import filters from './filters/filtersReducer'
 import slides from './slides/slidesReducer'
 import notification from './notification/notificationReducer'
+import basket from './basket/basketReducer'
 
 const rootReducer = combineReducers({
   user,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   filters,
   slides,
   notification,
+  basket,
 })
 
 export default rootReducer
