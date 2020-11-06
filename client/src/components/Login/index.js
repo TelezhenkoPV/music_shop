@@ -20,6 +20,17 @@ const useStyles = makeStyles((theme) => ({
   Tab: {
     color: theme.palette.grays.black,
     flexDirection: 'row',
+    boxShadow: 'inset 0px -6px 8px -5px rgba(0,0,0,1)',
+    fontWeight: 'bold',
+    fontSize: '16px',
+    [theme.breakpoints.down('xs')]: {
+      fontSize: '10px',
+    },
+  },
+  labelIcon: {
+    [theme.breakpoints.down('xs')]: {
+      minHeight: '0',
+    },
   },
   iconLabelWrapper: {
     flexDirection: 'row',
@@ -31,12 +42,11 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.primary.contrastText,
   },
-  paper: {
-    marginTop: theme.spacing(1),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
+  // paper: {
+  //   display: 'flex',
+  //   flexDirection: 'column',
+  //   alignItems: 'center',
+  // },
 }))
 
 function TabPanel(props) {
@@ -50,11 +60,7 @@ function TabPanel(props) {
       aria-labelledby={`nav-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box mx="auto" p={3}>
-          {children}
-        </Box>
-      )}
+      {value === index && <Box mx="auto">{children}</Box>}
     </div>
   )
 }
@@ -80,20 +86,22 @@ function Login() {
             root: classes.Tab,
             selected: classes.selectedTab,
             wrapper: classes.iconLabelWrapper,
+            labelIcon: classes.labelIcon,
           }}
           variant="contained"
           icon={<InputIcon className={classes.tabIcon} />}
-          label="LOGIN"
+          label="ВХОД"
         />
         <Tab
           classes={{
             root: classes.Tab,
             selected: classes.selectedTab,
             wrapper: classes.iconLabelWrapper,
+            labelIcon: classes.labelIcon,
           }}
           variant="contained"
           icon={<PersonPinIcon className={classes.tabIcon} />}
-          label="SIGNUP"
+          label="РЕГИСТРАЦИЯ"
         />
       </Tabs>
 

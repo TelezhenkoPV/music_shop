@@ -8,14 +8,15 @@ import Container from '@material-ui/core/Container'
 import Grid from '@material-ui/core/Grid'
 import cart_icon from '../../assets/cart_icon.svg'
 import Button from '@material-ui/core/Button'
+import BasketCard from '../../components/BasketCard'
+import ArrowBackIcon from '@material-ui/icons/ArrowBack'
+import { useDispatch, useSelector } from 'react-redux'
+import { removeCartItem } from '../../store/basket/basketAction'
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    height: '100%',
-  },
   title_box: {
     backgroundColor: '#f0f0ff',
-    height: '20%',
+    height: '120px',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -24,26 +25,63 @@ const useStyles = makeStyles((theme) => ({
   },
   tabs_box: {
     backgroundColor: theme.palette.primary.main,
-    height: '8%',
+    height: '70px',
     display: 'flex',
     alignItems: 'center',
     color: 'white',
     textAlign: 'center',
+    marginBottom: '15px',
   },
   noitems_box: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '67%',
+    height: '600px',
+  },
+  end_box: {},
+  price_box: {
+    border: '1px solid black',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    width: '25%',
+    padding: '25px 50px',
+    boxSizing: 'border-box',
+  },
+  buttons_box: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: '60px',
+  },
+  wrapper: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    marginBottom: '30px',
   },
 }))
 
 function Basket() {
   const classes = useStyles()
+  const dispatch = useDispatch()
+
+  const { totalPrice } = useSelector(({ basket }) => ({
+    totalPrice: basket.totalPrice,
+  }))
+
+  const productsObject = useSelector(({ basket }) => basket.items)
+
+  const addedProducts = Object.keys(productsObject).map((key) => {
+    return productsObject[key].items[0]
+  })
+
+  const onRemoveItem = (id) => {
+    dispatch(removeCartItem(id))
+  }
 
   return (
-    <Box className={classes.root}>
+    <Box>
       <Box className={classes.title_box}>
         <Typography variant="h4" style={{ marginBottom: '1%' }}>
           Корзина
@@ -63,7 +101,7 @@ function Basket() {
             <Grid item xs={5}>
               <Typography variant="subtitle1">Название</Typography>
             </Grid>
-            <Grid item xs>
+            <Grid item xs={1}>
               <Typography variant="subtitle1">Цвет</Typography>
             </Grid>
             <Grid item xs>
@@ -78,15 +116,49 @@ function Basket() {
           </Grid>
         </Container>
       </Box>
-      <Box className={classes.noitems_box}>
-        <img src={cart_icon} alt="cart icon" style={{ marginBottom: '2%' }} />
-        <Typography variant="h6" style={{ marginBottom: '2%' }}>
-          Здесь пока нет товаров
-        </Typography>
-        <Button variant="contained" color="primary" href="/">
-          Перейти к каталогу
-        </Button>
-      </Box>
+
+      {addedProducts.map((elem) => (
+        <BasketCard
+          key={elem._id}
+          name={elem.name}
+          price={elem.currentPrice}
+          onRemove={onRemoveItem}
+        />
+      ))}
+
+      {totalPrice ? (
+        <Container maxWidth="xm" className={classes.end_box}>
+          <div className={classes.wrapper}>
+            <Box className={classes.price_box}>
+              <Typography variant="h5">Итого</Typography>
+              <Typography variant="h4">${totalPrice}</Typography>
+            </Box>
+          </div>
+          <Box className={classes.buttons_box}>
+            <Button
+              startIcon={<ArrowBackIcon />}
+              variant="contained"
+              color="secondary"
+              href="/"
+            >
+              Продолжить покупки
+            </Button>
+            <Button variant="contained" color="primary">
+              Оформить заказ
+            </Button>
+          </Box>
+        </Container>
+      ) : (
+        <Box className={classes.noitems_box}>
+          <img src={cart_icon} alt="cart icon" style={{ marginBottom: '2%' }} />
+          <Typography variant="h6" style={{ marginBottom: '2%' }}>
+            Здесь пока нет товаров
+          </Typography>
+          <Button variant="contained" color="primary" href="/">
+            Перейти к каталогу
+          </Button>
+        </Box>
+      )}
     </Box>
   )
 }

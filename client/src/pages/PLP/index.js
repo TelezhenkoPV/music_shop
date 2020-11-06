@@ -1,13 +1,16 @@
 import React, { useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import Paper from '@material-ui/core/Paper'
 import { useDispatch, useSelector } from 'react-redux'
-import { getDataForFilterAction } from '../../store/filters/filtersAction'
-import { getFiltersDataSelector } from '../../store/filters/filtersSelectors'
-import { ProductCard } from '../../components/ProductCard/ProductCard'
 import { Grid, Typography } from '@material-ui/core'
-import guitarHeader from '../../assets/guitar-header.png'
+import Paper from '@material-ui/core/Paper'
+import { getDataForFilterAction } from '../../store/filters/filtersAction'
+import { ProductCard } from '../../components/ProductCard/ProductCard'
 import CatalogProductBar from '../../components/CatalogProductBar/CatalogProductBar'
+import FilterCategoryCheckbox from '../../components/Filter/FilterCategoryCheckbox'
+import FilterPriceSlider from '../../components/Filter/FilterPriceSlider'
+import guitarHeader from '../../assets/guitar-header.png'
+import { getFiltersDataSelector } from '../../store/filters/filtersSelectors'
+import { addProductToBasket } from '../../store/basket/basketAction'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,6 +53,10 @@ function PLP(props) {
     )
   }, [dispatch, product])
 
+  const handleAddProductToBasket = (elem) => {
+    dispatch(addProductToBasket(elem))
+  }
+
   return (
     <div className={classes.root}>
       <div className={classes.pageHeader}>
@@ -64,7 +71,10 @@ function PLP(props) {
       </div>
       <Grid className={classes.mainContainer}>
         <div className={classes.filterBlock}>
-          <Paper>Filter Block</Paper>
+          <Paper>
+            <FilterCategoryCheckbox categoryName={product} />
+            <FilterPriceSlider />
+          </Paper>
         </div>
         <div className={classes.productBlock}>
           <Typography variant={'body2'} style={{ padding: 10 }}>
@@ -73,7 +83,11 @@ function PLP(props) {
           <CatalogProductBar />
           {filtersData.products &&
             filtersData.products.map((e) => (
-              <ProductCard key={e._id} element={e} />
+              <ProductCard
+                key={e._id}
+                element={e}
+                onClickAddProduct={handleAddProductToBasket}
+              />
             ))}
         </div>
       </Grid>
