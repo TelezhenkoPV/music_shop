@@ -5,3 +5,5 @@ export const filtersCategoriesCheckboxesSelector = (store) =>
 export const filtersCategoriesSelector = (store) => store.filters.categories
 export const filterPricesIntervalSelector = (store) =>
   store.filters.pricesInterval
+export const filterNotFiltredDataSelector = (store) =>
+  store.filters._notFiltredData

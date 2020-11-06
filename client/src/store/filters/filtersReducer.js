@@ -7,11 +7,12 @@ import {
   FILTER_TOGGLE_CATEGORY_CHECKBOX,
   FILTER_SET_PRODUCTS_DATA,
   FILTER_SET_PRICE_INTERVAL,
+  FILTER_SET_NON_SORTED_PRODUCTS,
 } from '../actionTypes'
 
 const initialStore = {
   loading: false,
-  categories: ['bass'],
+  categories: [],
   data: [],
   categoriesCheckboxes: {
     gitar: false,
@@ -21,6 +22,10 @@ const initialStore = {
     keybords: false,
     accessories: false,
   },
+  _notFiltredData: {
+    products: [],
+    productsQuantity: 0,
+  },
   pricesInterval: [0, 2000],
 }
 
@@ -29,7 +34,11 @@ const reducer = (store = initialStore, action) => {
     case FILTER_SET_PRICE_INTERVAL:
       return { ...store, pricesInterval: action.payload }
     case FILTERS_GET_DATA:
-      return { ...store, data: action.payload }
+      return {
+        ...store,
+        data: action.payload,
+        _notFiltredData: action.payload,
+      }
     case FILTERS_SET_CATEGORY:
       // eslint-disable-next-line no-case-declarations
       const newCategoriesArr = []
@@ -48,7 +57,10 @@ const reducer = (store = initialStore, action) => {
         )
         store.categories.splice(index, 1)
       }
-      return { ...store }
+      return {
+        ...store,
+        categories: store.categories,
+      }
     case FILTER_CLEAR_CATEGORIES:
       return { ...store, categories: [] }
     case FILTER_CLEAR_CATEGORIES_CHECKBOXES:
@@ -62,14 +74,28 @@ const reducer = (store = initialStore, action) => {
         },
       }
     case FILTER_SET_PRODUCTS_DATA:
-      return { ...store, data: action.payload }
+      return {
+        ...store,
+        data: {
+          products: action.payload.products,
+          productsQuantity: action.payload.productsQuantity,
+        },
+      }
     case FILTER_TOGGLE_CATEGORY_CHECKBOX:
       return {
         ...store,
-        categories: store.categories,
+        // categories: store.categories,
         categoriesCheckboxes: {
           ...store.categoriesCheckboxes,
           [action.payload]: !store.categoriesCheckboxes[action.payload],
+        },
+      }
+    case FILTER_SET_NON_SORTED_PRODUCTS:
+      return {
+        ...store,
+        _notFiltredData: {
+          products: action.payload.products,
+          productsQuantity: action.payload.productsQuantity,
         },
       }
     default:

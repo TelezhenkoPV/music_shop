@@ -1,10 +1,16 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Slider from '@material-ui/core/Slider'
 import { useDispatch, useSelector } from 'react-redux'
-import { setFilterPriceIntervalAction } from '../../../store/filters/filtersAction'
-import { filterPricesIntervalSelector } from '../../../store/filters/filtersSelectors'
+import {
+  setFilterPriceIntervalAction,
+  setFilterProductsDataAction,
+} from '../../../store/filters/filtersAction'
+import {
+  filterPricesIntervalSelector,
+  filterNotFiltredDataSelector,
+} from '../../../store/filters/filtersSelectors'
 
 const useStyles = makeStyles({
   root: {
@@ -26,11 +32,29 @@ export default function FilterPriceSlider() {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const classes = useStyles()
   const dispatch = useDispatch()
-  // const [value, setValue] = React.useState([20, 37])
   const pricesInterval = useSelector(filterPricesIntervalSelector)
+  const notFiltredData = useSelector(filterNotFiltredDataSelector)
+
+  useEffect(() => {
+    const [minPrice, maxPrice] = pricesInterval
+    const sortedProductsByPrice = {
+      products: [],
+      productsQuantity: 0,
+    }
+
+    notFiltredData.products.filter((product) => {
+      return (
+        product.currentPrice >= minPrice &&
+        product.currentPrice <= maxPrice &&
+        sortedProductsByPrice.products.push(product) &&
+        sortedProductsByPrice.productsQuantity++
+      )
+    })
+
+    dispatch(setFilterProductsDataAction(sortedProductsByPrice))
+  }, [pricesInterval, notFiltredData, dispatch])
 
   const handleChange = (event, newValue) => {
-    console.log(newValue)
     dispatch(setFilterPriceIntervalAction(newValue))
   }
 
@@ -41,11 +65,11 @@ export default function FilterPriceSlider() {
       </Typography>
       <Slider
         min={0}
-        max={2000}
+        max={1500}
         value={pricesInterval}
         onChange={handleChange}
         valueLabelDisplay="auto"
-        step={50}
+        step={10}
         aria-labelledby="range-slider"
         getAriaValueText={valuetext}
       />
