@@ -4,6 +4,7 @@ import testReducer from './test_store/testReducer'
 import modalReducer from './modal/modalReducer'
 import filters from './filters/filtersReducer'
 import slides from './slides/slidesReducer'
+import notification from './notification/notificationReducer'
 
 const rootReducer = combineReducers({
   user,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   modalStatus: modalReducer,
   filters,
   slides,
+  notification,
 })
 
 export default rootReducer
