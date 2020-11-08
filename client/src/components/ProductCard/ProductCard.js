@@ -101,14 +101,16 @@ export const ProductCard = (props) => {
           >
             В корзину
           </Button>
-          <IconButton aria-label="like" style={{ width: 50 }}>
+
+          <IconButton
+            aria-label="like"
+            style={{ width: 50 }}
+            onClick={handleFavorite}
+          >
             {isFavorite ? (
-              <FavoriteIcon
-                style={{ color: '#C22A2A' }}
-                onClick={handleFavorite}
-              />
+              <FavoriteIcon style={{ color: '#C22A2A' }} />
             ) : (
-              <FavoriteIcon onClick={handleFavorite} />
+              <FavoriteIcon />
             )}
           </IconButton>
         </div>
