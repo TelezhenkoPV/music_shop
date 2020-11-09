@@ -1,6 +1,9 @@
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({
+  searchWrapper: {
+    display: 'flex',
+  },
   searchBar: {
     margin: '0 auto',
     minWidth: 800,
@@ -13,9 +16,15 @@ const useStyles = makeStyles((theme) => ({
       height: 35,
     },
     [theme.breakpoints.down('xs')]: {
-      minWidth: 300,
+      minWidth: 250,
       height: 30,
     },
+  },
+  clearIcon: {
+    color: theme.palette.grey,
+  },
+  searchDropDown: {
+    zIndex: '1400!important',
   },
 }))
 
