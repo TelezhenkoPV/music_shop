@@ -50,32 +50,32 @@ const Header = () => {
           setValue(0)
         }
         break
-      case '/gitars':
+      case '/products/guitars':
         if (value !== 0) {
           setValue(0)
         }
         break
-      case '/booster':
+      case '/products/booster':
         if (value !== 1) {
           setValue(1)
         }
         break
-      case '/percussion':
+      case '/products/percussion':
         if (value !== 2) {
           setValue(2)
         }
         break
-      case '/bass':
+      case '/products/bass':
         if (value !== 3) {
           setValue(3)
         }
         break
-      case '/keybords':
+      case '/products/keybords':
         if (value !== 4) {
           setValue(4)
         }
         break
-      case '/accessories':
+      case '/products/accessories':
         if (value !== 5) {
           setValue(5)
         }

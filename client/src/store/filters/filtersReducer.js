@@ -7,7 +7,6 @@ import {
   FILTER_TOGGLE_CATEGORY_CHECKBOX,
   FILTER_SET_PRODUCTS_DATA,
   FILTER_SET_PRICE_INTERVAL,
-  FILTER_SET_NON_SORTED_PRODUCTS,
 } from '../actionTypes'
 
 const initialStore = {
@@ -15,16 +14,12 @@ const initialStore = {
   categories: [],
   data: [],
   categoriesCheckboxes: {
-    gitar: false,
+    guitar: false,
     booster: false,
     percussion: false,
     bass: false,
     keybords: false,
     accessories: false,
-  },
-  _notFiltredData: {
-    products: [],
-    productsQuantity: 0,
   },
   pricesInterval: [0, 2000],
 }
@@ -36,8 +31,9 @@ const reducer = (store = initialStore, action) => {
     case FILTERS_GET_DATA:
       return {
         ...store,
+        // ?
+        ...store.data,
         data: action.payload,
-        _notFiltredData: action.payload,
       }
     case FILTERS_SET_CATEGORY:
       // eslint-disable-next-line no-case-declarations
@@ -76,10 +72,11 @@ const reducer = (store = initialStore, action) => {
     case FILTER_SET_PRODUCTS_DATA:
       return {
         ...store,
-        data: {
-          products: action.payload.products,
-          productsQuantity: action.payload.productsQuantity,
-        },
+        data: action.payload,
+        // data: {
+        //   products: action.payload.products,
+        //   productsQuantity: action.payload.productsQuantity,
+        // },
       }
     case FILTER_TOGGLE_CATEGORY_CHECKBOX:
       return {
@@ -88,14 +85,6 @@ const reducer = (store = initialStore, action) => {
         categoriesCheckboxes: {
           ...store.categoriesCheckboxes,
           [action.payload]: !store.categoriesCheckboxes[action.payload],
-        },
-      }
-    case FILTER_SET_NON_SORTED_PRODUCTS:
-      return {
-        ...store,
-        _notFiltredData: {
-          products: action.payload.products,
-          productsQuantity: action.payload.productsQuantity,
         },
       }
     default:

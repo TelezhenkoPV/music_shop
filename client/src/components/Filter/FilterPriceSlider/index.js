@@ -1,16 +1,10 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Slider from '@material-ui/core/Slider'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  setFilterPriceIntervalAction,
-  setFilterProductsDataAction,
-} from '../../../store/filters/filtersAction'
-import {
-  filterPricesIntervalSelector,
-  filterNotFiltredDataSelector,
-} from '../../../store/filters/filtersSelectors'
+import { setFilterPriceIntervalAction } from '../../../store/filters/filtersAction'
+import { filterPricesIntervalSelector } from '../../../store/filters/filtersSelectors'
 
 const useStyles = makeStyles({
   root: {
@@ -33,26 +27,6 @@ export default function FilterPriceSlider() {
   const classes = useStyles()
   const dispatch = useDispatch()
   const pricesInterval = useSelector(filterPricesIntervalSelector)
-  const notFiltredData = useSelector(filterNotFiltredDataSelector)
-
-  useEffect(() => {
-    const [minPrice, maxPrice] = pricesInterval
-    const sortedProductsByPrice = {
-      products: [],
-      productsQuantity: 0,
-    }
-
-    notFiltredData.products.filter((product) => {
-      return (
-        product.currentPrice >= minPrice &&
-        product.currentPrice <= maxPrice &&
-        sortedProductsByPrice.products.push(product) &&
-        sortedProductsByPrice.productsQuantity++
-      )
-    })
-
-    dispatch(setFilterProductsDataAction(sortedProductsByPrice))
-  }, [pricesInterval, notFiltredData, dispatch])
 
   const handleChange = (event, newValue) => {
     dispatch(setFilterPriceIntervalAction(newValue))
@@ -61,7 +35,7 @@ export default function FilterPriceSlider() {
   return (
     <div className={classes.root}>
       <Typography id="range-slider" className={classes.text} gutterBottom>
-        Цена "от" - "до"
+        Цена "от {pricesInterval[0]}" - "до {pricesInterval[1]}"
       </Typography>
       <Slider
         min={0}

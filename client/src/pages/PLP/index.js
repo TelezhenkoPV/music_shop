@@ -11,6 +11,8 @@ import FilterPriceSlider from '../../components/Filter/FilterPriceSlider'
 import guitarHeader from '../../assets/guitar-header.png'
 import { getFiltersDataSelector } from '../../store/filters/filtersSelectors'
 import { addProductToBasket } from '../../store/basket/basketAction'
+import { useParams } from 'react-router-dom'
+import * as staticNames from '../../util/staticNames'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,59 +41,63 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-function PLP(props) {
+function PLP() {
   const dispatch = useDispatch()
   const classes = useStyles()
   const filtersData = useSelector(getFiltersDataSelector)
-  const { product, title, description } = props
+  const useParamsData = useParams()
+  const { categoryName } = useParamsData
+  console.log('useParams--->', useParamsData)
 
   useEffect(() => {
     dispatch(
       getDataForFilterAction({
-        categories: product,
+        categories: categoryName,
       })
     )
-  }, [dispatch, product])
+  }, [dispatch, categoryName])
 
   const handleAddProductToBasket = (elem) => {
     dispatch(addProductToBasket(elem))
   }
 
   return (
-    <div className={classes.root}>
-      <div className={classes.pageHeader}>
-        <Typography variant={'h4'} style={{ padding: 10 }} align="center">
-          {' '}
-          {title}
-        </Typography>
-        <Typography variant={'body2'} style={{ padding: 10 }} align="center">
-          {' '}
-          Товары/{title}
-        </Typography>
-      </div>
-      <Grid className={classes.mainContainer}>
-        <div className={classes.filterBlock}>
-          <Paper>
-            <FilterCategoryCheckbox categoryName={product} />
-            <FilterPriceSlider />
-          </Paper>
-        </div>
-        <div className={classes.productBlock}>
-          <Typography variant={'body2'} style={{ padding: 10 }}>
-            {description}
+    (!!filtersData.products && (
+      <div className={classes.root}>
+        <div className={classes.pageHeader}>
+          <Typography variant={'h4'} style={{ padding: 10 }} align="center">
+            {' '}
+            {staticNames[categoryName].name}
           </Typography>
-          <CatalogProductBar />
-          {filtersData.products &&
-            filtersData.products.map((e) => (
-              <ProductCard
-                key={e._id}
-                element={e}
-                onClickAddProduct={handleAddProductToBasket}
-              />
-            ))}
+          <Typography variant={'body2'} style={{ padding: 10 }} align="center">
+            {' '}
+            Товары/{staticNames[categoryName].name}
+          </Typography>
         </div>
-      </Grid>
-    </div>
+        <Grid className={classes.mainContainer}>
+          <div className={classes.filterBlock}>
+            <Paper>
+              <FilterCategoryCheckbox categoryName={categoryName} />
+              <FilterPriceSlider />
+            </Paper>
+          </div>
+          <div className={classes.productBlock}>
+            <Typography variant={'body2'} style={{ padding: 10 }}>
+              {staticNames[categoryName].text}
+            </Typography>
+            <CatalogProductBar />
+            {filtersData.products &&
+              filtersData.products.map((e) => (
+                <ProductCard
+                  key={e._id}
+                  element={e}
+                  onClickAddProduct={handleAddProductToBasket}
+                />
+              ))}
+          </div>
+        </Grid>
+      </div>
+    )) || <div>Nothing to render</div>
   )
 }
 

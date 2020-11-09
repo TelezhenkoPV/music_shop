@@ -1,27 +1,27 @@
 const tabLinks = [
   {
     label: 'Гитары',
-    to: '/gitars',
+    to: '/products/guitar&0&2000',
   },
   {
     label: 'Усилители',
-    to: '/booster',
+    to: '/products/booster&0&2000',
   },
   {
     label: 'Перкуссия',
-    to: '/percussion',
+    to: '/products/percussion&0&2000',
   },
   {
     label: 'Басс',
-    to: '/bass',
+    to: '/products/bass&0&2000',
   },
   {
     label: 'Клавиатуры',
-    to: '/keybords',
+    to: '/products/keybords&0&2000',
   },
   {
     label: 'Аксессуары',
-    to: '/accessories',
+    to: '/products/accessories&0&2000',
   },
   // Тестовые пункты меню, для проверки защищенных роутов
   // {

@@ -7,7 +7,6 @@ import {
   FILTER_TOGGLE_CATEGORY_CHECKBOX,
   FILTER_SET_PRODUCTS_DATA,
   FILTER_SET_PRICE_INTERVAL,
-  FILTER_SET_NON_SORTED_PRODUCTS,
 } from '../actionTypes'
 const qs = require('qs')
 
@@ -44,8 +43,4 @@ export const setFilterProductsDataAction = (data) => (dispatch) =>
 
 export const setFilterPriceIntervalAction = (newValues) => (dispatch) => {
   dispatch({ type: FILTER_SET_PRICE_INTERVAL, payload: newValues })
-}
-
-export const setNonSortedDataAction = (data) => (dispatch) => {
-  dispatch({ type: FILTER_SET_NON_SORTED_PRODUCTS, payload: data })
 }

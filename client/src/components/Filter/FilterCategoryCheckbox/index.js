@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useCallback } from 'react'
 import axios from 'axios'
 import FormGroup from '@material-ui/core/FormGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
@@ -9,18 +9,17 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   toggleFilterCategoryAction,
   toggleFilterCategoryCheckboxAction,
-  setNonSortedDataAction,
   clearFilterCategoriesCheckboxesAction,
   setFilterCategoryAction,
   setFilterProductsDataAction,
 } from '../../../store/filters/filtersAction'
 import {
-  filterNotFiltredDataSelector,
   filterPricesIntervalSelector,
   filtersCategoriesCheckboxesSelector,
   filtersCategoriesSelector,
 } from '../../../store/filters/filtersSelectors'
 import { createUrlWithManyValues } from '../../../func'
+
 export default function FilterCategoryCheckbox(props) {
   const { categoryName } = props
   const dispatch = useDispatch()
@@ -30,8 +29,37 @@ export default function FilterCategoryCheckbox(props) {
   )
   const filtersCategories = useSelector(filtersCategoriesSelector)
   const [minPrice, maxPrice] = useSelector(filterPricesIntervalSelector)
-  const notFiltredData = useSelector(filterNotFiltredDataSelector)
-  const notSortedProducts = useSelector(filterNotFiltredDataSelector)
+
+  // const getFilteredData = (filtersCategories, minPrice, maxPrice, callback) => {
+  //   const linkForProductsInStoreUpdate = createUrlWithManyValues(
+  //     filtersCategories,
+  //     minPrice,
+  //     maxPrice,
+  //   )
+  //
+  //   axios(linkForProductsInStoreUpdate)
+  //     .then((response) => {
+  //       dispatch(callback(response.data))
+  //     })
+  //     .catch((e) => console.log(e))
+  // }
+
+  const getFilteredData = useCallback(
+    (filtersCategories, minPrice, maxPrice, callback) => {
+      const linkForProductsInStoreUpdate = createUrlWithManyValues(
+        filtersCategories,
+        minPrice,
+        maxPrice
+      )
+
+      axios(linkForProductsInStoreUpdate)
+        .then((response) => {
+          dispatch(callback(response.data))
+        })
+        .catch((e) => console.log(e))
+    },
+    [dispatch]
+  )
 
   useEffect(() => {
     dispatch(clearFilterCategoriesCheckboxesAction())
@@ -40,38 +68,24 @@ export default function FilterCategoryCheckbox(props) {
   }, [categoryName, dispatch])
 
   useEffect(() => {
-    const sortedProductsByPrice = {
-      products: [],
-      productsQuantity: 0,
-    }
-
-    notFiltredData.products.filter((product) => {
-      return (
-        product.currentPrice >= minPrice &&
-        product.currentPrice <= maxPrice &&
-        sortedProductsByPrice.products.push(product) &&
-        sortedProductsByPrice.productsQuantity++
-      )
-    })
-
-    dispatch(setFilterProductsDataAction(sortedProductsByPrice))
-  }, [notSortedProducts, notFiltredData, dispatch, minPrice, maxPrice])
+    getFilteredData(
+      filtersCategories,
+      minPrice,
+      maxPrice,
+      setFilterProductsDataAction
+    )
+  }, [dispatch, minPrice, maxPrice, filtersCategories, getFilteredData])
 
   const handleChange = (event) => {
     dispatch(toggleFilterCategoryCheckboxAction(event.target.name))
     dispatch(toggleFilterCategoryAction(event.target.name))
 
-    const linkForProductsInStoreUpdate = createUrlWithManyValues(
-      'http://localhost:5000/api/products/filter',
-      'categories',
-      filtersCategories
+    getFilteredData(
+      filtersCategories,
+      minPrice,
+      maxPrice,
+      setFilterProductsDataAction
     )
-
-    axios(linkForProductsInStoreUpdate)
-      .then((response) => {
-        dispatch(setNonSortedDataAction(response.data))
-      })
-      .catch((e) => console.log(e))
   }
 
   return (
@@ -79,11 +93,11 @@ export default function FilterCategoryCheckbox(props) {
       <FormControlLabel
         control={
           <Checkbox
-            checked={filtersCategoriesCheckboxes.gitar}
+            checked={filtersCategoriesCheckboxes.guitar}
             icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
             checkedIcon={<CheckBoxIcon fontSize="small" />}
             onChange={handleChange}
-            name="gitar"
+            name="guitar"
           />
         }
         label="Гитары"

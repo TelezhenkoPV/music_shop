@@ -6,6 +6,12 @@ export const getDataFromServe = async (link) => {
     .catch((e) => console.log(e))
 }
 
-export const createUrlWithManyValues = (linkBase, urlKey, array) => {
-  return `${linkBase}?${urlKey}=${array.join(',')}`
+export const createUrlWithManyValues = (
+  categoriesArray,
+  minPrice = 0,
+  maxPrice = 2500
+) => {
+  return `http://localhost:5000/api/products/filter?categories=${categoriesArray.join(
+    ','
+  )}&minPrice=${minPrice}&maxPrice=${maxPrice}`
 }
