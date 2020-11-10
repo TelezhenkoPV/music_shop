@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import useStyles from './styles'
 import SearchBar from 'material-ui-search-bar'
 import CircularProgress from '@material-ui/core/CircularProgress'
@@ -12,6 +13,7 @@ import { searchIsLoading, searchData } from '../../store/search/searchSelectors'
 export default function Search() {
   const classes = useStyles()
   const dispatch = useDispatch()
+  const history = useHistory()
   const anchorRef = useRef(null)
   const [inputValue, setInputValue] = useState('')
   const [searchWidth, setSearchWidth] = useState('auto')
@@ -26,7 +28,7 @@ export default function Search() {
 
   const handleClickItem = (item) => {
     handleClose()
-    console.log(`Clicked /${item.categories}/${item.itemNo}`)
+    history.push(`/products/${item.categories}/${item.itemNo}`)
   }
 
   useEffect(() => {
@@ -62,7 +64,8 @@ export default function Search() {
   return (
     <div className={classes.searchWrapper} ref={anchorRef}>
       <SearchBar
-        style={{ margin: 0 }}
+        style={{ margin: '0' }}
+        color="secondary"
         value={inputValue}
         className={classes.searchBar}
         onChange={(query) => setInputValue(query)}
@@ -71,16 +74,17 @@ export default function Search() {
         }
         closeIcon={
           isLoading ? (
-            <CircularProgress size={20} />
+            <CircularProgress size={20} className={classes.iconButton} />
           ) : (
-            <ClearIcon className={classes.clearIcon} />
+            <ClearIcon className={classes.iconButton} />
           )
         }
+        classes={{ input: classes.input, searchIconButton: classes.iconButton }}
       />
       <Menu
         className={classes.searchDropDown}
         anchorEl={anchorRef.current}
-        keepMounted
+        // keepMounted
         open={searchResult.length > 0}
         onClose={handleClose}
         getContentAnchorEl={null}
