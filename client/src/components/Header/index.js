@@ -25,6 +25,7 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import Login from '../Login'
 import { Badge } from '@material-ui/core'
+import { setFilterCategoryAction } from '../../store/filters/filtersAction'
 
 const Header = () => {
   const classes = useStyles()
@@ -41,7 +42,11 @@ const Header = () => {
 
   const [value, setValue] = useState(0)
   const [openDrawer, setOpenDrawer] = useState(false)
-  const handleChange = (event, newValue) => setValue(newValue)
+  const handleChange = (event, newValue) => {
+    setValue(newValue)
+
+    dispatch(setFilterCategoryAction(tabLinks[newValue].name))
+  }
 
   useEffect(() => {
     switch (window.location.pathname) {

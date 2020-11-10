@@ -1,27 +1,33 @@
 const tabLinks = [
   {
     label: 'Гитары',
-    to: '/products/guitar&minPrice=0&maxPrice=2000',
+    to: '/products/guitar&minPrice=0&maxPrice=1500',
+    name: 'guitar',
   },
   {
     label: 'Усилители',
-    to: '/products/booster&minPrice=0&maxPrice=2000',
+    to: '/products/booster&minPrice=0&maxPrice=1500',
+    name: 'booster',
   },
   {
     label: 'Перкуссия',
-    to: '/products/percussion&minPrice=0&maxPrice=2000',
+    to: '/products/percussion&minPrice=0&maxPrice=1500',
+    name: 'percussion',
   },
   {
     label: 'Басс',
-    to: '/products/bass&minPrice=0&maxPrice=2000',
+    to: '/products/bass&minPrice=0&maxPrice=1500',
+    name: 'bass',
   },
   {
     label: 'Клавиатуры',
-    to: '/products/keybords&minPrice=0&maxPrice=2000',
+    to: '/products/keybords&minPrice=0&maxPrice=1500',
+    name: 'keybords',
   },
   {
     label: 'Аксессуары',
-    to: '/products/accessories&minPrice=0&maxPrice=2000',
+    to: '/products/accessories&minPrice=0&maxPrice=1500',
+    name: 'accessories',
   },
   // Тестовые пункты меню, для проверки защищенных роутов
   // {

@@ -13,12 +13,9 @@ import CatalogProductBar from '../../components/CatalogProductBar/CatalogProduct
 import FilterCategoryCheckbox from '../../components/Filter/FilterCategoryCheckbox'
 import FilterPriceSlider from '../../components/Filter/FilterPriceSlider'
 import guitarHeader from '../../assets/guitar-header.png'
-import {
-  filtersCategoriesSelector,
-  getFiltersDataSelector,
-} from '../../store/filters/filtersSelectors'
+import { getFiltersDataSelector } from '../../store/filters/filtersSelectors'
 import { addProductToBasket } from '../../store/basket/basketAction'
-import { useParams, useHistory, useLocation } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,41 +48,19 @@ function PLP() {
   const dispatch = useDispatch()
   const classes = useStyles()
   const filtersData = useSelector(getFiltersDataSelector)
-  const filtersCategories = useSelector(filtersCategoriesSelector)
   const { categoryName, minPrice, maxPrice } = useParams()
-  const history = useHistory()
-  const location = useLocation()
 
   useEffect(() => {
     dispatch(getDataForFilterAction(categoryName))
-  }, [dispatch, categoryName])
-
-  useEffect(() => {
-    dispatch(setFilterPriceIntervalAction([+minPrice, +maxPrice]))
-    // history.replace(location.pathname)
-    // history.push({
-    //   categoryName: filtersCategories,
-    //   minPrice: minPrice,
-    //   maxPrice: maxPrice
-    // })
-  }, [
-    dispatch,
-    minPrice,
-    maxPrice,
-    filtersCategories,
-    history,
-    location.pathname,
-  ])
-
-  // console.log("history", history)
-  // console.log("location", location)
-  // console.log(categoryName, minPrice, maxPrice)
-
-  useEffect(() => {
     categoryName.split(',').forEach((elem) => {
       dispatch(setFilterParsedCategoriesAction(elem))
     })
-  }, [dispatch, categoryName])
+    // eslint-disable-next-line
+  }, [])
+
+  useEffect(() => {
+    dispatch(setFilterPriceIntervalAction([+minPrice, +maxPrice]))
+  }, [dispatch, minPrice, maxPrice])
 
   const handleAddProductToBasket = (elem) => {
     dispatch(addProductToBasket(elem))
@@ -107,7 +82,7 @@ function PLP() {
         <Grid className={classes.mainContainer}>
           <div className={classes.filterBlock}>
             <Paper>
-              <FilterCategoryCheckbox categoryName={categoryName} />
+              <FilterCategoryCheckbox />
               <FilterPriceSlider />
             </Paper>
           </div>

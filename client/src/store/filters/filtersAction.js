@@ -11,7 +11,6 @@ const qs = require('qs')
 
 export const getDataForFilterAction = (data) => (dispatch) => {
   // dispatch({ type: LOADING_DATA, payload: true })
-  console.log('data===>', data)
   axios(
     `http://localhost:5000/api/products/filter?categories=${qs.stringify(data)}`
   ).then((res) => {

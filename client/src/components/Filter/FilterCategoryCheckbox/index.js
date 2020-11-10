@@ -8,26 +8,19 @@ import CheckBoxIcon from '@material-ui/icons/CheckBox'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   toggleFilterCategoryAction,
-  setFilterCategoryAction,
-  // toggleFilterCategoryCheckboxAction,
-  // clearFilterCategoriesCheckboxesAction,
   setFilterProductsDataAction,
 } from '../../../store/filters/filtersAction'
 import {
   filterPricesIntervalSelector,
-  // filtersCategoriesCheckboxesSelector,
   filtersCategoriesSelector,
 } from '../../../store/filters/filtersSelectors'
 import { createUrlWithManyValues } from '../../../func'
+import { useHistory } from 'react-router-dom'
 
-export default function FilterCategoryCheckbox(props) {
-  const { categoryName } = props
+export default function FilterCategoryCheckbox() {
   const dispatch = useDispatch()
-
-  // const filtersCategoriesCheckboxes = useSelector(
-  //   filtersCategoriesCheckboxesSelector
-  // )
-  const filtersCategories = useSelector(filtersCategoriesSelector)
+  const history = useHistory()
+  let filtersCategories = useSelector(filtersCategoriesSelector)
   const [minPrice, maxPrice] = useSelector(filterPricesIntervalSelector)
 
   const getFilteredData = useCallback(
@@ -56,12 +49,7 @@ export default function FilterCategoryCheckbox(props) {
     )
   }, [dispatch, minPrice, maxPrice, filtersCategories, getFilteredData])
 
-  useEffect(() => {
-    dispatch(setFilterCategoryAction(categoryName))
-  }, [categoryName, dispatch])
-
   const handleChange = (event) => {
-    // dispatch(toggleFilterCategoryCheckboxAction(event.target.name))
     dispatch(toggleFilterCategoryAction(event.target.name))
 
     getFilteredData(
@@ -70,6 +58,16 @@ export default function FilterCategoryCheckbox(props) {
       maxPrice,
       setFilterProductsDataAction
     )
+
+    if (filtersCategories.length === 0) {
+      filtersCategories = ['emptyCategory']
+    }
+
+    const categoriesPath = filtersCategories.join(',')
+
+    history.push({
+      pathname: `/products/${categoriesPath}&minPrice=${minPrice}&maxPrice=${maxPrice}`,
+    })
   }
 
   return (
@@ -140,9 +138,7 @@ export default function FilterCategoryCheckbox(props) {
             icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
             checkedIcon={<CheckBoxIcon fontSize="small" />}
             name="accessories"
-            checked={filtersCategories.find(
-              (categoryName) => categoryName === 'accessories'
-            )}
+            checked={filtersCategories.includes('accessories')}
             onChange={handleChange}
           />
         }

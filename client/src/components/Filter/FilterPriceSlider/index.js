@@ -4,8 +4,11 @@ import Typography from '@material-ui/core/Typography'
 import Slider from '@material-ui/core/Slider'
 import { useDispatch, useSelector } from 'react-redux'
 import { setFilterPriceIntervalAction } from '../../../store/filters/filtersAction'
-import { filterPricesIntervalSelector } from '../../../store/filters/filtersSelectors'
-// import { useHistory } from 'react-router-dom'
+import {
+  filterPricesIntervalSelector,
+  filtersCategoriesSelector,
+} from '../../../store/filters/filtersSelectors'
+import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles({
   root: {
@@ -26,18 +29,25 @@ function valuetext(value) {
 export default function FilterPriceSlider() {
   const classes = useStyles()
   const dispatch = useDispatch()
-  // const history = useHistory()
   const pricesInterval = useSelector(filterPricesIntervalSelector)
+  const categoriesName = useSelector(filtersCategoriesSelector)
+  const [minPrice, maxPrice] = pricesInterval
+  const history = useHistory()
 
   const handleChange = (event, newValue) => {
     dispatch(setFilterPriceIntervalAction(newValue))
-    // history.pushState(null, '', `/products`)
+
+    const categoriesPath = categoriesName.join(',')
+
+    history.push({
+      pathname: `/products/${categoriesPath}&minPrice=${newValue[0]}&maxPrice=${newValue[1]}`,
+    })
   }
 
   return (
     <div className={classes.root}>
       <Typography id="range-slider" className={classes.text} gutterBottom>
-        Цена "от {pricesInterval[0]}" - "до {pricesInterval[1]}"
+        Цена "от {minPrice}" - "до {maxPrice}"
       </Typography>
       <Slider
         min={0}
