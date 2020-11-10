@@ -116,10 +116,10 @@ const MainRoutes = () => {
         <Route exact path="/product-details" render={() => <PDP />} />
         <Route exact path="/products-list" render={() => <PLP />} />
 
-        <ProtectedRoute path="/protected">
+        <ProtectedRoute exact path="/customer/profile">
           <UserProfile />
         </ProtectedRoute>
-        <ProtectedRoute path="/admin" adminOnly>
+        <ProtectedRoute exact path="/admin" adminOnly>
           <AdminPanel />
         </ProtectedRoute>
         <Route exact path="/prohibited" render={() => <Prohibited />} />

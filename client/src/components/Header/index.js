@@ -120,7 +120,7 @@ export default function Header() {
   }
 
   const handleClickProfile = () => {
-    history.push('/profile')
+    history.push('/customer/profile')
     handleMenuClose()
   }
 
@@ -315,8 +315,6 @@ export default function Header() {
       </div>
     </Popper>
   )
-
-  console.log('searchPopperOpen', searchPopperOpen)
 
   return (
     <div className={classes.root}>
