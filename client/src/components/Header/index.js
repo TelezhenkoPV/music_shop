@@ -316,8 +316,6 @@ export default function Header() {
     </Popper>
   )
 
-  console.log('searchPopperOpen', searchPopperOpen)
-
   return (
     <div className={classes.root}>
       <AppBar position="static" classes={{ root: classes.appBar }}>
