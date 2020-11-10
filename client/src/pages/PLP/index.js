@@ -3,16 +3,22 @@ import { makeStyles } from '@material-ui/core/styles'
 import { useDispatch, useSelector } from 'react-redux'
 import { Grid, Typography } from '@material-ui/core'
 import Paper from '@material-ui/core/Paper'
-import { getDataForFilterAction } from '../../store/filters/filtersAction'
+import {
+  setFilterParsedCategoriesAction,
+  setFilterPriceIntervalAction,
+  getDataForFilterAction,
+} from '../../store/filters/filtersAction'
 import { ProductCard } from '../../components/ProductCard/ProductCard'
 import CatalogProductBar from '../../components/CatalogProductBar/CatalogProductBar'
 import FilterCategoryCheckbox from '../../components/Filter/FilterCategoryCheckbox'
 import FilterPriceSlider from '../../components/Filter/FilterPriceSlider'
 import guitarHeader from '../../assets/guitar-header.png'
-import { getFiltersDataSelector } from '../../store/filters/filtersSelectors'
+import {
+  filtersCategoriesSelector,
+  getFiltersDataSelector,
+} from '../../store/filters/filtersSelectors'
 import { addProductToBasket } from '../../store/basket/basketAction'
-import { useParams } from 'react-router-dom'
-import * as staticNames from '../../util/staticNames'
+import { useParams, useHistory, useLocation } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,16 +51,40 @@ function PLP() {
   const dispatch = useDispatch()
   const classes = useStyles()
   const filtersData = useSelector(getFiltersDataSelector)
-  const useParamsData = useParams()
-  const { categoryName } = useParamsData
-  console.log('useParams--->', useParamsData)
+  const filtersCategories = useSelector(filtersCategoriesSelector)
+  const { categoryName, minPrice, maxPrice } = useParams()
+  const history = useHistory()
+  const location = useLocation()
 
   useEffect(() => {
-    dispatch(
-      getDataForFilterAction({
-        categories: categoryName,
-      })
-    )
+    dispatch(getDataForFilterAction(categoryName))
+  }, [dispatch, categoryName])
+
+  useEffect(() => {
+    dispatch(setFilterPriceIntervalAction([+minPrice, +maxPrice]))
+    // history.replace(location.pathname)
+    // history.push({
+    //   categoryName: filtersCategories,
+    //   minPrice: minPrice,
+    //   maxPrice: maxPrice
+    // })
+  }, [
+    dispatch,
+    minPrice,
+    maxPrice,
+    filtersCategories,
+    history,
+    location.pathname,
+  ])
+
+  // console.log("history", history)
+  // console.log("location", location)
+  // console.log(categoryName, minPrice, maxPrice)
+
+  useEffect(() => {
+    categoryName.split(',').forEach((elem) => {
+      dispatch(setFilterParsedCategoriesAction(elem))
+    })
   }, [dispatch, categoryName])
 
   const handleAddProductToBasket = (elem) => {
@@ -65,13 +95,13 @@ function PLP() {
     (!!filtersData.products && (
       <div className={classes.root}>
         <div className={classes.pageHeader}>
-          <Typography variant={'h4'} style={{ padding: 10 }} align="center">
-            {' '}
-            {staticNames[categoryName].name}
-          </Typography>
+          <Typography
+            variant={'h4'}
+            style={{ padding: 10 }}
+            align="center"
+          ></Typography>
           <Typography variant={'body2'} style={{ padding: 10 }} align="center">
             {' '}
-            Товары/{staticNames[categoryName].name}
           </Typography>
         </div>
         <Grid className={classes.mainContainer}>
@@ -82,9 +112,7 @@ function PLP() {
             </Paper>
           </div>
           <div className={classes.productBlock}>
-            <Typography variant={'body2'} style={{ padding: 10 }}>
-              {staticNames[categoryName].text}
-            </Typography>
+            <Typography variant={'body2'} style={{ padding: 10 }}></Typography>
             <CatalogProductBar />
             {filtersData.products &&
               filtersData.products.map((e) => (

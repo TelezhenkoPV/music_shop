@@ -20,7 +20,7 @@ const MainRoutes = () => {
         <Route exact path="/" render={() => <Main />} />
 
         <Route
-          path="/products/:categoryName&:minPrice&:maxPrice"
+          path="/products/:categoryName&minPrice=:minPrice&maxPrice=:maxPrice"
           render={() => <PLP />}
         />
 

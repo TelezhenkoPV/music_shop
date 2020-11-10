@@ -9,9 +9,10 @@ export const getDataFromServe = async (link) => {
 export const createUrlWithManyValues = (
   categoriesArray,
   minPrice = 0,
-  maxPrice = 2500
+  maxPrice = 2500,
+  link = 'http://localhost:5000/api/products/filter?categories'
 ) => {
-  return `http://localhost:5000/api/products/filter?categories=${categoriesArray.join(
+  return `${link}=${categoriesArray.join(
     ','
   )}&minPrice=${minPrice}&maxPrice=${maxPrice}`
 }

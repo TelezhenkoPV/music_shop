@@ -5,6 +5,7 @@ import Slider from '@material-ui/core/Slider'
 import { useDispatch, useSelector } from 'react-redux'
 import { setFilterPriceIntervalAction } from '../../../store/filters/filtersAction'
 import { filterPricesIntervalSelector } from '../../../store/filters/filtersSelectors'
+// import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles({
   root: {
@@ -23,13 +24,14 @@ function valuetext(value) {
 }
 
 export default function FilterPriceSlider() {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const classes = useStyles()
   const dispatch = useDispatch()
+  // const history = useHistory()
   const pricesInterval = useSelector(filterPricesIntervalSelector)
 
   const handleChange = (event, newValue) => {
     dispatch(setFilterPriceIntervalAction(newValue))
+    // history.pushState(null, '', `/products`)
   }
 
   return (
