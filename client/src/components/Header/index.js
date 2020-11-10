@@ -35,7 +35,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 
 import logo from '../../assets/logo.svg'
-import tabLinks from '../Header_Old/utilities'
+import tabLinks from './utilities'
 import useStyles from './styles'
 
 import { signOut } from '../../store/user/userActions'
