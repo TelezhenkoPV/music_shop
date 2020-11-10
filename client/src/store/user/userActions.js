@@ -64,8 +64,10 @@ export const signIn = ({ loginOrEmail, password, rememberMe }) => (
             notificate({
               variant: 'success',
               data: 'Успешная авторизация на сервере.',
+              key: 'signInSuccess',
             })
           )
+          dispatch(getCustomer())
         }
       }
     })
@@ -110,6 +112,7 @@ export const getCustomer = () => (dispatch) => {
             notificate({
               variant: 'success',
               data: 'Успешная авторизация на сервере.',
+              key: 'signInSuccess',
             })
           )
         }
