@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useCallback } from 'react'
 import axios from 'axios'
 import FormGroup from '@material-ui/core/FormGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
@@ -8,70 +8,66 @@ import CheckBoxIcon from '@material-ui/icons/CheckBox'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   toggleFilterCategoryAction,
-  toggleFilterCategoryCheckboxAction,
-  setNonSortedDataAction,
-  clearFilterCategoriesCheckboxesAction,
-  setFilterCategoryAction,
   setFilterProductsDataAction,
 } from '../../../store/filters/filtersAction'
 import {
-  filterNotFiltredDataSelector,
   filterPricesIntervalSelector,
-  filtersCategoriesCheckboxesSelector,
   filtersCategoriesSelector,
 } from '../../../store/filters/filtersSelectors'
 import { createUrlWithManyValues } from '../../../func'
-export default function FilterCategoryCheckbox(props) {
-  const { categoryName } = props
+import { useHistory } from 'react-router-dom'
+
+export default function FilterCategoryCheckbox() {
   const dispatch = useDispatch()
-
-  const filtersCategoriesCheckboxes = useSelector(
-    filtersCategoriesCheckboxesSelector
-  )
-  const filtersCategories = useSelector(filtersCategoriesSelector)
+  const history = useHistory()
+  let filtersCategories = useSelector(filtersCategoriesSelector)
   const [minPrice, maxPrice] = useSelector(filterPricesIntervalSelector)
-  const notFiltredData = useSelector(filterNotFiltredDataSelector)
-  const notSortedProducts = useSelector(filterNotFiltredDataSelector)
 
-  useEffect(() => {
-    dispatch(clearFilterCategoriesCheckboxesAction())
-    dispatch(toggleFilterCategoryCheckboxAction(categoryName))
-    dispatch(setFilterCategoryAction(categoryName))
-  }, [categoryName, dispatch])
-
-  useEffect(() => {
-    const sortedProductsByPrice = {
-      products: [],
-      productsQuantity: 0,
-    }
-
-    notFiltredData.products.filter((product) => {
-      return (
-        product.currentPrice >= minPrice &&
-        product.currentPrice <= maxPrice &&
-        sortedProductsByPrice.products.push(product) &&
-        sortedProductsByPrice.productsQuantity++
+  const getFilteredData = useCallback(
+    (filtersCategories, minPrice, maxPrice, callback) => {
+      const linkForProductsInStoreUpdate = createUrlWithManyValues(
+        filtersCategories,
+        minPrice,
+        maxPrice
       )
-    })
 
-    dispatch(setFilterProductsDataAction(sortedProductsByPrice))
-  }, [notSortedProducts, notFiltredData, dispatch, minPrice, maxPrice])
+      axios(linkForProductsInStoreUpdate)
+        .then((response) => {
+          dispatch(callback(response.data))
+        })
+        .catch((e) => console.log(e))
+    },
+    [dispatch]
+  )
+
+  useEffect(() => {
+    getFilteredData(
+      filtersCategories,
+      minPrice,
+      maxPrice,
+      setFilterProductsDataAction
+    )
+  }, [dispatch, minPrice, maxPrice, filtersCategories, getFilteredData])
 
   const handleChange = (event) => {
-    dispatch(toggleFilterCategoryCheckboxAction(event.target.name))
     dispatch(toggleFilterCategoryAction(event.target.name))
 
-    const linkForProductsInStoreUpdate = createUrlWithManyValues(
-      'http://localhost:5000/api/products/filter',
-      'categories',
-      filtersCategories
+    getFilteredData(
+      filtersCategories,
+      minPrice,
+      maxPrice,
+      setFilterProductsDataAction
     )
 
-    axios(linkForProductsInStoreUpdate)
-      .then((response) => {
-        dispatch(setNonSortedDataAction(response.data))
-      })
-      .catch((e) => console.log(e))
+    if (filtersCategories.length === 0) {
+      filtersCategories = ['emptyCategory']
+    }
+
+    const categoriesPath = filtersCategories.join(',')
+
+    history.push({
+      pathname: `/products/${categoriesPath}&minPrice=${minPrice}&maxPrice=${maxPrice}`,
+    })
   }
 
   return (
@@ -79,11 +75,11 @@ export default function FilterCategoryCheckbox(props) {
       <FormControlLabel
         control={
           <Checkbox
-            checked={filtersCategoriesCheckboxes.gitar}
+            checked={filtersCategories.includes('guitar')}
             icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
             checkedIcon={<CheckBoxIcon fontSize="small" />}
             onChange={handleChange}
-            name="gitar"
+            name="guitar"
           />
         }
         label="Гитары"
@@ -91,7 +87,7 @@ export default function FilterCategoryCheckbox(props) {
       <FormControlLabel
         control={
           <Checkbox
-            checked={filtersCategoriesCheckboxes.booster}
+            checked={filtersCategories.includes('booster')}
             onChange={handleChange}
             icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
             checkedIcon={<CheckBoxIcon fontSize="small" />}
@@ -106,7 +102,7 @@ export default function FilterCategoryCheckbox(props) {
             onChange={handleChange}
             icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
             checkedIcon={<CheckBoxIcon fontSize="small" />}
-            checked={filtersCategoriesCheckboxes.percussion}
+            checked={filtersCategories.includes('percussion')}
             name="percussion"
           />
         }
@@ -115,7 +111,7 @@ export default function FilterCategoryCheckbox(props) {
       <FormControlLabel
         control={
           <Checkbox
-            checked={filtersCategoriesCheckboxes.bass}
+            checked={filtersCategories.includes('bass')}
             icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
             checkedIcon={<CheckBoxIcon fontSize="small" />}
             onChange={handleChange}
@@ -127,11 +123,11 @@ export default function FilterCategoryCheckbox(props) {
       <FormControlLabel
         control={
           <Checkbox
-            name="keybords"
             icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
             checkedIcon={<CheckBoxIcon fontSize="small" />}
-            checked={filtersCategoriesCheckboxes.keybords}
+            checked={filtersCategories.includes('keybords')}
             onChange={handleChange}
+            name="keybords"
           />
         }
         label="Клавиатуры"
@@ -142,7 +138,7 @@ export default function FilterCategoryCheckbox(props) {
             icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
             checkedIcon={<CheckBoxIcon fontSize="small" />}
             name="accessories"
-            checked={filtersCategoriesCheckboxes.accessories}
+            checked={filtersCategories.includes('accessories')}
             onChange={handleChange}
           />
         }
