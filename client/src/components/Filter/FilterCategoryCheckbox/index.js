@@ -1,11 +1,16 @@
-import React, { useEffect, useCallback } from 'react'
 import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
+
+import React, { useEffect, useCallback } from 'react'
+import { useHistory } from 'react-router-dom'
+
 import FormGroup from '@material-ui/core/FormGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank'
 import CheckBoxIcon from '@material-ui/icons/CheckBox'
-import { useDispatch, useSelector } from 'react-redux'
+import { useStyles } from './styles'
+
 import {
   toggleFilterCategoryAction,
   setFilterProductsDataAction,
@@ -15,9 +20,10 @@ import {
   filtersCategoriesSelector,
 } from '../../../store/filters/filtersSelectors'
 import { createUrlWithManyValues } from '../../../func'
-import { useHistory } from 'react-router-dom'
+import FormLabel from '@material-ui/core/FormLabel'
 
 export default function FilterCategoryCheckbox() {
+  const classes = useStyles()
   const dispatch = useDispatch()
   const history = useHistory()
   let filtersCategories = useSelector(filtersCategoriesSelector)
@@ -72,6 +78,9 @@ export default function FilterCategoryCheckbox() {
 
   return (
     <FormGroup row>
+      <FormLabel component="legend" className={classes.text}>
+        Выбрать категории:
+      </FormLabel>
       <FormControlLabel
         control={
           <Checkbox
