@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Container } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import Box from '@material-ui/core/Box'
 import parse from 'html-react-parser'
 // eslint-disable-next-line
 import style from './style.scss'
@@ -24,11 +23,7 @@ const Contacts = () => {
     })
   })
 
-  return (
-    <Box>
-      <Container className={classes.div}>{parse(`${html}`)}</Container>
-    </Box>
-  )
+  return <Container className={classes.div}>{parse(`${html}`)}</Container>
 }
 
 export default Contacts

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Container } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import Box from '@material-ui/core/Box'
 import parse from 'html-react-parser/index'
 // eslint-disable-next-line
 import style from '../Contacts/style.scss'
@@ -24,11 +23,7 @@ const AboutOurTeam = () => {
     })
   })
 
-  return (
-    <Box style={{ height: '500px' }}>
-      <Container className={classes.root}>{parse(`${html}`)}</Container>
-    </Box>
-  )
+  return <Container className={classes.root}>{parse(`${html}`)}</Container>
 }
 
 export default AboutOurTeam
