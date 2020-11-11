@@ -4,8 +4,20 @@ export const addProductToBasket = (obj) => (dispatch) =>
     payload: obj,
   })
 
-export const removeCartItem = (id) => (dispatch) =>
+export const removeCartItem = (_id) => (dispatch) =>
   dispatch({
     type: 'REMOVE_CART_ITEM',
-    payload: id,
+    payload: _id,
+  })
+
+export const plusItem = (_id) => (dispatch) =>
+  dispatch({
+    type: 'PLUS_CART_ITEM',
+    payload: _id,
+  })
+
+export const minusItem = (_id) => (dispatch) =>
+  dispatch({
+    type: 'MINUS_CART_ITEM',
+    payload: _id,
   })
