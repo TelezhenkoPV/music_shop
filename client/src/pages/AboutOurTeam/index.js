@@ -9,7 +9,6 @@ import style from '../Contacts/style.scss'
 
 const AboutOurTeam = () => {
   const [html, setHtml] = useState(null)
-
   const classes = makeStyles((theme) => ({
     root: {
       [theme.breakpoints.down('sm')]: {
