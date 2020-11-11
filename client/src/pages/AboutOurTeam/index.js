@@ -3,9 +3,9 @@ import axios from 'axios'
 import { Container } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import Box from '@material-ui/core/Box'
+import parse from 'html-react-parser/index'
 // eslint-disable-next-line
 import style from '../Contacts/style.scss'
-import parse from 'html-react-parser/index'
 
 const AboutOurTeam = () => {
   const [html, setHtml] = useState(null)
