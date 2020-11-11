@@ -69,7 +69,7 @@ export default function PersonalInformation() {
               <Typography variant="h5">
                 Delivary address <LocationOnIcon />
               </Typography>
-              <Box gutterBottom>{addresses}</Box>
+              <Box>{addresses}</Box>
               <Typography variant="h5">
                 Credit Cards <CreditCardIcon />
               </Typography>
