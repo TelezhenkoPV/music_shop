@@ -53,6 +53,7 @@
     "formik": "^2.2.1",
     "formik-material-ui": "^3.0.0",
     "history": "^5.0.0",
+    "html-react-parser": "^0.14.1",
     "immutability-helper": "^3.1.1",
     "material": "^0.4.3",
     "material-ui-search-bar": "^1.0.0",
