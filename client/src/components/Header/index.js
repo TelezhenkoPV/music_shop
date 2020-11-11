@@ -41,6 +41,7 @@ import useStyles from './styles'
 import { signOut } from '../../store/user/userActions'
 import { openModal } from '../../store/modal/modalAction'
 import { getIsAuthenticated, getUserData } from '../../store/user/userSelectors'
+import { setFilterCategoryAction } from '../../store/filters/filtersAction'
 
 import SearchBar from '../SearchBar'
 import Login from '../Login'
@@ -53,7 +54,11 @@ export default function Header() {
   const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent)
   const [openDrawer, setOpenDrawer] = useState(false)
   const [searchPopperOpen, setSearchPopperOpen] = useState(false)
-  const handleChangeCategoryTab = (event, newValue) => setValue(newValue)
+
+  const handleChangeCategoryTab = (event, newValue) => {
+    setValue(newValue)
+    dispatch(setFilterCategoryAction(tabLinks[newValue].name))
+  }
 
   const [value, setValue] = useState(0)
   const [anchorEl, setAnchorEl] = useState(null)
@@ -140,8 +145,9 @@ export default function Header() {
   }
 
   const handleClickSignOut = () => {
-    dispatch(signOut())
+    history.push('/')
     handleMenuClose()
+    dispatch(signOut())
   }
 
   const handleSearchOpen = () => {
