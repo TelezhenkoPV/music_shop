@@ -19,6 +19,12 @@ export default createMuiTheme({
       blueGary: '#607D8B',
       black: '#040404',
     },
+    green: {
+      main: '#4CAF50',
+      light: '#8BC34A',
+      dark: '#009688',
+      contrastText: '#ffffff',
+    },
   },
   basicFlex: {
     display: 'flex',

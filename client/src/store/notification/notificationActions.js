@@ -27,15 +27,19 @@ export const removeSnackbar = (key) => ({
   key,
 })
 
-export const notificate = ({ variant = 'default', data = null }) => (
+export const notificate = ({ variant = 'default', data = null, key }) => (
   dispatch
 ) => {
   if (data) {
     const options = {
-      variant,
-      anchorOrigin: {
-        vertical: 'bottom',
-        horizontal: 'center',
+      preventDuplicate: true,
+      options: {
+        key,
+        variant,
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'center',
+        },
       },
     }
 
@@ -46,6 +50,7 @@ export const notificate = ({ variant = 'default', data = null }) => (
           dispatch(
             enqueueSnackbar({
               message: `${JSON.stringify(message)}.`,
+
               options,
             })
           )
@@ -55,7 +60,7 @@ export const notificate = ({ variant = 'default', data = null }) => (
           dispatch(
             enqueueSnackbar({
               message: `${JSON.stringify(data[key])}.`,
-              options,
+              ...options,
             })
           )
         }
@@ -64,7 +69,7 @@ export const notificate = ({ variant = 'default', data = null }) => (
       dispatch(
         enqueueSnackbar({
           message: data,
-          options,
+          ...options,
         })
       )
     }
