@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import ReactHtmlParser from 'react-html-parser'
 import { Container } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import Box from '@material-ui/core/Box'
+// eslint-disable-next-line
+import style from '../Contacts/style.scss'
+import parse from 'html-react-parser/index'
 
 const AboutOurTeam = () => {
   const [html, setHtml] = useState(null)
@@ -12,7 +15,6 @@ const AboutOurTeam = () => {
       [theme.breakpoints.down('sm')]: {
         padding: '10px',
       },
-      height: '90%',
       padding: '20px',
     },
   }))
@@ -23,7 +25,11 @@ const AboutOurTeam = () => {
     })
   })
 
-  return <Container className={classes.root}>{ReactHtmlParser(html)}</Container>
+  return (
+    <Box style={{ height: '500px' }}>
+      <Container className={classes.root}>{parse(`${html}`)}</Container>
+    </Box>
+  )
 }
 
 export default AboutOurTeam
