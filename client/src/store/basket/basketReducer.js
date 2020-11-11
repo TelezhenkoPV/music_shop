@@ -7,6 +7,20 @@ const initialStore = {
 const getTotalPrice = (arr) =>
   arr.reduce((sum, obj) => obj.currentPrice + sum, 0)
 
+const _get = (obj, path) => {
+  const [firstKey, ...keys] = path.split('.')
+  return keys.reduce((val, key) => {
+    return val[key]
+  }, obj[firstKey])
+}
+
+const getTotalSum = (obj, path) => {
+  return Object.values(obj).reduce((sum, obj) => {
+    const value = _get(obj, path)
+    return sum + value
+  }, 0)
+}
+
 const reducer = (store = initialStore, action) => {
   switch (action.type) {
     case 'SET_TOTAL_PRICE':
@@ -14,37 +28,33 @@ const reducer = (store = initialStore, action) => {
     case 'SET_TOTAL_COUNT':
       return { ...store, totalCount: action.payload }
     case 'ADD_PRODUCT_TO_BASKET': {
-      const currentProductItems = !store.items[action.payload.id]
+      const currentProductItems = !store.items[action.payload._id]
         ? [action.payload]
-        : [...store.items[action.payload.id].items, action.payload]
+        : [...store.items[action.payload._id].items, action.payload]
 
       const newItems = {
         ...store.items,
-        [action.payload.id]: {
+        [action.payload._id]: {
           items: currentProductItems,
           totalPrice: getTotalPrice(currentProductItems),
         },
       }
 
-      const items = Object.values(newItems).map((obj) => obj.items)
-      const allProducts = [].concat.apply([], items)
-      const totalPrice = getTotalPrice(allProducts)
+      const totalCount = getTotalSum(newItems, 'items.length')
+      const totalPrice = getTotalSum(newItems, 'totalPrice')
 
       return {
         ...store,
         items: newItems,
-        totalCount: allProducts.length,
+        totalCount,
         totalPrice,
       }
     }
-    case 'REMOVE_CART_ITEM':
-      // eslint-disable-next-line no-case-declarations
+    case 'REMOVE_CART_ITEM': {
       const newItems = {
         ...store.items,
       }
-      // eslint-disable-next-line no-case-declarations
       const currentTotalPrice = newItems[action.payload].totalPrice
-      // eslint-disable-next-line no-case-declarations
       const currentTotalCount = newItems[action.payload].items.length
       delete newItems[action.payload]
       return {
@@ -53,6 +63,54 @@ const reducer = (store = initialStore, action) => {
         totalPrice: store.totalPrice - currentTotalPrice,
         totalCount: store.totalCount - currentTotalCount,
       }
+    }
+    case 'PLUS_CART_ITEM': {
+      const newObjItems = [
+        ...store.items[action.payload].items,
+        store.items[action.payload].items[0],
+      ]
+      const newItems = {
+        ...store.items,
+        [action.payload]: {
+          items: newObjItems,
+          totalPrice: getTotalPrice(newObjItems),
+        },
+      }
+
+      const totalCount = getTotalSum(newItems, 'items.length')
+      const totalPrice = getTotalSum(newItems, 'totalPrice')
+
+      return {
+        ...store,
+        items: newItems,
+        totalCount,
+        totalPrice,
+      }
+    }
+    case 'MINUS_CART_ITEM': {
+      const oldItems = store.items[action.payload].items
+      const newObjItems =
+        oldItems.length > 1
+          ? store.items[action.payload].items.slice(1)
+          : oldItems
+      const newItems = {
+        ...store.items,
+        [action.payload]: {
+          items: newObjItems,
+          totalPrice: getTotalPrice(newObjItems),
+        },
+      }
+
+      const totalCount = getTotalSum(newItems, 'items.length')
+      const totalPrice = getTotalSum(newItems, 'totalPrice')
+
+      return {
+        ...store,
+        items: newItems,
+        totalCount,
+        totalPrice,
+      }
+    }
     default:
       return store
   }

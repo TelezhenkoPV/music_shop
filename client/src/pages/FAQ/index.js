@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import ReactHtmlParser from 'react-html-parser'
 import { Container } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import parse from 'html-react-parser/index'
+// eslint-disable-next-line
+import style from './style.scss'
 
 const FAQ = () => {
   const [html, setHtml] = useState(null)
-
   const classes = makeStyles((theme) => ({
     div: {
       [theme.breakpoints.down('sm')]: {
@@ -22,6 +23,6 @@ const FAQ = () => {
     })
   })
 
-  return <Container className={classes.div}>{ReactHtmlParser(html)}</Container>
+  return <Container className={classes.div}>{parse(`${html}`)}</Container>
 }
 export default FAQ
