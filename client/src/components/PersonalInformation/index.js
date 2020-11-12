@@ -3,10 +3,12 @@ import { useSelector } from 'react-redux'
 import useStyles from './styles'
 
 import Container from '@material-ui/core/Container'
-import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
-import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemText from '@material-ui/core/ListItemText'
 
 import PersonIcon from '@material-ui/icons/Person'
 import CakeIcon from '@material-ui/icons/Cake'
@@ -15,6 +17,7 @@ import CreditCardIcon from '@material-ui/icons/CreditCard'
 import PhoneIcon from '@material-ui/icons/Phone'
 import EmailOutlinedIcon from '@material-ui/icons/EmailOutlined'
 import WcIcon from '@material-ui/icons/Wc'
+import CheckIcon from '@material-ui/icons/Check'
 
 import { getUserData } from '../../store/user/userSelectors'
 
@@ -34,17 +37,27 @@ export default function PersonalInformation() {
 
   const addresses = addressDelivery.map(({ address, isDefault }, i) => {
     return (
-      <Typography key={address + i} variant="body1" noWrap>
-        {i + 1}. {address} {isDefault && '(default)'}
-      </Typography>
+      <ListItem disableGutters divider>
+        <ListItemText primary={`${i + 1}. ${address}`} />
+        {isDefault && (
+          <ListItemIcon>
+            <CheckIcon className={classes.iconInline} />
+          </ListItemIcon>
+        )}
+      </ListItem>
     )
   })
 
   const creditCards = creditCart.map(({ id, isDefault }, i) => {
     return (
-      <Typography key={id + i} variant="body1" noWrap>
-        {i + 1}. {id} {isDefault && '(default)'}
-      </Typography>
+      <ListItem disableGutters divider>
+        <ListItemText primary={`${i + 1}. ${id}`} />
+        {isDefault && (
+          <ListItemIcon>
+            <CheckIcon className={classes.iconInline} />
+          </ListItemIcon>
+        )}
+      </ListItem>
     )
   })
 
@@ -53,50 +66,76 @@ export default function PersonalInformation() {
       <Container>
         <Grid container spacing={10}>
           <Grid item xs={6}>
-            <Paper className={classes.paper}>
-              <Typography variant="h5">
-                Full Name <PersonIcon />
-              </Typography>
-              <Typography variant="body1" gutterBottom noWrap>
+            <div className={classes.info}>
+              <div className={classes.infoLabel}>
+                <PersonIcon className={classes.iconInline} />
+                <Typography>Full Name</Typography>
+              </div>
+              <Typography className={classes.infoData} noWrap>
                 {lastName} {firstName} {familyName}
               </Typography>
-              <Typography variant="h5">
-                Birthday <CakeIcon />
-              </Typography>
-              <Typography variant="body1" gutterBottom noWrap>
+            </div>
+
+            <div className={classes.info}>
+              <div className={classes.infoLabel}>
+                <CakeIcon className={classes.iconInline} />
+                <Typography>Birthday</Typography>
+              </div>
+              <Typography className={classes.infoData} noWrap>
                 {birthdate}
               </Typography>
-              <Typography variant="h5">
-                Delivary address <LocationOnIcon />
+            </div>
+
+            <div className={classes.info}>
+              <div className={classes.infoLabel}>
+                <LocationOnIcon className={classes.iconInline} />
+                <Typography>Delivary address</Typography>
+              </div>
+              <Typography className={classes.infoData} noWrap>
+                <List>{addresses}</List>
               </Typography>
-              <Box>{addresses}</Box>
-              <Typography variant="h5">
-                Credit Cards <CreditCardIcon />
+            </div>
+
+            <div className={classes.info}>
+              <div className={classes.infoLabel}>
+                <CreditCardIcon className={classes.iconInline} />
+                <Typography>Credit Cards</Typography>
+              </div>
+              <Typography className={classes.infoData} noWrap>
+                <List>{creditCards}</List>
               </Typography>
-              <Box>{creditCards}</Box>
-            </Paper>
+            </div>
           </Grid>
           <Grid item xs={6}>
-            <Paper className={classes.paper}>
-              <Typography variant="h5">
-                Phone <PhoneIcon />
-              </Typography>
-              <Typography variant="body1" gutterBottom noWrap>
+            <div className={classes.info}>
+              <div className={classes.infoLabel}>
+                <PhoneIcon className={classes.iconInline} />
+                <Typography>Phone</Typography>
+              </div>
+              <Typography className={classes.infoData} noWrap>
                 {telephone}
               </Typography>
-              <Typography variant="h5">
-                Email <EmailOutlinedIcon />
-              </Typography>
-              <Typography variant="body1" gutterBottom noWrap>
+            </div>
+
+            <div className={classes.info}>
+              <div className={classes.infoLabel}>
+                <EmailOutlinedIcon className={classes.iconInline} />
+                <Typography>Email</Typography>
+              </div>
+              <Typography className={classes.infoData} noWrap>
                 {email}
               </Typography>
-              <Typography variant="h5">
-                Gender <WcIcon />
-              </Typography>
-              <Typography variant="body1" gutterBottom noWrap>
+            </div>
+
+            <div className={classes.info}>
+              <div className={classes.infoLabel}>
+                <WcIcon className={classes.iconInline} />
+                <Typography>Gender</Typography>
+              </div>
+              <Typography className={classes.infoData} noWrap>
                 {gender}
               </Typography>
-            </Paper>
+            </div>
           </Grid>
         </Grid>
       </Container>
