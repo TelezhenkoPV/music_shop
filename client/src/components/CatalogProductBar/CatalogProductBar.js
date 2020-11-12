@@ -34,8 +34,8 @@ const CatalogProductBar = () => {
     <AppBar
       position="static"
       className={classes.root}
-      style={{ background: '#F0F0FF' }}
-      color={grey[50]}
+      style={{ background: '#F0F0FF', color: 'black' }}
+
     >
       <Toolbar>
         <IconButton

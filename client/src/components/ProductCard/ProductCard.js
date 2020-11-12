@@ -9,6 +9,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import ProductCardSlide from '../ProductCardSlide/ProductCardSlide'
 
+
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: '100%',
@@ -77,7 +78,9 @@ export const ProductCard = (props) => {
           style={{ background: element.color }}
         />
       </div>
+
       <ProductCardSlide data={element.imageUrls} />
+
       <CardContent>
         <div style={{ display: 'flex' }}>
           <Typography variant="h6" style={{ textTransform: 'uppercase' }}>
@@ -100,14 +103,17 @@ export const ProductCard = (props) => {
           >
             В корзину
           </Button>
-          <IconButton aria-label="like" style={{ width: 50 }}>
+
+          <IconButton
+            aria-label="like"
+            style={{ width: 50 }}
+            onClick={handleFavorite}
+          >
             {isFavorite ? (
-              <FavoriteIcon
-                style={{ color: '#C22A2A' }}
-                onClick={handleFavorite}
-              />
+              <FavoriteIcon style={{ color: '#C22A2A' }} />
             ) : (
-              <FavoriteIcon onClick={handleFavorite} />
+              <FavoriteIcon />
+
             )}
           </IconButton>
         </div>

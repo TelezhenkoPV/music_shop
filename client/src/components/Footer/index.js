@@ -34,7 +34,9 @@ const Footer = () => {
               Sound Tower
             </Typography>
             <img alt="company logo" src={logo} className={classes.logo} />
-            <Typography className={classes.logoName} variant="subtitle22">
+            <Typography className={classes.logoName} variant="subtitle2">
+
+
               Музыкальный интернет-гипермаркет
             </Typography>
           </Grid>
@@ -63,19 +65,19 @@ const Footer = () => {
                   {item.title === 'Контакты' ? (
                     <Grid item className={classes.boxLinks}>
                       <RoomIcon
-                        style={{ margin: '2px' }}
+
+                        style={{ margin: '2px', color: '#fff' }}
                         fontSize="small"
-                        color={'white'}
                       />
                       <PhoneIcon
-                        style={{ margin: '2px' }}
+                        style={{ margin: '2px', color: '#fff' }}
                         fontSize="small"
-                        color={'white'}
                       />
                       <MailOutlineIcon
-                        style={{ margin: '2px' }}
+                        style={{ margin: '2px', color: '#fff' }}
                         fontSize="small"
-                        color={'white'}
+
+
                       />
                     </Grid>
                   ) : null}
