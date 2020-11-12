@@ -1,21 +1,31 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { fade, makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({
+  searchWrapper: {
+    display: 'flex',
+    flexGrow: 2,
+  },
   searchBar: {
-    margin: '0 auto',
-    minWidth: 800,
-    [theme.breakpoints.down('md')]: {
-      minWidth: 650,
-      height: 40,
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: fade(theme.palette.common.white, 0.25),
+    '&:hover': {
+      backgroundColor: fade(theme.palette.common.white, 0.35),
     },
-    [theme.breakpoints.down('sm')]: {
-      minWidth: 485,
-      height: 35,
-    },
-    [theme.breakpoints.down('xs')]: {
-      minWidth: 300,
-      height: 30,
-    },
+    marginRight: theme.spacing(2),
+    marginLeft: 0,
+    width: '100%',
+  },
+  input: {
+    color: '#ffffff !important',
+  },
+  iconButton: {
+    color: '#ffffff !important',
+  },
+  clearIcon: {
+    color: '#ffffff',
+  },
+  searchDropDown: {
+    zIndex: '1400!important',
   },
 }))
 
