@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 
 import React, { useEffect, useCallback } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 
 import FormGroup from '@material-ui/core/FormGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
@@ -28,13 +28,16 @@ export default function FilterCategoryCheckbox() {
   const history = useHistory()
   let filtersCategories = useSelector(filtersCategoriesSelector)
   const [minPrice, maxPrice] = useSelector(filterPricesIntervalSelector)
+  const { colors } = useParams()
 
   const getFilteredData = useCallback(
-    (filtersCategories, minPrice, maxPrice, callback) => {
+    (filtersCategories, minPrice, maxPrice, colors, callback) => {
       const linkForProductsInStoreUpdate = createUrlWithManyValues(
         filtersCategories,
         minPrice,
-        maxPrice
+        maxPrice,
+        'http://localhost:5000/api/products/filter?categories',
+        colors
       )
 
       axios(linkForProductsInStoreUpdate)
@@ -51,9 +54,10 @@ export default function FilterCategoryCheckbox() {
       filtersCategories,
       minPrice,
       maxPrice,
+      colors,
       setFilterProductsDataAction
     )
-  }, [dispatch, minPrice, maxPrice, filtersCategories, getFilteredData])
+  }, [dispatch, minPrice, maxPrice, filtersCategories, getFilteredData, colors])
 
   const handleChange = (event) => {
     dispatch(toggleFilterCategoryAction(event.target.name))
@@ -62,6 +66,7 @@ export default function FilterCategoryCheckbox() {
       filtersCategories,
       minPrice,
       maxPrice,
+      colors,
       setFilterProductsDataAction
     )
 

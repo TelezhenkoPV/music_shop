@@ -23,10 +23,14 @@ function PLP() {
   const dispatch = useDispatch()
   const classes = useStyles()
   const filtersData = useSelector(getFiltersDataSelector)
-  const { categoryName, minPrice, maxPrice } = useParams()
+  const { categoryName, minPrice, maxPrice, colors } = useParams()
 
   useEffect(() => {
-    dispatch(getDataForFilterAction(categoryName))
+    if (colors) {
+      dispatch(getDataForFilterAction(categoryName, colors))
+    } else {
+      dispatch(getDataForFilterAction(categoryName))
+    }
     categoryName.split(',').forEach((elem) => {
       dispatch(setFilterParsedCategoriesAction(elem))
     })

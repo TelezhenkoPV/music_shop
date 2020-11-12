@@ -10,8 +10,14 @@ export const createUrlWithManyValues = (
   categoriesArray,
   minPrice = 0,
   maxPrice = 2500,
-  link = 'http://localhost:5000/api/products/filter?categories'
+  link = 'http://localhost:5000/api/products/filter?categories',
+  colors = null
 ) => {
+  if (colors !== null) {
+    return `${link}=${categoriesArray.join(
+      ','
+    )}&minPrice=${minPrice}&maxPrice=${maxPrice}&color=${colors}`
+  }
   return `${link}=${categoriesArray.join(
     ','
   )}&minPrice=${minPrice}&maxPrice=${maxPrice}`
