@@ -28,8 +28,6 @@ export default function FilterPriceSlider() {
   const history = useHistory()
 
   const handleChange = (event, newValue) => {
-    dispatch(setFilterPriceIntervalAction(newValue))
-
     createPathnameFromFiltersData(
       history,
       categoriesName,
@@ -37,6 +35,7 @@ export default function FilterPriceSlider() {
       newValue[0],
       newValue[1]
     )
+    dispatch(setFilterPriceIntervalAction(newValue))
   }
 
   return (
@@ -48,7 +47,7 @@ export default function FilterPriceSlider() {
         min={0}
         max={1500}
         value={pricesInterval}
-        onChange={handleChange}
+        onChangeCommitted={handleChange}
         valueLabelDisplay="auto"
         step={10}
         aria-labelledby="range-slider"

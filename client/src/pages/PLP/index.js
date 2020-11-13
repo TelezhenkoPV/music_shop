@@ -11,13 +11,14 @@ import {
   setFilterPriceIntervalAction,
   getDataForFilterAction,
 } from '../../store/filters/filtersAction'
-import { ProductCard } from '../../components/ProductCard/ProductCard'
+// import { ProductCard } from '../../components/ProductCard/ProductCard'
 import CatalogProductBar from '../../components/CatalogProductBar/CatalogProductBar'
 import FilterCategoryCheckbox from '../../components/Filter/FilterCategoryCheckbox'
 import FilterPriceSlider from '../../components/Filter/FilterPriceSlider'
 import { getFiltersDataSelector } from '../../store/filters/filtersSelectors'
 import { addProductToBasket } from '../../store/basket/basketAction'
 import FilterColorsCheckbox from '../../components/Filter/FilterColorsCheckbox'
+import ProductsScroll from '../../components/InfiniteProductsScroll'
 
 function PLP() {
   const dispatch = useDispatch()
@@ -65,14 +66,9 @@ function PLP() {
           <div className={classes.productBlock}>
             <Typography variant={'body2'} style={{ padding: 10 }} />
             <CatalogProductBar />
-            {filtersData.products &&
-              filtersData.products.map((e) => (
-                <ProductCard
-                  key={e._id}
-                  element={e}
-                  onClickAddProduct={handleAddProductToBasket}
-                />
-              ))}
+            {filtersData.products && (
+              <ProductsScroll onClickAddProduct={handleAddProductToBasket} />
+            )}
           </div>
         </Grid>
       </div>

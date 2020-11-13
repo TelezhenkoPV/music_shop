@@ -20,7 +20,6 @@ export const getDataForFilterAction = (categories, colors = null) => (
   } else {
     link = `http://localhost:5000/api/products/filter?categories=${categories}`
   }
-  console.log(link)
   axios(link).then((res) => {
     dispatch({ type: FILTERS_GET_DATA, payload: res.data })
     // dispatch({ type: LOADING_DATA, payload: false })
