@@ -7,7 +7,6 @@ import IconButton from '@material-ui/core/IconButton'
 import TocIcon from '@material-ui/icons/Toc'
 import GridOnIcon from '@material-ui/icons/GridOn'
 import Select from '@material-ui/core/Select'
-import { grey } from '@material-ui/core/colors'
 import MenuItem from '@material-ui/core/MenuItem'
 
 const useStyles = makeStyles((theme) => ({
@@ -35,7 +34,6 @@ const CatalogProductBar = () => {
       position="static"
       className={classes.root}
       style={{ background: '#F0F0FF', color: 'black' }}
-
     >
       <Toolbar>
         <IconButton
