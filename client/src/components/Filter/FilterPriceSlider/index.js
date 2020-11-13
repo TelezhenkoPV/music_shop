@@ -12,6 +12,7 @@ import {
   filterPricesIntervalSelector,
   filtersCategoriesSelector,
 } from '../../../store/filters/filtersSelectors'
+import { createPathnameFromFiltersData } from '../utils'
 
 function valuetext(value) {
   return `${value}$`
@@ -21,31 +22,20 @@ export default function FilterPriceSlider() {
   const classes = useStyles()
   const dispatch = useDispatch()
   const pricesInterval = useSelector(filterPricesIntervalSelector)
-  let categoriesName = useSelector(filtersCategoriesSelector)
+  const categoriesName = useSelector(filtersCategoriesSelector)
   const filtersColors = useSelector(filterColorsSelector)
   const [minPrice, maxPrice] = pricesInterval
   const history = useHistory()
 
   const handleChange = (event, newValue) => {
+    createPathnameFromFiltersData(
+      history,
+      categoriesName,
+      filtersColors,
+      newValue[0],
+      newValue[1]
+    )
     dispatch(setFilterPriceIntervalAction(newValue))
-
-    if (categoriesName.length === 0) {
-      categoriesName = ['emptyCategory']
-    }
-
-    const categoriesPath = categoriesName.join(',')
-
-    if (filtersColors.length > 0) {
-      const colorsPath = filtersColors.join(',')
-
-      history.push({
-        pathname: `/products/${categoriesPath}&minPrice=${newValue[0]}&maxPrice=${newValue[1]}&color=${colorsPath}`,
-      })
-    } else {
-      history.push({
-        pathname: `/products/${categoriesPath}&minPrice=${newValue[0]}&maxPrice=${newValue[1]}`,
-      })
-    }
   }
 
   return (
@@ -57,7 +47,7 @@ export default function FilterPriceSlider() {
         min={0}
         max={1500}
         value={pricesInterval}
-        onChange={handleChange}
+        onChangeCommitted={handleChange}
         valueLabelDisplay="auto"
         step={10}
         aria-labelledby="range-slider"

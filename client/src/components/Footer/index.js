@@ -35,8 +35,6 @@ const Footer = () => {
             </Typography>
             <img alt="company logo" src={logo} className={classes.logo} />
             <Typography className={classes.logoName} variant="subtitle2">
-
-
               Музыкальный интернет-гипермаркет
             </Typography>
           </Grid>
@@ -65,7 +63,6 @@ const Footer = () => {
                   {item.title === 'Контакты' ? (
                     <Grid item className={classes.boxLinks}>
                       <RoomIcon
-
                         style={{ margin: '2px', color: '#fff' }}
                         fontSize="small"
                       />
@@ -76,8 +73,6 @@ const Footer = () => {
                       <MailOutlineIcon
                         style={{ margin: '2px', color: '#fff' }}
                         fontSize="small"
-
-
                       />
                     </Grid>
                   ) : null}

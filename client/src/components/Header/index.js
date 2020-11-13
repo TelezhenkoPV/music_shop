@@ -42,7 +42,10 @@ import { signOut } from '../../store/user/userActions'
 import { openModal } from '../../store/modal/modalAction'
 import { getIsAuthenticated, getUserData } from '../../store/user/userSelectors'
 
-import { setFilterCategoryAction } from '../../store/filters/filtersAction'
+import {
+  clearFilterColors,
+  setFilterCategoryAction,
+} from '../../store/filters/filtersAction'
 
 import SearchBar from '../SearchBar'
 import Login from '../Login'
@@ -55,8 +58,12 @@ export default function Header() {
   const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent)
   const [openDrawer, setOpenDrawer] = useState(false)
   const [searchPopperOpen, setSearchPopperOpen] = useState(false)
+
   const handleChangeCategoryTab = (event, newValue) => {
     setValue(newValue)
+
+    // clear earlier selected colors in filters
+    dispatch(clearFilterColors())
 
     dispatch(setFilterCategoryAction(tabLinks[newValue].name))
   }
