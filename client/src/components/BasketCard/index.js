@@ -4,7 +4,6 @@ import { makeStyles, withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Radio from '@material-ui/core/Radio'
 import IconButton from '@material-ui/core/IconButton'
-import guitar_img from '../../assets/guitar_img.png'
 import ClearIcon from '@material-ui/icons/Clear'
 import Container from '@material-ui/core/Container'
 import AddIcon from '@material-ui/icons/Add'
@@ -20,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   card_content: {
     border: '1px solid black',
     boxSizing: 'border-box',
-    padding: '20px 60px',
+    padding: '20px 40px',
     width: '100%',
     display: 'flex',
     alignItems: 'center',
@@ -33,7 +32,6 @@ const useStyles = makeStyles((theme) => ({
   },
   count_buttons: {
     display: 'flex',
-    // justifyContent: 'center',
     alignItems: 'center',
   },
 }))
@@ -109,10 +107,12 @@ const BasketCard = (props) => {
         </IconButton>
         <Grid className={classes.card_content} container direction="row">
           <Grid item xs={2}>
-            <img src={guitar_img} alt="img" />
+            <img style={{ height: 120 }} src={`/${img[0]}`} alt="img" />
           </Grid>
           <Grid item xs={3}>
-            <Typography variant="h5">{name}</Typography>
+            <Typography style={{ textTransform: 'uppercase' }} variant="h6">
+              {name}
+            </Typography>
           </Grid>
           <Grid item xs>
             <Box className={classes.card_radio}>

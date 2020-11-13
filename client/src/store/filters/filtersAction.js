@@ -7,6 +7,7 @@ import {
   FILTER_SET_PRICE_INTERVAL,
   FILTERS_SET_PARSED_CATEGORIES,
   FILTERS_TOGGLE_COLOR,
+  FILTERS_CLEAR_COLORS,
 } from '../actionTypes'
 
 export const getDataForFilterAction = (categories, colors = null) => (
@@ -19,7 +20,6 @@ export const getDataForFilterAction = (categories, colors = null) => (
   } else {
     link = `http://localhost:5000/api/products/filter?categories=${categories}`
   }
-  console.log(link)
   axios(link).then((res) => {
     dispatch({ type: FILTERS_GET_DATA, payload: res.data })
     // dispatch({ type: LOADING_DATA, payload: false })
@@ -49,4 +49,8 @@ export const setFilterParsedCategoriesAction = (newCategories) => (
   dispatch
 ) => {
   dispatch({ type: FILTERS_SET_PARSED_CATEGORIES, payload: newCategories })
+}
+
+export const clearFilterColors = () => (dispatch) => {
+  dispatch({ type: FILTERS_CLEAR_COLORS })
 }

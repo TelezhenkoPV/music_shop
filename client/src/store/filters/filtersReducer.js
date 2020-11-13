@@ -7,6 +7,7 @@ import {
   FILTER_SET_PRICE_INTERVAL,
   FILTERS_SET_PARSED_CATEGORIES,
   FILTERS_TOGGLE_COLOR,
+  FILTERS_CLEAR_COLORS,
 } from '../actionTypes'
 
 const initialStore = {
@@ -64,6 +65,8 @@ const reducer = (store = initialStore, action) => {
         ...store,
         data: action.payload,
       }
+    case FILTERS_CLEAR_COLORS:
+      return { ...store, colors: [] }
     default:
       return store
   }

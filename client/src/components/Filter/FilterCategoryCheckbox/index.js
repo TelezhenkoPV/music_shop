@@ -16,17 +16,20 @@ import {
   setFilterProductsDataAction,
 } from '../../../store/filters/filtersAction'
 import {
+  filterColorsSelector,
   filterPricesIntervalSelector,
   filtersCategoriesSelector,
 } from '../../../store/filters/filtersSelectors'
 import { createUrlWithManyValues } from '../../../func'
 import FormLabel from '@material-ui/core/FormLabel'
+import { createPathnameFromFiltersData } from '../utils'
 
 export default function FilterCategoryCheckbox() {
   const classes = useStyles()
   const dispatch = useDispatch()
   const history = useHistory()
-  let filtersCategories = useSelector(filtersCategoriesSelector)
+  const filtersCategories = useSelector(filtersCategoriesSelector)
+  const filtersColors = useSelector(filterColorsSelector)
   const [minPrice, maxPrice] = useSelector(filterPricesIntervalSelector)
   const { colors } = useParams()
 
@@ -70,15 +73,13 @@ export default function FilterCategoryCheckbox() {
       setFilterProductsDataAction
     )
 
-    if (filtersCategories.length === 0) {
-      filtersCategories = ['emptyCategory']
-    }
-
-    const categoriesPath = filtersCategories.join(',')
-
-    history.push({
-      pathname: `/products/${categoriesPath}&minPrice=${minPrice}&maxPrice=${maxPrice}`,
-    })
+    createPathnameFromFiltersData(
+      history,
+      filtersCategories,
+      filtersColors,
+      minPrice,
+      maxPrice
+    )
   }
 
   return (
@@ -89,9 +90,9 @@ export default function FilterCategoryCheckbox() {
       <FormControlLabel
         control={
           <Checkbox
-            checked={filtersCategories.includes('guitar')}
             icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
             checkedIcon={<CheckBoxIcon fontSize="small" />}
+            checked={filtersCategories.includes('guitar')}
             onChange={handleChange}
             name="guitar"
           />
@@ -101,10 +102,10 @@ export default function FilterCategoryCheckbox() {
       <FormControlLabel
         control={
           <Checkbox
-            checked={filtersCategories.includes('booster')}
-            onChange={handleChange}
             icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
             checkedIcon={<CheckBoxIcon fontSize="small" />}
+            checked={filtersCategories.includes('booster')}
+            onChange={handleChange}
             name="booster"
           />
         }
@@ -113,10 +114,10 @@ export default function FilterCategoryCheckbox() {
       <FormControlLabel
         control={
           <Checkbox
-            onChange={handleChange}
             icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
             checkedIcon={<CheckBoxIcon fontSize="small" />}
             checked={filtersCategories.includes('percussion')}
+            onChange={handleChange}
             name="percussion"
           />
         }
@@ -125,9 +126,9 @@ export default function FilterCategoryCheckbox() {
       <FormControlLabel
         control={
           <Checkbox
-            checked={filtersCategories.includes('bass')}
             icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
             checkedIcon={<CheckBoxIcon fontSize="small" />}
+            checked={filtersCategories.includes('bass')}
             onChange={handleChange}
             name="bass"
           />
@@ -151,9 +152,9 @@ export default function FilterCategoryCheckbox() {
           <Checkbox
             icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
             checkedIcon={<CheckBoxIcon fontSize="small" />}
-            name="accessories"
             checked={filtersCategories.includes('accessories')}
             onChange={handleChange}
+            name="accessories"
           />
         }
         label="Аксессуары"
