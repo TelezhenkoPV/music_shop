@@ -75,6 +75,7 @@ function PLP() {
             style={{ padding: 10 }}
             align="center"
           ></Typography>
+
           <Typography variant={'body2'} style={{ padding: 10 }} align="center">
             {' '}
           </Typography>
@@ -87,7 +88,9 @@ function PLP() {
             </Paper>
           </div>
           <div className={classes.productBlock}>
+
             <Typography variant={'body2'} style={{ padding: 10 }}></Typography>
+
             <CatalogProductBar />
             {filtersData.products &&
               filtersData.products.map((e) => (
