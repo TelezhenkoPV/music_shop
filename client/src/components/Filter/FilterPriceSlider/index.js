@@ -1,26 +1,16 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
+import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
+
 import Typography from '@material-ui/core/Typography'
 import Slider from '@material-ui/core/Slider'
-import { useDispatch, useSelector } from 'react-redux'
+import { useStyles } from './styles'
+
 import { setFilterPriceIntervalAction } from '../../../store/filters/filtersAction'
 import {
   filterPricesIntervalSelector,
   filtersCategoriesSelector,
 } from '../../../store/filters/filtersSelectors'
-import { useHistory } from 'react-router-dom'
-
-const useStyles = makeStyles({
-  root: {
-    width: 300,
-    height: 200,
-    paddingLeft: 5,
-    paddingTop: 50,
-  },
-  text: {
-    textAlign: 'center',
-  },
-})
 
 function valuetext(value) {
   return `${value}$`
