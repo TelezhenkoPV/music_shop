@@ -7,6 +7,7 @@ import {
   FILTER_SET_PRICE_INTERVAL,
   FILTERS_SET_PARSED_CATEGORIES,
   FILTERS_TOGGLE_COLOR,
+  FILTERS_CLEAR_COLORS,
 } from '../actionTypes'
 
 export const getDataForFilterAction = (categories, colors = null) => (
@@ -49,4 +50,8 @@ export const setFilterParsedCategoriesAction = (newCategories) => (
   dispatch
 ) => {
   dispatch({ type: FILTERS_SET_PARSED_CATEGORIES, payload: newCategories })
+}
+
+export const clearFilterColors = () => (dispatch) => {
+  dispatch({ type: FILTERS_CLEAR_COLORS })
 }

@@ -50,7 +50,6 @@ function PLP() {
       <div className={classes.root}>
         <div className={classes.pageHeader}>
           <Typography variant={'h4'} style={{ padding: 10 }} align="center" />
-          >>>>>>>>> Temporary merge branch 2
           <Typography variant={'body2'} style={{ padding: 10 }} align="center">
             {' '}
           </Typography>
@@ -65,7 +64,6 @@ function PLP() {
           </div>
           <div className={classes.productBlock}>
             <Typography variant={'body2'} style={{ padding: 10 }} />
-            >>>>>>>>> Temporary merge branch 2
             <CatalogProductBar />
             {filtersData.products &&
               filtersData.products.map((e) => (

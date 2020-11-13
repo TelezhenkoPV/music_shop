@@ -18,12 +18,13 @@ import {
   filterColorsSelector,
 } from '../../../store/filters/filtersSelectors'
 import { toggleFilterColorAction } from '../../../store/filters/filtersAction'
+import { createPathnameFromFiltersData } from '../utils'
 
 export default function FilterColorsCheckbox() {
   const classes = useStyles()
   const history = useHistory()
   const dispatch = useDispatch()
-  let filtersCategories = useSelector(filtersCategoriesSelector)
+  const filtersCategories = useSelector(filtersCategoriesSelector)
   const filtersColors = useSelector(filterColorsSelector)
   const [minPrice, maxPrice] = useSelector(filterPricesIntervalSelector)
 
@@ -39,23 +40,13 @@ export default function FilterColorsCheckbox() {
   const handleChange = (event) => {
     dispatch(toggleFilterColorAction(event.target.name))
 
-    if (filtersCategories.length === 0) {
-      filtersCategories = ['emptyCategory']
-    }
-
-    const categoriesPath = filtersCategories.join(',')
-
-    if (filtersColors.length > 0) {
-      const colorsPath = filtersColors.join(',')
-
-      history.push({
-        pathname: `/products/${categoriesPath}&minPrice=${minPrice}&maxPrice=${maxPrice}&color=${colorsPath}`,
-      })
-    } else {
-      history.push({
-        pathname: `/products/${categoriesPath}&minPrice=${minPrice}&maxPrice=${maxPrice}`,
-      })
-    }
+    createPathnameFromFiltersData(
+      history,
+      filtersCategories,
+      filtersColors,
+      minPrice,
+      maxPrice
+    )
   }
 
   const list = colors.map((elem) => (
