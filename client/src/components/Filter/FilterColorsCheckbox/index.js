@@ -23,7 +23,7 @@ export default function FilterColorsCheckbox() {
   const classes = useStyles()
   const history = useHistory()
   const dispatch = useDispatch()
-  const filtersCategories = useSelector(filtersCategoriesSelector)
+  let filtersCategories = useSelector(filtersCategoriesSelector)
   const filtersColors = useSelector(filterColorsSelector)
   const [minPrice, maxPrice] = useSelector(filterPricesIntervalSelector)
 
@@ -38,6 +38,10 @@ export default function FilterColorsCheckbox() {
 
   const handleChange = (event) => {
     dispatch(toggleFilterColorAction(event.target.name))
+
+    if (filtersCategories.length === 0) {
+      filtersCategories = ['emptyCategory']
+    }
 
     const categoriesPath = filtersCategories.join(',')
 
@@ -59,6 +63,7 @@ export default function FilterColorsCheckbox() {
       key={elem._id}
       control={
         <Checkbox
+          checked={filtersColors.includes(elem.name)}
           icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
           checkedIcon={<CheckBoxIcon fontSize="small" />}
           onChange={handleChange}
