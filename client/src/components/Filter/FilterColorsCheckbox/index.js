@@ -18,6 +18,7 @@ import {
   filterColorsSelector,
 } from '../../../store/filters/filtersSelectors'
 import { toggleFilterColorAction } from '../../../store/filters/filtersAction'
+import { createPathnameFromFiltersData } from '../utils'
 
 export default function FilterColorsCheckbox() {
   const classes = useStyles()
@@ -39,19 +40,13 @@ export default function FilterColorsCheckbox() {
   const handleChange = (event) => {
     dispatch(toggleFilterColorAction(event.target.name))
 
-    const categoriesPath = filtersCategories.join(',')
-
-    if (filtersColors.length > 0) {
-      const colorsPath = filtersColors.join(',')
-
-      history.push({
-        pathname: `/products/${categoriesPath}&minPrice=${minPrice}&maxPrice=${maxPrice}&color=${colorsPath}`,
-      })
-    } else {
-      history.push({
-        pathname: `/products/${categoriesPath}&minPrice=${minPrice}&maxPrice=${maxPrice}`,
-      })
-    }
+    createPathnameFromFiltersData(
+      history,
+      filtersCategories,
+      filtersColors,
+      minPrice,
+      maxPrice
+    )
   }
 
   const list = colors.map((elem) => (
@@ -59,6 +54,7 @@ export default function FilterColorsCheckbox() {
       key={elem._id}
       control={
         <Checkbox
+          checked={filtersColors.includes(elem.name)}
           icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
           checkedIcon={<CheckBoxIcon fontSize="small" />}
           onChange={handleChange}
