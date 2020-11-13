@@ -12,13 +12,20 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     borderBottom: '1px solid black',
     color: 'black',
+  },
+  infoLabelText: {
     fontWeight: 'bold',
   },
   infoData: {
+    margin: theme.spacing(1, 2, 0),
     fontWeight: 'normal',
   },
   iconInline: {
     margin: theme.spacing(0, 2),
+  },
+  actions: {
+    display: 'flex',
+    justifyContent: 'flex-end',
   },
 }))
 
