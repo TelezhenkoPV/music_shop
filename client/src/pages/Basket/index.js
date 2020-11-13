@@ -132,6 +132,7 @@ function Basket() {
       {addedProducts.map((elem) => (
         <BasketCard
           key={elem._id}
+          img={elem.imageUrls}
           id={elem._id}
           name={elem.name}
           price={elem.currentPrice}
