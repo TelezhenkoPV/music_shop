@@ -16,6 +16,7 @@ import {
   setFilterProductsDataAction,
 } from '../../../store/filters/filtersAction'
 import {
+  filterColorsSelector,
   filterPricesIntervalSelector,
   filtersCategoriesSelector,
 } from '../../../store/filters/filtersSelectors'
@@ -27,6 +28,7 @@ export default function FilterCategoryCheckbox() {
   const dispatch = useDispatch()
   const history = useHistory()
   let filtersCategories = useSelector(filtersCategoriesSelector)
+  const filtersColors = useSelector(filterColorsSelector)
   const [minPrice, maxPrice] = useSelector(filterPricesIntervalSelector)
   const { colors } = useParams()
 
@@ -76,9 +78,17 @@ export default function FilterCategoryCheckbox() {
 
     const categoriesPath = filtersCategories.join(',')
 
-    history.push({
-      pathname: `/products/${categoriesPath}&minPrice=${minPrice}&maxPrice=${maxPrice}`,
-    })
+    if (filtersColors.length > 0) {
+      const colorsPath = filtersColors.join(',')
+
+      history.push({
+        pathname: `/products/${categoriesPath}&minPrice=${minPrice}&maxPrice=${maxPrice}&color=${colorsPath}`,
+      })
+    } else {
+      history.push({
+        pathname: `/products/${categoriesPath}&minPrice=${minPrice}&maxPrice=${maxPrice}`,
+      })
+    }
   }
 
   return (
