@@ -16,20 +16,23 @@ import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import Radio from '@material-ui/core/Radio'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
+import InputAdornment from '@material-ui/core/InputAdornment'
+import Tooltip from '@material-ui/core/Tooltip'
 
 import Typography from '@material-ui/core/Typography'
 
 import PersonIcon from '@material-ui/icons/Person'
 import CakeIcon from '@material-ui/icons/Cake'
 import LocationOnIcon from '@material-ui/icons/LocationOn'
-// import CreditCardIcon from '@material-ui/icons/CreditCard'
+import CreditCardIcon from '@material-ui/icons/CreditCard'
 import PhoneIcon from '@material-ui/icons/Phone'
 import EmailOutlinedIcon from '@material-ui/icons/EmailOutlined'
 import WcIcon from '@material-ui/icons/Wc'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
 import AddIcon from '@material-ui/icons/Add'
 import AddLocationIcon from '@material-ui/icons/AddLocation'
-import CheckIcon from '@material-ui/icons/Check'
+import RadioButtonUncheckedRoundedIcon from '@material-ui/icons/RadioButtonUncheckedRounded'
+import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined'
 
 import { toogleProfileEdit, update } from '../../store/user/userActions'
 
@@ -83,7 +86,7 @@ export default function EditPersonalInformation({
     email,
     telephone,
     addressDelivery = [],
-    creditCart = [],
+    creditCard = [],
   },
 }) {
   const classes = useStyles()
@@ -98,7 +101,7 @@ export default function EditPersonalInformation({
     email,
     telephone,
     addressDelivery,
-    creditCart,
+    creditCard,
   }
 
   const [submit, setSubmit] = useState({ isSubmitting: false })
@@ -118,10 +121,30 @@ export default function EditPersonalInformation({
   }, [isUpdateSuccessful, isUpdateProceed, updateError, submit, dispatch])
 
   const handleSubmit = (values, { setSubmitting, setErrors }) => {
-    // const sigUpData = (({ confirmPassword, ...rest }) => rest)(values)
-    // dispatch(signUp(sigUpData))
     dispatch(update(values))
     setSubmit({ isSubmitting: true, setSubmitting, setErrors })
+  }
+
+  const handleClickDefaultAddress = (setFieldValue, addresses, index) => {
+    setFieldValue(
+      'addressDelivery',
+      addresses.map((address, i) =>
+        i === index
+          ? { ...address, isDefault: true }
+          : { ...address, isDefault: false }
+      )
+    )
+  }
+
+  const handleClickDefaultCreditCard = (setFieldValue, cards, index) => {
+    setFieldValue(
+      'creditCard',
+      cards.map((card, i) =>
+        i === index
+          ? { ...card, isDefault: true }
+          : { ...card, isDefault: false }
+      )
+    )
   }
 
   return (
@@ -132,7 +155,7 @@ export default function EditPersonalInformation({
           validationSchema={UpdateSchema}
           onSubmit={handleSubmit}
         >
-          {({ values, submitForm, isValid, isSubmitting }) => (
+          {({ values, submitForm, isValid, isSubmitting, setFieldValue }) => (
             <Form className={classes.form}>
               <Grid container spacing={2}>
                 <Grid item xs={12} md={6}>
@@ -337,46 +360,204 @@ export default function EditPersonalInformation({
                       name="addressDelivery"
                       render={(arrayHelpers) => (
                         <div>
-                          {values.addressDelivery.map((address, index) => (
-                            <div key={index} className={classes.listItem}>
-                              <Field
-                                component={TextField}
-                                classes={{ root: classes.textField }}
-                                variant="outlined"
-                                margin="dense"
-                                size="small"
-                                fullWidth
-                                id={`addressDelivery.${index}.address`}
-                                name={`addressDelivery.${index}.address`}
-                                autoComplete="street-address"
-                                disabled={isSubmitting}
-                                FormHelperTextProps={{
-                                  className: classes.helperText,
-                                }}
-                              />
-                              {address.isDefault && (
-                                <CheckIcon className={classes.iconInline} />
-                              )}
+                          {values.addressDelivery &&
+                          values.addressDelivery.length > 0
+                            ? values.addressDelivery.map((address, index) => (
+                                <div key={index} className={classes.listItem}>
+                                  <Field
+                                    component={TextField}
+                                    classes={{ root: classes.textField }}
+                                    variant="outlined"
+                                    margin="dense"
+                                    size="small"
+                                    fullWidth
+                                    id={`addressDelivery.${index}.address`}
+                                    name={`addressDelivery.${index}.address`}
+                                    autoComplete="street-address"
+                                    disabled={isSubmitting}
+                                    FormHelperTextProps={{
+                                      className: classes.helperText,
+                                    }}
+                                    InputProps={{
+                                      endAdornment: (
+                                        <InputAdornment position="end">
+                                          <Tooltip
+                                            title="Set default address"
+                                            arrow
+                                          >
+                                            <IconButton
+                                              onClick={() =>
+                                                handleClickDefaultAddress(
+                                                  setFieldValue,
+                                                  values.addressDelivery,
+                                                  index
+                                                )
+                                              }
+                                            >
+                                              {address.isDefault ? (
+                                                <CheckCircleOutlineOutlinedIcon
+                                                  className={
+                                                    classes.iconChecked
+                                                  }
+                                                />
+                                              ) : (
+                                                <RadioButtonUncheckedRoundedIcon
+                                                  className={classes.iconInline}
+                                                />
+                                              )}
+                                            </IconButton>
+                                          </Tooltip>
+                                        </InputAdornment>
+                                      ),
+                                    }}
+                                  />
+                                  <Tooltip title="Remove address" arrow>
+                                    <IconButton
+                                      className={classes.iconInline}
+                                      onClick={() => arrayHelpers.remove(index)}
+                                    >
+                                      <DeleteForeverIcon />
+                                    </IconButton>
+                                  </Tooltip>
+                                </div>
+                              ))
+                            : null}
+                          <Typography className={classes.listItem}>
+                            Add one more address
+                            <Tooltip title="Add address" arrow>
                               <IconButton
                                 className={classes.iconInline}
-                                onClick={() => arrayHelpers.remove(index)}
+                                onClick={() => arrayHelpers.push('')}
                               >
-                                <DeleteForeverIcon />
+                                <AddLocationIcon />
                               </IconButton>
-                            </div>
-                          ))}
-                          <IconButton
-                            className={classes.iconInline}
-                            onClick={() => arrayHelpers.push('')}
-                          >
-                            <AddLocationIcon />
-                          </IconButton>
-                          <IconButton
-                            className={classes.iconInline}
-                            onClick={() => arrayHelpers.push('')}
-                          >
-                            <AddIcon />
-                          </IconButton>
+                            </Tooltip>
+                          </Typography>
+                        </div>
+                      )}
+                    />
+                  </div>
+
+                  <div className={classes.info}>
+                    <div className={classes.infoLabel}>
+                      <CreditCardIcon />
+                      <Typography className={classes.infoLabelText}>
+                        Credit Cards
+                      </Typography>
+                    </div>
+                    <FieldArray
+                      name="creditCard"
+                      render={(arrayHelpers) => (
+                        <div>
+                          {values.creditCard && values.creditCard.length > 0
+                            ? values.creditCard.map((card, index) => (
+                                <div key={index} className={classes.listItem}>
+                                  <div>
+                                    <Field
+                                      component={TextField}
+                                      classes={{ root: classes.textField }}
+                                      variant="outlined"
+                                      margin="dense"
+                                      size="small"
+                                      fullWidth
+                                      id={`creditCard.${index}.cardNumber`}
+                                      name={`creditCard.${index}.cardNumber`}
+                                      autoComplete="cc-number"
+                                      disabled={isSubmitting}
+                                      placeholder="XXXX-XXXX-XXXX-XXXX"
+                                      FormHelperTextProps={{
+                                        className: classes.helperText,
+                                      }}
+                                      InputProps={{
+                                        endAdornment: (
+                                          <InputAdornment position="end">
+                                            <Tooltip
+                                              title="Set default credit card"
+                                              arrow
+                                            >
+                                              <IconButton
+                                                onClick={() =>
+                                                  handleClickDefaultCreditCard(
+                                                    setFieldValue,
+                                                    values.creditCard,
+                                                    index
+                                                  )
+                                                }
+                                              >
+                                                {card.isDefault ? (
+                                                  <CheckCircleOutlineOutlinedIcon
+                                                    className={
+                                                      classes.iconChecked
+                                                    }
+                                                  />
+                                                ) : (
+                                                  <RadioButtonUncheckedRoundedIcon
+                                                    className={
+                                                      classes.iconInline
+                                                    }
+                                                  />
+                                                )}
+                                              </IconButton>
+                                            </Tooltip>
+                                          </InputAdornment>
+                                        ),
+                                      }}
+                                    />
+                                    <div className={classes.listItem}>
+                                      <Field
+                                        component={TextField}
+                                        classes={{ root: classes.textField }}
+                                        variant="outlined"
+                                        margin="dense"
+                                        size="small"
+                                        id={`creditCard.${index}.expiryDate`}
+                                        name={`creditCard.${index}.expiryDate`}
+                                        autoComplete="cc-number"
+                                        disabled={isSubmitting}
+                                        placeholder="MM/YY"
+                                        FormHelperTextProps={{
+                                          className: classes.helperText,
+                                        }}
+                                      />
+                                      <Field
+                                        component={TextField}
+                                        classes={{ root: classes.textField }}
+                                        variant="outlined"
+                                        margin="dense"
+                                        size="small"
+                                        id={`creditCard.${index}.cvc`}
+                                        name={`creditCard.${index}.cvc`}
+                                        autoComplete="cc-number"
+                                        disabled={isSubmitting}
+                                        placeholder="XXX or XXXX"
+                                        FormHelperTextProps={{
+                                          className: classes.helperText,
+                                        }}
+                                      />
+                                    </div>
+                                  </div>
+                                  <Tooltip title="Remove credit card" arrow>
+                                    <IconButton
+                                      className={classes.iconInline}
+                                      onClick={() => arrayHelpers.remove(index)}
+                                    >
+                                      <DeleteForeverIcon />
+                                    </IconButton>
+                                  </Tooltip>
+                                </div>
+                              ))
+                            : null}
+                          <Typography className={classes.listItem}>
+                            Add one more credit card
+                            <Tooltip title="Add credit card" arrow>
+                              <IconButton
+                                className={classes.iconInline}
+                                onClick={() => arrayHelpers.push('')}
+                              >
+                                <AddIcon />
+                              </IconButton>
+                            </Tooltip>
+                          </Typography>
                         </div>
                       )}
                     />

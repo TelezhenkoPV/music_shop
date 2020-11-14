@@ -4,7 +4,7 @@ const useStyles = makeStyles((theme) => ({
   info: {
     marginBottom: theme.spacing(4),
     fontSize: '14px',
-    width: 'fit-content',
+    // width: 'fit-content',
   },
   infoLabel: {
     display: 'flex',

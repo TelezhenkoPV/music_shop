@@ -34,7 +34,7 @@ export default function ViewPersonalInformation({ data }) {
     email,
     telephone,
     addressDelivery,
-    creditCart,
+    creditCard,
   } = data
 
   const handleClickEdit = () => {
@@ -42,31 +42,37 @@ export default function ViewPersonalInformation({ data }) {
     dispatch(toogleProfileEdit(true))
   }
 
-  const addresses = addressDelivery.map(({ address, isDefault }, i) => {
-    return (
-      <ListItem key={address + i} dense disableGutters divider>
-        <ListItemText primary={`${address}`} />
-        {isDefault && (
-          <ListItemIcon>
-            <CheckIcon className={classes.iconInline} />
-          </ListItemIcon>
-        )}
-      </ListItem>
-    )
-  })
+  const addresses =
+    addressDelivery && addressDelivery.length > 0
+      ? addressDelivery.map(({ address, isDefault }, i) => {
+          return (
+            <ListItem key={address + i} dense disableGutters divider>
+              <ListItemText primary={`${address}`} />
+              {isDefault && (
+                <ListItemIcon>
+                  <CheckIcon className={classes.iconInline} />
+                </ListItemIcon>
+              )}
+            </ListItem>
+          )
+        })
+      : null
 
-  const creditCards = creditCart.map(({ id, isDefault }, i) => {
-    return (
-      <ListItem key={id + i} dense disableGutters divider>
-        <ListItemText primary={`${id}`} />
-        {isDefault && (
-          <ListItemIcon>
-            <CheckIcon className={classes.iconInline} />
-          </ListItemIcon>
-        )}
-      </ListItem>
-    )
-  })
+  const creditCards =
+    creditCard && creditCard.length > 0
+      ? creditCard.map(({ cardNumber, isDefault }, i) => {
+          return (
+            <ListItem key={cardNumber + i} dense disableGutters divider>
+              <ListItemText primary={`${cardNumber}`} />
+              {isDefault && (
+                <ListItemIcon>
+                  <CheckIcon className={classes.iconInline} />
+                </ListItemIcon>
+              )}
+            </ListItem>
+          )
+        })
+      : null
 
   return (
     <>

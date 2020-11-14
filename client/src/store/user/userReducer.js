@@ -78,8 +78,7 @@ const reducer = (store = initialStore, action) => {
     // Разлогинивание пользователя
     case SIGNOUT:
       return {
-        ...store,
-        token: null,
+        ...initialStore,
       }
 
     // Начало или окончание процесса получения данных о пользователе

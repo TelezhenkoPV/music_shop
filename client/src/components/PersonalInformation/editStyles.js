@@ -84,6 +84,23 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'flex-end',
   },
+  iconChecked: {
+    color: theme.palette.primary.main,
+  },
+  // creditCardNumber: {
+  //   flexGrow: 1,
+  //   fontSize: '14px',
+  // },
+  // creditCardExpiryDate: {
+  //   width: '70px',
+  //   minWidth: '70px',
+  //   fontSize: '14px',
+  // },
+  // creditCardCVC: {
+  //   width: '65px',
+  //   minWidth: '65px',
+  //   fontSize: '14px',
+  // }
 }))
 
 export default useStyles
