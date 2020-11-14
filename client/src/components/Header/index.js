@@ -133,7 +133,7 @@ export default function Header() {
   }
 
   const handleClickProfile = () => {
-    history.push('/profile')
+    history.push('/customer/profile')
     handleMenuClose()
   }
 
@@ -153,8 +153,9 @@ export default function Header() {
   }
 
   const handleClickSignOut = () => {
-    dispatch(signOut())
+    history.push('/')
     handleMenuClose()
+    dispatch(signOut())
   }
 
   const handleSearchOpen = () => {

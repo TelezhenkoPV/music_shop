@@ -8,19 +8,24 @@ import {
   SIGNOUT,
   GET_CUSTOMER_PROCEED,
   SAVE_USER_DATA,
+  TOOGLE_PROFILE_EDIT,
+  UPDATE_SUCCESS,
+  UPDATE_PROCEED,
+  UPDATE_ERROR,
 } from './userConstants'
 
 const initialStore = {
   isSignInProceed: false,
   isSignUpProceed: false,
+  isUpdateProceed: false,
   isGetCustomerProceed: false,
+  isProfileEdit: false,
   token: null,
-  data: {
-    isAdmin: false,
-  },
+  data: {},
   errors: {
     signIn: null,
     signUp: null,
+    update: null,
     getCustomer: null,
   },
 }
@@ -73,8 +78,7 @@ const reducer = (store = initialStore, action) => {
     // Разлогинивание пользователя
     case SIGNOUT:
       return {
-        ...store,
-        token: null,
+        ...initialStore,
       }
 
     // Начало или окончание процесса получения данных о пользователе
@@ -89,6 +93,34 @@ const reducer = (store = initialStore, action) => {
       return {
         ...store,
         data: action.payload,
+      }
+
+    // Флаг редактирования профиля пользователя
+    case TOOGLE_PROFILE_EDIT:
+      return {
+        ...store,
+        isProfileEdit: action.payload,
+      }
+
+    // Изменение данных о пользователе успешо выполнено
+    case UPDATE_SUCCESS:
+      return {
+        ...store,
+        errors: { ...store.errors, update: null },
+      }
+
+    // Начало или окончание процесса изменения данных пользователя
+    case UPDATE_PROCEED:
+      return {
+        ...store,
+        isUpdateProceed: action.payload,
+      }
+
+    // Ошибки процесса изменения данных пользователя
+    case UPDATE_ERROR:
+      return {
+        ...store,
+        errors: { ...store.errors, update: action.payload },
       }
 
     default:
