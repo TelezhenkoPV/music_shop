@@ -9,6 +9,10 @@ import {
   SIGNIN_ERROR,
   GET_CUSTOMER_PROCEED,
   SAVE_USER_DATA,
+  TOOGLE_PROFILE_EDIT,
+  UPDATE_SUCCESS,
+  UPDATE_PROCEED,
+  UPDATE_ERROR,
 } from './userConstants'
 import { notificate } from '../notification/notificationActions'
 
@@ -18,7 +22,6 @@ export const signUp = (userData) => (dispatch) => {
     .post('http://localhost:5000/api/customers', userData)
     .then((signUpResult) => {
       if (signUpResult.status === 200) {
-        console.log(signUpResult.data)
         dispatch({ type: SIGNUP })
         dispatch(
           notificate({
@@ -125,4 +128,45 @@ export const getCustomer = () => (dispatch) => {
         dispatch({ type: GET_CUSTOMER_PROCEED, payload: false })
       })
   }
+}
+
+export const toogleProfileEdit = (isEdit) => (dispatch) => {
+  dispatch({ type: TOOGLE_PROFILE_EDIT, payload: isEdit })
+}
+
+export const update = (userData) => (dispatch) => {
+  dispatch({ type: UPDATE_PROCEED, payload: true })
+
+  const token = sessionStorage.token || localStorage.token || null
+
+  var authOptions = {
+    headers: {
+      Authorization: token,
+    },
+  }
+  axios
+    .put('http://localhost:5000/api/customers', userData, authOptions)
+    .then((updateResult) => {
+      if (updateResult.status === 200) {
+        console.log(updateResult.data)
+        dispatch({ type: UPDATE_SUCCESS })
+        dispatch({ type: SAVE_USER_DATA, payload: updateResult.data })
+        dispatch(
+          notificate({
+            variant: 'success',
+            data: 'User data updated successfully.',
+          })
+        )
+      }
+    })
+    .catch(({ response: { status, data } }) => {
+      dispatch({ type: UPDATE_ERROR, payload: data })
+      dispatch(notificate({ variant: 'error', data }))
+    })
+    .finally(() => {
+      // Фейковая задержка для демонстрации спинера
+      setTimeout(() => {
+        dispatch({ type: UPDATE_PROCEED, payload: false })
+      }, 3000)
+    })
 }
