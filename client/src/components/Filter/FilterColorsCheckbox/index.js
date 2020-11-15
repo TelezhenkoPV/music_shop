@@ -55,8 +55,18 @@ export default function FilterColorsCheckbox() {
       control={
         <Checkbox
           checked={filtersColors.includes(elem.name)}
-          icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
-          checkedIcon={<CheckBoxIcon fontSize="small" />}
+          icon={
+            <CheckBoxOutlineBlankIcon
+              htmlColor={elem.name !== 'white' && elem.name}
+              fontSize="small"
+            />
+          }
+          checkedIcon={
+            <CheckBoxIcon
+              htmlColor={elem.name !== 'white' && elem.name}
+              fontSize="small"
+            />
+          }
           onChange={handleChange}
           name={elem.name}
         />

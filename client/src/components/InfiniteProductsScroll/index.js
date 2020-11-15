@@ -46,7 +46,7 @@ export default function ProductsScroll(props) {
             setFilteredProductsQuantity(resp.data.productsQuantity)
           })
           .catch((e) => console.log(e))
-      }, 300)
+      }, 200)
     }
     // eslint-disable-next-line
   }, [page, categoryName, filtersCategories, colors, minPrice, maxPrice])
