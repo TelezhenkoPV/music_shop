@@ -26,17 +26,10 @@ export const signUp = (userData) => (dispatch) => {
     .then((signUpResult) => {
       if (signUpResult.status === 200) {
         dispatch({ type: SIGNUP })
-        dispatch(
-          notificate({
-            variant: 'success',
-            data: 'Успешная регистрация на сервере.',
-          })
-        )
       }
     })
     .catch(({ response: { status, data } }) => {
       dispatch({ type: SIGNUP_ERROR, payload: data })
-      dispatch(notificate({ variant: 'error', data }))
     })
     .finally(() => {
       // Фейковая задержка для демонстрации спинера
@@ -66,21 +59,12 @@ export const signIn = ({ loginOrEmail, password, rememberMe }) => (
           sessionStorage.setItem('token', token)
 
           dispatch({ type: SIGNIN, payload: token })
-          dispatch(
-            notificate({
-              variant: 'success',
-              data: 'Успешная авторизация на сервере.',
-              key: 'signInSuccess',
-            })
-          )
           dispatch(getCustomer())
         }
       }
     })
     .catch(({ response: { status, data } }) => {
       dispatch({ type: SIGNIN_ERROR, payload: data })
-      dispatch(notificate({ variant: 'error', data }))
-      dispatch(signOut())
     })
     .finally(() => {
       // Фейковая задержка для демонстрации спинера
@@ -114,17 +98,9 @@ export const getCustomer = () => (dispatch) => {
 
           dispatch({ type: SIGNIN, payload: token })
           dispatch({ type: SAVE_USER_DATA, payload: data })
-          dispatch(
-            notificate({
-              variant: 'success',
-              data: 'Успешная авторизация на сервере.',
-              key: 'signInSuccess',
-            })
-          )
         }
       })
-      .catch((error) => {
-        dispatch(notificate({ variant: 'error', data: error.message }))
+      .catch(() => {
         dispatch(signOut())
       })
       .finally(() => {

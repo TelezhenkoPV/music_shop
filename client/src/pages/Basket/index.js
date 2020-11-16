@@ -161,7 +161,7 @@ function Basket() {
             >
               Продолжить покупки
             </Button>
-            <Button variant="contained" color="primary">
+            <Button variant="contained" color="primary" href="/checkout">
               Оформить заказ
             </Button>
           </Box>
