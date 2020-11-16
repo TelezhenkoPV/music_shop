@@ -8,6 +8,7 @@ import { TextField, RadioGroup } from 'formik-material-ui'
 import { DatePicker } from 'formik-material-ui-pickers'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 import DateFnsUtils from '@date-io/date-fns'
+import MaskedText from 'react-text-mask'
 
 import Grid from '@material-ui/core/Grid'
 import LinearProgress from '@material-ui/core/LinearProgress'
@@ -33,6 +34,7 @@ import AddIcon from '@material-ui/icons/Add'
 import AddLocationIcon from '@material-ui/icons/AddLocation'
 import RadioButtonUncheckedRoundedIcon from '@material-ui/icons/RadioButtonUncheckedRounded'
 import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined'
+import creditCard_icon from '../../assets/credit-card.svg'
 
 import { toogleProfileEdit, update } from '../../store/user/userActions'
 
@@ -125,6 +127,10 @@ export default function EditPersonalInformation({
     setSubmit({ isSubmitting: true, setSubmitting, setErrors })
   }
 
+  const handleClose = () => {
+    dispatch(toogleProfileEdit(false))
+  }
+
   const handleClickDefaultAddress = (setFieldValue, addresses, index) => {
     setFieldValue(
       'addressDelivery',
@@ -155,9 +161,17 @@ export default function EditPersonalInformation({
           validationSchema={UpdateSchema}
           onSubmit={handleSubmit}
         >
-          {({ values, submitForm, isValid, isSubmitting, setFieldValue }) => (
+          {({
+            values,
+            submitForm,
+            isValid,
+            isSubmitting,
+            setFieldValue,
+            handleChange,
+            handleBlur,
+          }) => (
             <Form className={classes.form}>
-              <Grid container spacing={2}>
+              <Grid container spacing={10}>
                 <Grid item xs={12} md={6}>
                   <div className={classes.info}>
                     <div className={classes.infoLabel}>
@@ -310,7 +324,6 @@ export default function EditPersonalInformation({
                         format="dd.MM.yyyy"
                         id="birthdate"
                         name="birthdate"
-                        //   label="Birthday"
                         required
                         autoComplete="birthdate"
                         disabled={isSubmitting}
@@ -386,6 +399,7 @@ export default function EditPersonalInformation({
                                             arrow
                                           >
                                             <IconButton
+                                              className={classes.iconInline}
                                               onClick={() =>
                                                 handleClickDefaultAddress(
                                                   setFieldValue,
@@ -401,9 +415,7 @@ export default function EditPersonalInformation({
                                                   }
                                                 />
                                               ) : (
-                                                <RadioButtonUncheckedRoundedIcon
-                                                  className={classes.iconInline}
-                                                />
+                                                <RadioButtonUncheckedRoundedIcon />
                                               )}
                                             </IconButton>
                                           </Tooltip>
@@ -452,89 +464,117 @@ export default function EditPersonalInformation({
                           {values.creditCard && values.creditCard.length > 0
                             ? values.creditCard.map((card, index) => (
                                 <div key={index} className={classes.listItem}>
-                                  <div>
-                                    <Field
-                                      component={TextField}
-                                      classes={{ root: classes.textField }}
-                                      variant="outlined"
-                                      margin="dense"
-                                      size="small"
-                                      fullWidth
-                                      id={`creditCard.${index}.cardNumber`}
-                                      name={`creditCard.${index}.cardNumber`}
-                                      autoComplete="cc-number"
-                                      disabled={isSubmitting}
-                                      placeholder="XXXX-XXXX-XXXX-XXXX"
-                                      FormHelperTextProps={{
-                                        className: classes.helperText,
-                                      }}
-                                      InputProps={{
-                                        endAdornment: (
-                                          <InputAdornment position="end">
-                                            <Tooltip
-                                              title="Set default credit card"
-                                              arrow
-                                            >
-                                              <IconButton
-                                                onClick={() =>
-                                                  handleClickDefaultCreditCard(
-                                                    setFieldValue,
-                                                    values.creditCard,
-                                                    index
-                                                  )
-                                                }
-                                              >
-                                                {card.isDefault ? (
-                                                  <CheckCircleOutlineOutlinedIcon
-                                                    className={
-                                                      classes.iconChecked
-                                                    }
-                                                  />
-                                                ) : (
-                                                  <RadioButtonUncheckedRoundedIcon
-                                                    className={
-                                                      classes.iconInline
-                                                    }
-                                                  />
-                                                )}
-                                              </IconButton>
-                                            </Tooltip>
-                                          </InputAdornment>
-                                        ),
-                                      }}
+                                  <div className={classes.creditCard}>
+                                    <img
+                                      src={creditCard_icon}
+                                      alt="Credit-card icon"
+                                      className={classes.creditCardIcon}
                                     />
-                                    <div className={classes.listItem}>
-                                      <Field
-                                        component={TextField}
-                                        classes={{ root: classes.textField }}
-                                        variant="outlined"
-                                        margin="dense"
-                                        size="small"
-                                        id={`creditCard.${index}.expiryDate`}
-                                        name={`creditCard.${index}.expiryDate`}
-                                        autoComplete="cc-number"
-                                        disabled={isSubmitting}
-                                        placeholder="MM/YY"
-                                        FormHelperTextProps={{
-                                          className: classes.helperText,
-                                        }}
-                                      />
-                                      <Field
-                                        component={TextField}
-                                        classes={{ root: classes.textField }}
-                                        variant="outlined"
-                                        margin="dense"
-                                        size="small"
-                                        id={`creditCard.${index}.cvc`}
-                                        name={`creditCard.${index}.cvc`}
-                                        autoComplete="cc-number"
-                                        disabled={isSubmitting}
-                                        placeholder="XXX or XXXX"
-                                        FormHelperTextProps={{
-                                          className: classes.helperText,
-                                        }}
-                                      />
-                                    </div>
+                                    <Field
+                                      classes={{
+                                        root: classes.creditCardNumber,
+                                      }}
+                                      name={`creditCard.${index}.cardNumber`}
+                                    >
+                                      {({ field }) => (
+                                        <MaskedText
+                                          {...field}
+                                          className={
+                                            classes.creditCardNumberText
+                                          }
+                                          mask={[
+                                            /[4|5]/,
+                                            /\d/,
+                                            /\d/,
+                                            /\d/,
+                                            ' ',
+                                            /\d/,
+                                            /\d/,
+                                            /\d/,
+                                            /\d/,
+                                            ' ',
+                                            /\d/,
+                                            /\d/,
+                                            /\d/,
+                                            /\d/,
+                                            ' ',
+                                            /\d/,
+                                            /\d/,
+                                            /\d/,
+                                            /\d/,
+                                          ]}
+                                          placeholder="Credit card number"
+                                          type="text"
+                                          disabled={isSubmitting}
+                                          showMask
+                                        />
+                                      )}
+                                    </Field>
+                                    <Field
+                                      classes={{
+                                        root: classes.creditCardExpiry,
+                                      }}
+                                      name={`creditCard.${index}.expiryDate`}
+                                    >
+                                      {({ field }) => (
+                                        <MaskedText
+                                          {...field}
+                                          className={
+                                            classes.creditCardExpiryText
+                                          }
+                                          mask={[
+                                            /[0|1]/,
+                                            /\d/,
+                                            '/',
+                                            /\d/,
+                                            /\d/,
+                                          ]}
+                                          placeholder="MM/YY"
+                                          type="text"
+                                          disabled={isSubmitting}
+                                          showMask
+                                        />
+                                      )}
+                                    </Field>
+                                    <Field
+                                      classes={{ root: classes.creditCardCVC }}
+                                      name={`creditCard.${index}.cvc`}
+                                    >
+                                      {({ field }) => (
+                                        <MaskedText
+                                          {...field}
+                                          className={classes.creditCardCVCText}
+                                          mask={[/\d/, /\d/, /\d/]}
+                                          placeholder="CVV"
+                                          type="text"
+                                          disabled={isSubmitting}
+                                          showMask
+                                        />
+                                      )}
+                                    </Field>
+                                    <Tooltip
+                                      title="Set default credit card"
+                                      arrow
+                                    >
+                                      <IconButton
+                                        className={classes.iconInline}
+                                        onClick={() =>
+                                          handleClickDefaultCreditCard(
+                                            setFieldValue,
+                                            values.creditCard,
+                                            index
+                                          )
+                                        }
+                                      >
+                                        {card.isDefault ? (
+                                          <CheckCircleOutlineOutlinedIcon
+                                            className={classes.iconChecked}
+                                          />
+                                        ) : (
+                                          <RadioButtonUncheckedRoundedIcon />
+                                        )}
+                                      </IconButton>
+                                    </Tooltip>
                                   </div>
                                   <Tooltip title="Remove credit card" arrow>
                                     <IconButton
@@ -552,7 +592,13 @@ export default function EditPersonalInformation({
                             <Tooltip title="Add credit card" arrow>
                               <IconButton
                                 className={classes.iconInline}
-                                onClick={() => arrayHelpers.push('')}
+                                onClick={() =>
+                                  arrayHelpers.push({
+                                    cardNumber: '',
+                                    expiryDate: '',
+                                    cvc: '',
+                                  })
+                                }
                               >
                                 <AddIcon />
                               </IconButton>
@@ -572,6 +618,14 @@ export default function EditPersonalInformation({
               )}
 
               <div className={classes.actions}>
+                <Button
+                  className={classes.button}
+                  variant="contained"
+                  color="primary"
+                  onClick={handleClose}
+                >
+                  Cancel
+                </Button>
                 <Button
                   className={classes.button}
                   variant="contained"

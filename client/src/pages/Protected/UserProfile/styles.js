@@ -2,7 +2,9 @@ import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    //   height: '90%',
+    [theme.breakpoints.down('xs')]: {
+      padding: 0,
+    },
   },
   title_box: {
     backgroundColor: theme.palette.primary.lighter,
@@ -17,6 +19,9 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     display: 'flex',
     marginBottom: theme.spacing(2),
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+    },
   },
   tabsWrapper: {
     display: 'flex',
@@ -31,6 +36,9 @@ const useStyles = makeStyles((theme) => ({
     borderRight: `1px solid ${theme.palette.divider}`,
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.primary.contrastText,
+    [theme.breakpoints.down('sm')]: {
+      justifyContent: 'center',
+    },
   },
   tabsTitle: {
     margin: theme.spacing(2, 1),
@@ -66,6 +74,9 @@ const useStyles = makeStyles((theme) => ({
   },
   tabsIndicator: {
     backgroundColor: theme.palette.primary.lighter,
+    [theme.breakpoints.down('sm')]: {
+      backgroundColor: theme.palette.primary.dark,
+    },
   },
   tabLabelIconWrapper: {
     flexDirection: 'row',
@@ -76,6 +87,10 @@ const useStyles = makeStyles((theme) => ({
   tabSelected: {
     background: `linear-gradient(115deg, ${theme.palette.primary.dark} 30%, ${theme.palette.primary.lighter} 30%)`,
     color: theme.palette.grays.black,
+    [theme.breakpoints.down('sm')]: {
+      background: theme.palette.primary.dark,
+      color: theme.palette.primary.contrastText,
+    },
   },
   tabPanel: {
     backgroundColor: theme.palette.primary.lighter,

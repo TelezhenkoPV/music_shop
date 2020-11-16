@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import useStyles from './styles'
+import { useTheme } from '@material-ui/core/styles'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 import Link from '@material-ui/core/Link'
 import Container from '@material-ui/core/Container'
 import Paper from '@material-ui/core/Paper'
@@ -30,13 +32,15 @@ function TabPanel(props) {
       aria-labelledby={`vertical-tab-${index}`}
       {...other}
     >
-      {value === index && <Box p={3}>{children}</Box>}
+      {value === index && <div>{children}</div>}
     </div>
   )
 }
 
 function UserProfile() {
   const classes = useStyles()
+  const upMD = useMediaQuery(useTheme().breakpoints.up('md'))
+  const upSM = useMediaQuery('(min-width:500px)')
 
   const [tabIndex, setTabIndex] = useState(0)
 
@@ -60,7 +64,11 @@ function UserProfile() {
             <Link color="inherit" href="/">
               Main
             </Link>
-            <Link color="textPrimary" aria-current="page">
+            <Link
+              color="textPrimary"
+              aria-current="page"
+              href="/customer/profile"
+            >
               Personal profile
             </Link>
           </Breadcrumbs>
@@ -86,17 +94,20 @@ function UserProfile() {
             </div>
           </div>
           <Tabs
-            orientation="vertical"
+            orientation={upMD ? 'vertical' : 'horizontal'}
             variant="scrollable"
             value={tabIndex}
             onChange={handleChangeTab}
             aria-label="Vertical tabs"
-            className={classes.tabs}
-            classes={{ indicator: classes.tabsIndicator }}
+            // className={classes.tabs}
+            classes={{
+              indicator: classes.tabsIndicator,
+              flexContainer: classes.tabs,
+            }}
           >
             <Tab
               icon={<AccountCircle className={classes.tabsIcon} />}
-              label="Personal Information"
+              label={upSM ? 'Personal Information' : null}
               id="vertical-tab-0"
               aria-controls="vertical-tabpanel-2"
               classes={{
@@ -107,7 +118,7 @@ function UserProfile() {
             />
             <Tab
               icon={<LocalMallIcon className={classes.tabsIcon} />}
-              label="Orders"
+              label={upSM ? 'Orders' : null}
               id="vertical-tab-1"
               aria-controls="vertical-tabpanel-2"
               classes={{
@@ -118,7 +129,7 @@ function UserProfile() {
             />
             <Tab
               icon={<FavoriteIcon className={classes.tabsIcon} />}
-              label="Favorites"
+              label={upSM ? 'Favorites' : null}
               id="vertical-tab-1"
               aria-controls="vertical-tabpanel-2"
               classes={{

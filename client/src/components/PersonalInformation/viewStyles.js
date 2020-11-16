@@ -1,10 +1,16 @@
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({
+  paper: {
+    marginTop: theme.spacing(1),
+    padding: theme.spacing(3),
+    [theme.breakpoints.only('xs')]: {
+      padding: theme.spacing(1),
+    },
+  },
   info: {
     marginBottom: theme.spacing(4),
     fontSize: '14px',
-    // width: 'fit-content',
   },
   infoLabel: {
     display: 'flex',
@@ -25,7 +31,8 @@ const useStyles = makeStyles((theme) => ({
   },
   actions: {
     display: 'flex',
-    justifyContent: 'flex-end',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 }))
 

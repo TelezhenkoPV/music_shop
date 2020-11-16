@@ -3,9 +3,13 @@ import { makeStyles } from '@material-ui/core/styles'
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(1),
+    padding: theme.spacing(3),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    [theme.breakpoints.only('xs')]: {
+      padding: theme.spacing(1),
+    },
   },
   info: {
     fontSize: '14px',
@@ -82,25 +86,86 @@ const useStyles = makeStyles((theme) => ({
   },
   actions: {
     display: 'flex',
-    justifyContent: 'flex-end',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   iconChecked: {
     color: theme.palette.primary.main,
   },
-  // creditCardNumber: {
-  //   flexGrow: 1,
-  //   fontSize: '14px',
-  // },
-  // creditCardExpiryDate: {
-  //   width: '70px',
-  //   minWidth: '70px',
-  //   fontSize: '14px',
-  // },
-  // creditCardCVC: {
-  //   width: '65px',
-  //   minWidth: '65px',
-  //   fontSize: '14px',
-  // }
+  iconInline: {
+    [theme.breakpoints.only('md')]: {
+      padding: theme.spacing(0.5),
+    },
+    [theme.breakpoints.only('xs')]: {
+      padding: theme.spacing(0.5),
+    },
+  },
+  creditCard: {
+    margin: theme.spacing(1, 0, 0.5),
+    height: '40px',
+    display: 'flex',
+    flexDirection: 'row',
+    flexGrow: 1,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    border: '1px solid rgba(0, 0, 0, 0.3)',
+    borderRadius: '4px',
+    backgroundColor: 'transparent',
+
+    '& input': {
+      padding: theme.spacing(1, 0, 1, 1),
+      border: 'none',
+      backgroundColor: 'transparent',
+      font: 'inherit',
+      letterSpacing: 'inherit',
+      fontSize: '16px',
+      [theme.breakpoints.only('md')]: {
+        padding: theme.spacing(0.5, 0, 0.5, 0.5),
+        fontSize: '12px',
+      },
+      [theme.breakpoints.only('xs')]: {
+        padding: theme.spacing(0.5, 0, 0.5, 0.5),
+        fontSize: '12px',
+      },
+    },
+  },
+  creditCardIcon: {
+    padding: theme.spacing(0.5, 0, 0.5, 0.5),
+    width: '25px',
+    [theme.breakpoints.down('md')]: {
+      display: 'none',
+    },
+    [theme.breakpoints.down('xs')]: {
+      display: 'none',
+    },
+  },
+  creditCardNumberText: {
+    width: '165px',
+    [theme.breakpoints.only('md')]: {
+      width: '130px',
+    },
+    [theme.breakpoints.only('xs')]: {
+      width: '130px',
+    },
+  },
+  creditCardExpiryText: {
+    width: '65px',
+    [theme.breakpoints.only('md')]: {
+      width: '40px',
+    },
+    [theme.breakpoints.only('xs')]: {
+      width: '40px',
+    },
+  },
+  creditCardCVCText: {
+    width: '50px',
+    [theme.breakpoints.only('md')]: {
+      width: '30px',
+    },
+    [theme.breakpoints.only('xs')]: {
+      width: '30px',
+    },
+  },
 }))
 
 export default useStyles
