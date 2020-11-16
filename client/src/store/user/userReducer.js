@@ -12,12 +12,16 @@ import {
   UPDATE_SUCCESS,
   UPDATE_PROCEED,
   UPDATE_ERROR,
+  CHANGE_PASSWORD_SUCCESS,
+  CHANGE_PASSWORD_PROCEED,
+  CHANGE_PASSWORD_ERROR,
 } from './userConstants'
 
 const initialStore = {
   isSignInProceed: false,
   isSignUpProceed: false,
   isUpdateProceed: false,
+  isChangePasswordProceed: false,
   isGetCustomerProceed: false,
   isProfileEdit: false,
   token: null,
@@ -26,6 +30,7 @@ const initialStore = {
     signIn: null,
     signUp: null,
     update: null,
+    changePassword: null,
     getCustomer: null,
   },
 }
@@ -121,6 +126,27 @@ const reducer = (store = initialStore, action) => {
       return {
         ...store,
         errors: { ...store.errors, update: action.payload },
+      }
+
+    // Изменение пароля успешо выполнено
+    case CHANGE_PASSWORD_SUCCESS:
+      return {
+        ...store,
+        errors: { ...store.errors, changePassword: null },
+      }
+
+    // Начало или окончание процесса изменения пароля
+    case CHANGE_PASSWORD_PROCEED:
+      return {
+        ...store,
+        isChangePasswordProceed: action.payload,
+      }
+
+    // Ошибки процесса изменения пароля
+    case CHANGE_PASSWORD_ERROR:
+      return {
+        ...store,
+        errors: { ...store.errors, changePassword: action.payload },
       }
 
     default:
