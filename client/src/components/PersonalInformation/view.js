@@ -20,26 +20,32 @@ import WcIcon from '@material-ui/icons/Wc'
 import CheckIcon from '@material-ui/icons/Check'
 
 import { toogleProfileEdit } from '../../store/user/userActions'
+import { openModal } from '../../store/modal/modalAction'
 
-export default function ViewPersonalInformation({ data }) {
+import ChangePassword from './changePassword'
+
+export default function ViewPersonalInformation({
+  data: {
+    firstName,
+    lastName,
+    middleName = '',
+    gender,
+    birthdate = '',
+    email,
+    telephone,
+    addressDelivery = [],
+    creditCard = [],
+  },
+}) {
   const classes = useStyles()
   const dispatch = useDispatch()
 
-  const {
-    firstName,
-    lastName,
-    middleName,
-    gender,
-    birthdate,
-    email,
-    telephone,
-    addressDelivery,
-    creditCard,
-  } = data
-
   const handleClickEdit = () => {
-    console.log('Profile Edit Click')
     dispatch(toogleProfileEdit(true))
+  }
+
+  const handleClickChangePassword = () => {
+    dispatch(openModal(<ChangePassword />))
   }
 
   const addresses =
@@ -75,9 +81,9 @@ export default function ViewPersonalInformation({ data }) {
       : null
 
   return (
-    <>
+    <div className={classes.paper}>
       <Grid container spacing={10}>
-        <Grid item xs={6}>
+        <Grid item xs={12} md={6}>
           <div className={classes.info}>
             <div className={classes.infoLabel}>
               <PersonIcon className={classes.iconInline} />
@@ -98,10 +104,12 @@ export default function ViewPersonalInformation({ data }) {
               </Typography>
             </div>
             <Typography className={classes.infoData} noWrap>
-              {`${birthdate.substring(8)}.${birthdate.substring(
-                5,
-                7
-              )}.${birthdate.substring(0, 4)}`}
+              {birthdate &&
+                birthdate.length === 10 &&
+                `${birthdate.substring(8)}.${birthdate.substring(
+                  5,
+                  7
+                )}.${birthdate.substring(0, 4)}`}
             </Typography>
           </div>
 
@@ -129,7 +137,7 @@ export default function ViewPersonalInformation({ data }) {
             </List>
           </div>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} md={6}>
           <div className={classes.info}>
             <div className={classes.infoLabel}>
               <PhoneIcon className={classes.iconInline} />
@@ -167,11 +175,19 @@ export default function ViewPersonalInformation({ data }) {
           variant="contained"
           color="primary"
           size="large"
+          onClick={handleClickChangePassword}
+        >
+          Сменить пароль
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          size="large"
           onClick={handleClickEdit}
         >
-          Редактировать
+          Редактировать профиль
         </Button>
       </div>
-    </>
+    </div>
   )
 }
