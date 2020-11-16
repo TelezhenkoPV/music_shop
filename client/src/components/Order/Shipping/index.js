@@ -3,7 +3,7 @@ import React from 'react'
 // import { useDispatch, useSelector } from 'react-redux'
 import useStyles from './styles'
 
-export default function Summary() {
+export default function Shipping() {
   const classes = useStyles()
 
   return <div className={classes.root}></div>
