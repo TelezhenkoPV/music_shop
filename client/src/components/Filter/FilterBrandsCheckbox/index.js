@@ -10,47 +10,36 @@ import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank'
 import CheckBoxIcon from '@material-ui/icons/CheckBox'
 import FormLabel from '@material-ui/core/FormLabel'
 
-export default function FilterColorsCheckbox() {
+export default function FilterBrandsCheckbox() {
   const classes = useStyles()
 
-  const [colors, setColors] = useState([])
+  const [brands, setBrands] = useState([])
 
   useEffect(() => {
-    axios('/colors')
-      .then((resp) => setColors(resp.data))
+    axios('/filters/brand')
+      .then((resp) => setBrands(resp.data))
       .catch((e) => console.log(e))
   }, [])
 
-  const handleChange = (event) => {}
+  const handleChange = (event) => {
+    // dispatch(toggleFilterColorAction(event.target.name))
+    // createPathnameFromFiltersData(
+    //   history,
+    //   filtersCategories,
+    //   filtersColors,
+    //   minPrice,
+    //   maxPrice
+    // )
+  }
 
-  const list = colors.map((elem) => (
+  const list = brands.map((elem) => (
     <FormControlLabel
       key={elem._id}
       control={
         <Checkbox
           // checked={filtersColors.includes(elem.name)}
-          icon={
-            <CheckBoxOutlineBlankIcon
-              htmlColor={
-                (elem.name !== 'white' &&
-                  elem.name !== 'multicolor' &&
-                  elem.name) ||
-                'primary'
-              }
-              fontSize="small"
-            />
-          }
-          checkedIcon={
-            <CheckBoxIcon
-              htmlColor={
-                (elem.name !== 'white' &&
-                  elem.name !== 'multicolor' &&
-                  elem.name) ||
-                'primary'
-              }
-              fontSize="small"
-            />
-          }
+          icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
+          checkedIcon={<CheckBoxIcon fontSize="small" />}
           onChange={handleChange}
           name={elem.name}
         />
@@ -62,7 +51,7 @@ export default function FilterColorsCheckbox() {
   return (
     <FormGroup row>
       <FormLabel component="legend" className={classes.text}>
-        Select colors:
+        Select brands:
       </FormLabel>
       {list}
     </FormGroup>

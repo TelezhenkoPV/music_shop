@@ -1,61 +1,53 @@
 import axios from 'axios'
 
 import React, { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
-
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { ProductCard } from '../ProductCard/ProductCard'
 
-import { filtersCategoriesSelector } from '../../store/filters/filtersSelectors'
-import { createUrlWithManyValues } from '../../func'
+import { getUrlParams, objToQueryString } from '../Filter/utils'
+import { setFilterActualFiltersParamsAction } from '../../store/filters/filtersAction'
 
 export default function ProductsScroll(props) {
   const { onClickAddProduct } = props
+  const { params } = useParams()
+  const dispatch = useDispatch()
   const [page, setPage] = useState(1)
-  const [data, setData] = useState([])
-  const filtersCategories = useSelector(filtersCategoriesSelector)
-  const [filteredProductsQuantity, setFilteredProductsQuantity] = useState(0)
-
-  const { categoryName, colors, minPrice, maxPrice } = useParams()
+  const [cards, setCards] = useState([])
 
   useEffect(() => {
+    const urlData = getUrlParams(params)
+
+    for (const key in urlData) {
+      urlData[key] = urlData[key].split(',')
+    }
+
+    dispatch(setFilterActualFiltersParamsAction(urlData))
+
     setPage(1)
-    setData([])
-  }, [categoryName, filtersCategories, colors, minPrice, maxPrice])
+
+    const queryString = objToQueryString(
+      urlData,
+      'http://localhost:5000/api/products/filter?'
+    )
+
+    axios(queryString)
+      .then((response) => {
+        setCards(response.data.products)
+      })
+      .catch((e) => console.log(e))
+  }, [dispatch, params])
 
   const LoadMorePosts = () => {
     setPage(1 + page)
   }
 
-  useEffect(() => {
-    const url = createUrlWithManyValues(
-      filtersCategories,
-      minPrice,
-      maxPrice,
-      'http://localhost:5000/api/products/filter?categories',
-      colors,
-      page
-    )
-
-    if (data.length <= filteredProductsQuantity) {
-      setTimeout(() => {
-        axios(url)
-          .then((resp) => {
-            setData((oldData) => [...oldData, ...resp.data.products])
-            setFilteredProductsQuantity(resp.data.productsQuantity)
-          })
-          .catch((e) => console.log(e))
-      }, 200)
-    }
-    // eslint-disable-next-line
-  }, [page, categoryName, filtersCategories, colors, minPrice, maxPrice])
-
   return (
     <InfiniteScroll
-      dataLength={data.length}
+      dataLength={cards.length}
       next={LoadMorePosts}
-      hasMore={data.length !== filteredProductsQuantity}
+      hasMore={true}
       loader={<h4>Loading...</h4>}
       endMessage={
         <p style={{ textAlign: 'center' }}>
@@ -63,7 +55,7 @@ export default function ProductsScroll(props) {
         </p>
       }
     >
-      {data.map((item) => (
+      {cards.map((item) => (
         <ProductCard
           key={item._id}
           element={item}

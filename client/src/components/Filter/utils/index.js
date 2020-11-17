@@ -1,25 +1,26 @@
-export const createPathnameFromFiltersData = (
-  history,
-  filtersCategories,
-  filtersColors,
-  minPrice,
-  maxPrice
-) => {
-  if (filtersCategories.length === 0) {
-    filtersCategories = ['emptyCategory']
-  }
+export const getUrlParams = (url) => {
+  const vars = {}
+  url.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+    vars[key] = value
+  })
+  return vars
+}
 
-  const categoriesPath = filtersCategories.join(',')
+export const objToQueryString = (obj, baseUrl) => {
+  return Object.entries(obj)
+    .reduce((acc, [key, value]) => {
+      return `${acc}${key}=${Array.isArray(value) ? value.toString() : value}&`
+    }, baseUrl)
+    .slice(0, -1)
+}
 
-  if (filtersColors.length > 0) {
-    const colorsPath = filtersColors.join(',')
-
-    return history.push({
-      pathname: `/products/${categoriesPath}&minPrice=${minPrice}&maxPrice=${maxPrice}&color=${colorsPath}`,
-    })
+export const toggleItemInArr = (item, arrNameInObj, obj) => {
+  console.log('item, arrNameInObj, obj', item, arrNameInObj, obj)
+  if (!arrNameInObj.includes(item)) {
+    arrNameInObj.push(item)
   } else {
-    return history.push({
-      pathname: `/products/${categoriesPath}&minPrice=${minPrice}&maxPrice=${maxPrice}`,
-    })
+    const index = arrNameInObj.findIndex((elem) => elem === item)
+    arrNameInObj.splice(index, 1)
   }
+  return obj
 }
