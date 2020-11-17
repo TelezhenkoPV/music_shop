@@ -35,12 +35,12 @@ import FavoriteIcon from '@material-ui/icons/Favorite'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 
 import logo from '../../assets/logo.svg'
-import tabLinks from './utilities'
 import useStyles from './styles'
 
 import { signOut } from '../../store/user/userActions'
 import { openModal } from '../../store/modal/modalAction'
 import { getIsAuthenticated, getUserData } from '../../store/user/userSelectors'
+import { getCatalog } from '../../store/categories/categoriesSelectors'
 
 import {
   clearFilterColors,
@@ -49,10 +49,13 @@ import {
 
 import SearchBar from '../SearchBar'
 import Login from '../Login'
+import { loadCatalog } from '../../store/categories/categoriesAction'
+import index from 'react-html-parser/lib/elementTypes'
 
 export default function Header() {
   const classes = useStyles()
   const dispatch = useDispatch()
+  const catalog = useSelector(getCatalog)
   const history = useHistory()
 
   const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent)
@@ -65,7 +68,7 @@ export default function Header() {
     // clear earlier selected colors in filters
     dispatch(clearFilterColors())
 
-    dispatch(setFilterCategoryAction(tabLinks[newValue].name))
+    dispatch(setFilterCategoryAction(catalog[newValue].name))
   }
 
   const [value, setValue] = useState(0)
@@ -83,46 +86,8 @@ export default function Header() {
   const isMenuOpen = Boolean(anchorEl)
 
   useEffect(() => {
-    switch (window.location.pathname) {
-      case '/':
-        if (value !== 0) {
-          setValue(0)
-        }
-        break
-      case '/gitars':
-        if (value !== 0) {
-          setValue(0)
-        }
-        break
-      case '/booster':
-        if (value !== 1) {
-          setValue(1)
-        }
-        break
-      case '/percussion':
-        if (value !== 2) {
-          setValue(2)
-        }
-        break
-      case '/bass':
-        if (value !== 3) {
-          setValue(3)
-        }
-        break
-      case '/keybords':
-        if (value !== 4) {
-          setValue(4)
-        }
-        break
-      case '/accessories':
-        if (value !== 5) {
-          setValue(5)
-        }
-        break
-      default:
-        break
-    }
-  }, [value])
+    dispatch(loadCatalog())
+  }, [dispatch])
 
   const handleMenuClose = () => {
     setAnchorEl(null)
@@ -134,16 +99,6 @@ export default function Header() {
 
   const handleClickProfile = () => {
     history.push('/customer/profile')
-    handleMenuClose()
-  }
-
-  const handleClickCart = () => {
-    history.push('/basket')
-    handleMenuClose()
-  }
-
-  const handleClickFavorites = () => {
-    history.push('/favorites')
     handleMenuClose()
   }
 
@@ -184,7 +139,7 @@ export default function Header() {
           <Divider key="menu-user-divider" />
         </div>
       ) : null}
-      <MenuItem onClick={handleClickCart}>
+      <MenuItem>
         <IconButton aria-label="show qty product in cart" color="inherit">
           <Badge badgeContent={totalCartCount} color="secondary">
             <ShoppingBasketIcon />
@@ -194,7 +149,7 @@ export default function Header() {
       </MenuItem>
       {isAuthenticated ? (
         [
-          <MenuItem key="menu-auth-favorites" onClick={handleClickFavorites}>
+          <MenuItem key="menu-auth-favorites">
             <IconButton
               aria-label="show qty product in favorites"
               color="inherit"
@@ -251,13 +206,13 @@ export default function Header() {
       onChange={handleChangeCategoryTab}
       value={value}
     >
-      {tabLinks.map((tab, index) => {
+      {catalog.map((item) => {
         return (
           <Tab
-            key={`${tab}${index}`}
+            key={item.id}
             component={Link}
-            to={tab.to}
-            label={tab.label}
+            to={item.url}
+            label={item.name}
             classes={{
               root: classes.tab,
               selected: classes.selectedTab,
@@ -287,11 +242,11 @@ export default function Header() {
       </div>
       <Divider classes={{ root: classes.dividerThik }} />
       <List disablePadding>
-        {tabLinks.map((tab, index) => (
+        {catalog.map((item) => (
           <ListItem
-            key={tab + index}
+            key={item.id}
             component={Link}
-            to={tab.to}
+            to={item.url}
             divider
             button
             onClick={() => {
@@ -305,7 +260,7 @@ export default function Header() {
             }}
           >
             <ListItemText disableTypography className={classes.drawerItem}>
-              {tab.label}
+              {item.name}
             </ListItemText>
           </ListItem>
         ))}

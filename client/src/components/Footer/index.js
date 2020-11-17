@@ -41,7 +41,7 @@ const Footer = () => {
           {allLinks.map((item) => {
             const links = item.links.map((link) => (
               <Typography
-                key={link._id}
+                key={link.id}
                 style={{
                   color: 'white',
                   textDecoration: 'none',
@@ -55,7 +55,7 @@ const Footer = () => {
               </Typography>
             ))
             return (
-              <Grid item>
+              <Grid item key={item._id}>
                 <Typography className={classes.titleLinks}>
                   {item.title}
                 </Typography>
