@@ -11,7 +11,11 @@ import Button from '@material-ui/core/Button'
 import BasketCard from '../../components/BasketCard'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import { useDispatch, useSelector } from 'react-redux'
-import { removeCartItem } from '../../store/basket/basketAction'
+import {
+  removeCartItem,
+  plusItem,
+  minusItem,
+} from '../../store/basket/basketAction'
 
 const useStyles = makeStyles((theme) => ({
   title_box: {
@@ -76,8 +80,16 @@ function Basket() {
     return productsObject[key].items[0]
   })
 
-  const onRemoveItem = (id) => {
-    dispatch(removeCartItem(id))
+  const onRemoveItem = (_id) => {
+    dispatch(removeCartItem(_id))
+  }
+
+  const onPlusItem = (_id) => {
+    dispatch(plusItem(_id))
+  }
+
+  const onMinusItem = (_id) => {
+    dispatch(minusItem(_id))
   }
 
   return (
@@ -120,14 +132,20 @@ function Basket() {
       {addedProducts.map((elem) => (
         <BasketCard
           key={elem._id}
+          img={elem.imageUrls}
+          id={elem._id}
           name={elem.name}
           price={elem.currentPrice}
           onRemove={onRemoveItem}
+          totalPrice={productsObject[elem._id].totalPrice}
+          totalCount={productsObject[elem._id].items.length}
+          onMinus={onMinusItem}
+          onPlus={onPlusItem}
         />
       ))}
 
       {totalPrice ? (
-        <Container maxWidth="xm" className={classes.end_box}>
+        <Container maxWidth="xl" className={classes.end_box}>
           <div className={classes.wrapper}>
             <Box className={classes.price_box}>
               <Typography variant="h5">Итого</Typography>
@@ -143,7 +161,7 @@ function Basket() {
             >
               Продолжить покупки
             </Button>
-            <Button variant="contained" color="primary">
+            <Button variant="contained" color="primary" href="/checkout">
               Оформить заказ
             </Button>
           </Box>

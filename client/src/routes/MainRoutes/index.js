@@ -12,6 +12,7 @@ import PLP from '../../pages/PLP'
 import AboutOurTeam from '../../pages/AboutOurTeam'
 import FAQ from '../../pages/FAQ'
 import Contacts from '../../pages/Contacts'
+import OrderCheckout from '../../pages/OrderCheckout'
 
 const MainRoutes = () => {
   return (
@@ -20,6 +21,13 @@ const MainRoutes = () => {
         <Route exact path="/" render={() => <Main />} />
 
         <Route
+          exact
+          path="/products/:categoryName&minPrice=:minPrice&maxPrice=:maxPrice&color=:colors"
+          render={() => <PLP />}
+        />
+
+        <Route
+          exact
           path="/products/:categoryName&minPrice=:minPrice&maxPrice=:maxPrice"
           render={() => <PLP />}
         />
@@ -65,11 +73,11 @@ const MainRoutes = () => {
         <Route exact path="/basket" render={() => <Basket />} />
         <Route exact path="/product-details" render={() => <PDP />} />
         <Route exact path="/products-list" render={() => <PLP />} />
-
-        <ProtectedRoute path="/protected">
+        <Route exact path="/checkout" render={() => <OrderCheckout />} />
+        <ProtectedRoute exact path="/customer/profile">
           <UserProfile />
         </ProtectedRoute>
-        <ProtectedRoute path="/admin" adminOnly>
+        <ProtectedRoute exact path="/admin" adminOnly>
           <AdminPanel />
         </ProtectedRoute>
         <Route exact path="/prohibited" render={() => <Prohibited />} />

@@ -1,26 +1,18 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
+import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
+
 import Typography from '@material-ui/core/Typography'
 import Slider from '@material-ui/core/Slider'
-import { useDispatch, useSelector } from 'react-redux'
+import { useStyles } from './styles'
+
 import { setFilterPriceIntervalAction } from '../../../store/filters/filtersAction'
 import {
+  filterColorsSelector,
   filterPricesIntervalSelector,
   filtersCategoriesSelector,
 } from '../../../store/filters/filtersSelectors'
-import { useHistory } from 'react-router-dom'
-
-const useStyles = makeStyles({
-  root: {
-    width: 300,
-    height: 200,
-    paddingLeft: 5,
-    paddingTop: 50,
-  },
-  text: {
-    textAlign: 'center',
-  },
-})
+import { createPathnameFromFiltersData } from '../utils'
 
 function valuetext(value) {
   return `${value}$`
@@ -31,17 +23,19 @@ export default function FilterPriceSlider() {
   const dispatch = useDispatch()
   const pricesInterval = useSelector(filterPricesIntervalSelector)
   const categoriesName = useSelector(filtersCategoriesSelector)
+  const filtersColors = useSelector(filterColorsSelector)
   const [minPrice, maxPrice] = pricesInterval
   const history = useHistory()
 
   const handleChange = (event, newValue) => {
+    createPathnameFromFiltersData(
+      history,
+      categoriesName,
+      filtersColors,
+      newValue[0],
+      newValue[1]
+    )
     dispatch(setFilterPriceIntervalAction(newValue))
-
-    const categoriesPath = categoriesName.join(',')
-
-    history.push({
-      pathname: `/products/${categoriesPath}&minPrice=${newValue[0]}&maxPrice=${newValue[1]}`,
-    })
   }
 
   return (
@@ -53,7 +47,7 @@ export default function FilterPriceSlider() {
         min={0}
         max={1500}
         value={pricesInterval}
-        onChange={handleChange}
+        onChangeCommitted={handleChange}
         valueLabelDisplay="auto"
         step={10}
         aria-labelledby="range-slider"
