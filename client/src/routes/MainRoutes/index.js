@@ -12,6 +12,7 @@ import PLP from '../../pages/PLP'
 import AboutOurTeam from '../../pages/AboutOurTeam'
 import FAQ from '../../pages/FAQ'
 import Contacts from '../../pages/Contacts'
+import OrderCheckout from '../../pages/OrderCheckout'
 
 const MainRoutes = () => {
   return (
@@ -62,7 +63,7 @@ const MainRoutes = () => {
         <Route exact path="/basket" render={() => <Basket />} />
         <Route exact path="/product-details" render={() => <PDP />} />
         <Route exact path="/products-list" render={() => <PLP />} />
-
+        <Route exact path="/checkout" render={() => <OrderCheckout />} />
         <ProtectedRoute exact path="/customer/profile">
           <UserProfile />
         </ProtectedRoute>
