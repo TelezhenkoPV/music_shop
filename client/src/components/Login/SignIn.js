@@ -22,6 +22,7 @@ import {
   getIsSignInProceed,
   getSignInError,
 } from '../../store/user/userSelectors'
+import { notificate } from '../../store/notification/notificationActions'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -94,8 +95,28 @@ export default function SignIn() {
     if (submit.isSubmitting && !isSignInProceed) {
       submit.setSubmitting(false)
       setSubmit({ isSubmitting: false })
-      submit.setErrors({ ...signInError })
-      if (isAuthenticated) dispatch(closeModal())
+
+      if (signInError !== null) {
+        submit.setErrors({ ...signInError })
+        dispatch(
+          notificate({
+            variant: 'error',
+            data: signInError,
+            key: 'signInError',
+          })
+        )
+      }
+
+      if (isAuthenticated) {
+        dispatch(
+          notificate({
+            variant: 'success',
+            data: 'Authorized successfully.',
+            key: 'signInSuccess',
+          })
+        )
+        dispatch(closeModal())
+      }
     }
   }, [isAuthenticated, isSignInProceed, signInError, submit, dispatch])
 
