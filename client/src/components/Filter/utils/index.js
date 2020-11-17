@@ -14,13 +14,28 @@ export const objToQueryString = (obj, baseUrl) => {
     .slice(0, -1)
 }
 
-export const toggleItemInArr = (item, arrNameInObj, obj) => {
-  console.log('item, arrNameInObj, obj', item, arrNameInObj, obj)
-  if (!arrNameInObj.includes(item)) {
-    arrNameInObj.push(item)
+export const toggleItemInArr = (item, filterName, obj) => {
+  console.log('item, filterName, obj', item, filterName, obj)
+  if (filterName === 'minPrice' || filterName === 'maxPrice') {
+    obj[filterName] = [item]
+    return obj
+  }
+
+  if (obj[filterName] === undefined) {
+    obj[filterName] = [item]
+  } else if (!obj[filterName].includes(item)) {
+    obj[filterName].push(item)
   } else {
-    const index = arrNameInObj.findIndex((elem) => elem === item)
-    arrNameInObj.splice(index, 1)
+    const index = obj[filterName].findIndex((elem) => elem === item)
+    obj[filterName].splice(index, 1)
+    if (
+      obj[filterName].length === 1 &&
+      obj[filterName][0] === '' &&
+      filterName !== 'categories'
+    ) {
+      console.log('obj[filterName]', obj[filterName])
+      delete obj[filterName]
+    }
   }
   return obj
 }

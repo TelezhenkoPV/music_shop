@@ -40,7 +40,7 @@ export default function FilterCategoryCheckbox() {
   const handleChange = (event) => {
     const newActualFilters = toggleItemInArr(
       event.target.name,
-      actualFilters.categories,
+      'categories',
       actualFilters
     )
     dispatch(setFilterActualFiltersParamsAction(newActualFilters))

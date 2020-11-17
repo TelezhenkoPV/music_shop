@@ -1,4 +1,3 @@
-export const getFiltersDataSelector = (store) => store.filters.data
 export const filtersDataLoadingSelector = (store) => store.filters.loading
 export const actualFiltersSelector = (store) => store.filters.actualFilters
 export const actualFiltersCategoriesSelector = (store) =>

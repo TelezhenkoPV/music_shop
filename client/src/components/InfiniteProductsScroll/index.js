@@ -15,6 +15,7 @@ export default function ProductsScroll(props) {
   const dispatch = useDispatch()
   const [page, setPage] = useState(1)
   const [cards, setCards] = useState([])
+  // const [filteredProductsQuantity, setFilteredProductsQuantity] = useState(0)
 
   useEffect(() => {
     const urlData = getUrlParams(params)
@@ -35,12 +36,14 @@ export default function ProductsScroll(props) {
     axios(queryString)
       .then((response) => {
         setCards(response.data.products)
+        // setFilteredProductsQuantity(response.data.productsQuantity)
       })
       .catch((e) => console.log(e))
   }, [dispatch, params])
 
   const LoadMorePosts = () => {
     setPage(1 + page)
+    console.log(page)
   }
 
   return (

@@ -1,8 +1,9 @@
 import axios from 'axios'
+import { useStyles } from './styles'
 
 import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 
-import { useStyles } from './styles'
 import FormGroup from '@material-ui/core/FormGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
@@ -10,9 +11,15 @@ import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank'
 import CheckBoxIcon from '@material-ui/icons/CheckBox'
 import FormLabel from '@material-ui/core/FormLabel'
 
+import { actualFiltersSelector } from '../../../store/filters/filtersSelectors'
+import { objToQueryString, toggleItemInArr } from '../utils'
+import { useHistory } from 'react-router'
+
 export default function FilterColorsCheckbox() {
   const classes = useStyles()
+  const history = useHistory()
 
+  const actualFilters = useSelector(actualFiltersSelector)
   const [colors, setColors] = useState([])
 
   useEffect(() => {
@@ -21,14 +28,25 @@ export default function FilterColorsCheckbox() {
       .catch((e) => console.log(e))
   }, [])
 
-  const handleChange = (event) => {}
+  const handleChange = (event) => {
+    const newActualFilters = toggleItemInArr(
+      event.target.name,
+      'color',
+      actualFilters
+    )
+
+    const queryString = objToQueryString(newActualFilters, '/products/&')
+    history.push(queryString)
+  }
 
   const list = colors.map((elem) => (
     <FormControlLabel
       key={elem._id}
       control={
         <Checkbox
-          // checked={filtersColors.includes(elem.name)}
+          checked={
+            actualFilters.color && actualFilters.color.includes(elem.name)
+          }
           icon={
             <CheckBoxOutlineBlankIcon
               htmlColor={

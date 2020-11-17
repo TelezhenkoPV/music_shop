@@ -9,10 +9,16 @@ import Checkbox from '@material-ui/core/Checkbox'
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank'
 import CheckBoxIcon from '@material-ui/icons/CheckBox'
 import FormLabel from '@material-ui/core/FormLabel'
+import { objToQueryString, toggleItemInArr } from '../utils'
+import { useHistory } from 'react-router'
+import { useSelector } from 'react-redux'
+import { actualFiltersSelector } from '../../../store/filters/filtersSelectors'
 
 export default function FilterBrandsCheckbox() {
   const classes = useStyles()
+  const history = useHistory()
 
+  const actualFilters = useSelector(actualFiltersSelector)
   const [brands, setBrands] = useState([])
 
   useEffect(() => {
@@ -22,14 +28,14 @@ export default function FilterBrandsCheckbox() {
   }, [])
 
   const handleChange = (event) => {
-    // dispatch(toggleFilterColorAction(event.target.name))
-    // createPathnameFromFiltersData(
-    //   history,
-    //   filtersCategories,
-    //   filtersColors,
-    //   minPrice,
-    //   maxPrice
-    // )
+    const newActualFilters = toggleItemInArr(
+      event.target.name,
+      'brand',
+      actualFilters
+    )
+
+    const queryString = objToQueryString(newActualFilters, '/products/&')
+    history.push(queryString)
   }
 
   const list = brands.map((elem) => (
@@ -37,7 +43,9 @@ export default function FilterBrandsCheckbox() {
       key={elem._id}
       control={
         <Checkbox
-          // checked={filtersColors.includes(elem.name)}
+          checked={
+            actualFilters.brand && actualFilters.brand.includes(elem.name)
+          }
           icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
           checkedIcon={<CheckBoxIcon fontSize="small" />}
           onChange={handleChange}
