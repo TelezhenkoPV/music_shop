@@ -18,6 +18,7 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff'
 
 import { signUp } from '../../store/user/userActions'
 import { closeModal } from '../../store/modal/modalAction'
+import { notificate } from '../../store/notification/notificationActions'
 
 import {
   getIsSignUpProceed,
@@ -159,9 +160,27 @@ export default function SignUp() {
     if (submit.isSubmitting && !isSignUpProceed) {
       submit.setSubmitting(false)
       setSubmit({ isSubmitting: false })
-      submit.setErrors({ ...signUpError })
+      if (signUpError !== null) {
+        submit.setErrors({ ...signUpError })
+        dispatch(
+          notificate({
+            variant: 'error',
+            data: signUpError,
+            key: 'signUpError',
+          })
+        )
+      }
 
-      if (isSignUpSuccessful) dispatch(closeModal())
+      if (isSignUpSuccessful) {
+        dispatch(
+          notificate({
+            variant: 'success',
+            data: 'Registered succsessfully.',
+            key: 'signUpSuccess',
+          })
+        )
+        dispatch(closeModal())
+      }
     }
   }, [isSignUpSuccessful, isSignUpProceed, signUpError, submit, dispatch])
 

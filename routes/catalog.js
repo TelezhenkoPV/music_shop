@@ -39,7 +39,7 @@ router.delete(
 );
 
 // @route   GET /catalog
-// @desc    GET existing categories
+// @desc    GET existing categories_main
 // @access  Public
 router.get("/", getCategories);
 

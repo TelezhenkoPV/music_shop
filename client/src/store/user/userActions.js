@@ -13,6 +13,9 @@ import {
   UPDATE_SUCCESS,
   UPDATE_PROCEED,
   UPDATE_ERROR,
+  CHANGE_PASSWORD_SUCCESS,
+  CHANGE_PASSWORD_PROCEED,
+  CHANGE_PASSWORD_ERROR,
 } from './userConstants'
 import { notificate } from '../notification/notificationActions'
 
@@ -23,17 +26,10 @@ export const signUp = (userData) => (dispatch) => {
     .then((signUpResult) => {
       if (signUpResult.status === 200) {
         dispatch({ type: SIGNUP })
-        dispatch(
-          notificate({
-            variant: 'success',
-            data: 'Успешная регистрация на сервере.',
-          })
-        )
       }
     })
     .catch(({ response: { status, data } }) => {
       dispatch({ type: SIGNUP_ERROR, payload: data })
-      dispatch(notificate({ variant: 'error', data }))
     })
     .finally(() => {
       // Фейковая задержка для демонстрации спинера
@@ -63,21 +59,12 @@ export const signIn = ({ loginOrEmail, password, rememberMe }) => (
           sessionStorage.setItem('token', token)
 
           dispatch({ type: SIGNIN, payload: token })
-          dispatch(
-            notificate({
-              variant: 'success',
-              data: 'Успешная авторизация на сервере.',
-              key: 'signInSuccess',
-            })
-          )
           dispatch(getCustomer())
         }
       }
     })
     .catch(({ response: { status, data } }) => {
       dispatch({ type: SIGNIN_ERROR, payload: data })
-      dispatch(notificate({ variant: 'error', data }))
-      dispatch(signOut())
     })
     .finally(() => {
       // Фейковая задержка для демонстрации спинера
@@ -111,17 +98,9 @@ export const getCustomer = () => (dispatch) => {
 
           dispatch({ type: SIGNIN, payload: token })
           dispatch({ type: SAVE_USER_DATA, payload: data })
-          dispatch(
-            notificate({
-              variant: 'success',
-              data: 'Успешная авторизация на сервере.',
-              key: 'signInSuccess',
-            })
-          )
         }
       })
-      .catch((error) => {
-        dispatch(notificate({ variant: 'error', data: error.message }))
+      .catch(() => {
         dispatch(signOut())
       })
       .finally(() => {
@@ -148,7 +127,6 @@ export const update = (userData) => (dispatch) => {
     .put('http://localhost:5000/api/customers', userData, authOptions)
     .then((updateResult) => {
       if (updateResult.status === 200) {
-        console.log(updateResult.data)
         dispatch({ type: UPDATE_SUCCESS })
         dispatch({ type: SAVE_USER_DATA, payload: updateResult.data })
         dispatch(
@@ -167,6 +145,40 @@ export const update = (userData) => (dispatch) => {
       // Фейковая задержка для демонстрации спинера
       setTimeout(() => {
         dispatch({ type: UPDATE_PROCEED, payload: false })
+      }, 3000)
+    })
+}
+
+export const changePassword = (passwords) => (dispatch) => {
+  dispatch({ type: CHANGE_PASSWORD_PROCEED, payload: true })
+  const token = sessionStorage.token || localStorage.token || null
+
+  var authOptions = {
+    headers: {
+      Authorization: token,
+    },
+  }
+  axios
+    .put('http://localhost:5000/api/customers/password', passwords, authOptions)
+    .then((result) => {
+      if (result.status === 200) {
+        dispatch({ type: CHANGE_PASSWORD_SUCCESS })
+        dispatch(
+          notificate({
+            variant: 'success',
+            data: 'Password successfully changed.',
+          })
+        )
+      }
+    })
+    .catch(({ response: { status, data } }) => {
+      dispatch({ type: CHANGE_PASSWORD_ERROR, payload: data })
+      dispatch(notificate({ variant: 'error', data }))
+    })
+    .finally(() => {
+      // Фейковая задержка для демонстрации спинера
+      setTimeout(() => {
+        dispatch({ type: CHANGE_PASSWORD_PROCEED, payload: false })
       }, 3000)
     })
 }
