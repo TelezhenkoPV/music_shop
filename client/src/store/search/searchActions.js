@@ -17,7 +17,7 @@ export const search = (query) => (dispatch) => {
   } else {
     dispatch({ type: SEARCH_LOADING, payload: true })
     axios
-      .post('http://localhost:5000/api/products/search/', { query })
+      .post('/api/products/search/', { query })
       .then((response) => {
         if (response.status === 200) {
           const searchResult = response.data

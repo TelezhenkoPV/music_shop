@@ -6,6 +6,7 @@ import slides from './slides/slidesReducer'
 import notification from './notification/notificationReducer'
 import basket from './basket/basketReducer'
 import search from './search/searchReducer'
+import order from './order/orderReducer'
 import catalog from './categories/categoriesReducer'
 
 const rootReducer = combineReducers({
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   notification,
   basket,
   search,
+  order,
   catalog,
 })
 

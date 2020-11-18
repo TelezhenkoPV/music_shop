@@ -16,17 +16,23 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: '3%',
   },
   checkoutRoot: {
+    padding: theme.spacing(2),
     backgroundColor: theme.palette.primary.lighter,
-    // flexGrow: 1,
     display: 'flex',
     flexDirection: 'column',
     marginBottom: theme.spacing(2),
   },
   stepperRoot: {
     width: '100%',
+    backgroundColor: theme.palette.primary.lighter,
   },
   stepConnectorAlternativeLabel: {
     top: 22,
+  },
+  stepLabel: {
+    [theme.breakpoints.only('xs')]: {
+      display: 'none',
+    },
   },
   stepConnectorActive: {
     '& .MuiStepConnector-line': {

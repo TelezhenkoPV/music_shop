@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import * as Yup from 'yup'
 import { Formik, Form, Field } from 'formik'
+import { schemaSignIn } from '../../validation/schema'
 import { TextField, CheckboxWithLabel } from 'formik-material-ui'
 
-import { makeStyles } from '@material-ui/core/styles'
+import useStyles from './signInStyles'
 import Container from '@material-ui/core/Container'
 import Button from '@material-ui/core/Button'
 import InputAdornment from '@material-ui/core/InputAdornment'
@@ -23,56 +23,6 @@ import {
   getSignInError,
 } from '../../store/user/userSelectors'
 import { notificate } from '../../store/notification/notificationActions'
-
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(1),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  formWrapper: {
-    padding: '15px',
-  },
-  form: {
-    width: '100%',
-  },
-  button: {
-    margin: theme.spacing(1, 0, 1),
-    [theme.breakpoints.down('xs')]: {
-      fontSize: '10px',
-    },
-  },
-  marginBottom: {
-    marginBottom: theme.spacing(4),
-  },
-  marginBottomLast: {
-    marginBottom: theme.spacing(2),
-  },
-  helperText: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    transform: 'translateY(100%)',
-    [theme.breakpoints.down('xs')]: {
-      fontSize: '10px',
-    },
-  },
-  devider: {
-    margin: '3px 0 1px',
-  },
-}))
-
-const SignInSchema = Yup.object().shape({
-  loginOrEmail: Yup.string()
-    .required('Необходимо указать Логин или Email')
-    .min(3, 'Логин должен содержать как минимум 3 символа'),
-  password: Yup.string()
-    .required('Необходимо указать пароль')
-    .min(7, 'Минимальная длина пароля 7 символов')
-    .max(30, 'Максимальная длина пароля 30 символов')
-    .matches(/^[a-zA-Z0-9]+$/, 'Разрешенные символы: a-z, A-Z, 0-9'),
-})
 
 const initialValues = {
   loginOrEmail: '',
@@ -135,7 +85,7 @@ export default function SignIn() {
       <div className={classes.paper}>
         <Formik
           initialValues={initialValues}
-          validationSchema={SignInSchema}
+          validationSchema={schemaSignIn}
           onSubmit={handleSubmit}
         >
           {({ submitForm, isValid, isSubmitting }) => (
@@ -147,7 +97,7 @@ export default function SignIn() {
                 fullWidth
                 id="loginOrEmail"
                 name="loginOrEmail"
-                label="Логин или Email"
+                label="Login or Email"
                 required
                 autoComplete="username email"
                 autoFocus
@@ -164,7 +114,7 @@ export default function SignIn() {
                 fullWidth
                 id="password"
                 name="password"
-                label="Пароль"
+                label="Password"
                 required
                 type={showPassword ? 'text' : 'password'}
                 autoComplete="current-password"
@@ -194,7 +144,7 @@ export default function SignIn() {
                 type="checkbox"
                 name="rememberMe"
                 color="primary"
-                Label={{ label: 'Запомнить меня' }}
+                Label={{ label: 'Remember me' }}
                 disabled={isAuthenticated}
               />
 
@@ -213,7 +163,7 @@ export default function SignIn() {
                   onClick={handleClickSignOut}
                 >
                   {' '}
-                  Выход{' '}
+                  SIGNOUT{' '}
                 </Button>
               ) : (
                 <Button
@@ -224,7 +174,7 @@ export default function SignIn() {
                   disabled={!isValid || isSubmitting}
                   onClick={submitForm}
                 >
-                  Вход
+                  SIGNIN
                 </Button>
               )}
             </Form>
