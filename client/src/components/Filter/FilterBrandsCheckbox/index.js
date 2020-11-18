@@ -22,7 +22,7 @@ export default function FilterBrandsCheckbox() {
   const [brands, setBrands] = useState([])
 
   useEffect(() => {
-    axios('/filters/brand')
+    axios('/api/filters/brand')
       .then((resp) => setBrands(resp.data))
       .catch((e) => console.log(e))
   }, [])
@@ -44,7 +44,8 @@ export default function FilterBrandsCheckbox() {
       control={
         <Checkbox
           checked={
-            actualFilters.brand && actualFilters.brand.includes(elem.name)
+            (actualFilters.brand && actualFilters.brand.includes(elem.name)) ||
+            false
           }
           icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
           checkedIcon={<CheckBoxIcon fontSize="small" />}
