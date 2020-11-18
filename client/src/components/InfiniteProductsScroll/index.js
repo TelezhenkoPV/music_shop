@@ -6,52 +6,70 @@ import { useParams } from 'react-router-dom'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { ProductCard } from '../ProductCard/ProductCard'
 
+import CircularProgress from '@material-ui/core/CircularProgress'
+
 import { getUrlParams, objToQueryString } from '../Filter/utils'
 import { setFilterActualFiltersParamsAction } from '../../store/filters/filtersAction'
 
 export default function ProductsScroll(props) {
   const { onClickAddProduct } = props
   const { params } = useParams()
+
   const dispatch = useDispatch()
-  const [page, setPage] = useState(1)
+
+  const [page, setPage] = useState(0)
   const [cards, setCards] = useState([])
-  // const [filteredProductsQuantity, setFilteredProductsQuantity] = useState(0)
+  const [filteredProductsQuantity, setFilteredProductsQuantity] = useState(0)
 
   useEffect(() => {
+    setPage(1)
+    setCards([])
+    getMoreData()
+    // eslint-disable-next-line
+  }, [params])
+
+  useEffect(() => {
+    getMoreData()
+    // eslint-disable-next-line
+  }, [page])
+
+  const getMoreData = () => {
     const urlData = getUrlParams(params)
 
     for (const key in urlData) {
       urlData[key] = urlData[key].split(',')
     }
 
-    dispatch(setFilterActualFiltersParamsAction(urlData))
+    urlData.startPage = page
+    urlData.perPage = 2
 
-    setPage(1)
+    dispatch(setFilterActualFiltersParamsAction(urlData))
 
     const queryString = objToQueryString(
       urlData,
       'http://localhost:5000/api/products/filter?'
     )
 
-    axios(queryString)
-      .then((response) => {
-        setCards(response.data.products)
-        // setFilteredProductsQuantity(response.data.productsQuantity)
-      })
-      .catch((e) => console.log(e))
-  }, [dispatch, params])
+    setTimeout(() => {
+      axios(queryString)
+        .then((response) => {
+          setCards((oldCards) => [...oldCards, ...response.data.products])
+          setFilteredProductsQuantity(response.data.productsQuantity)
+        })
+        .catch((e) => console.log(e))
+    }, 200)
+  }
 
   const LoadMorePosts = () => {
     setPage(1 + page)
-    console.log(page)
   }
 
   return (
     <InfiniteScroll
       dataLength={cards.length}
       next={LoadMorePosts}
-      hasMore={true}
-      loader={<h4>Loading...</h4>}
+      hasMore={filteredProductsQuantity > cards.length}
+      loader={<CircularProgress />}
       endMessage={
         <p style={{ textAlign: 'center' }}>
           <b>Yay! You have seen it all</b>

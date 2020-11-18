@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core/styles'
 
 export const useStyles = makeStyles({
   root: {
-    height: 160,
+    height: 140,
     paddingTop: 50,
   },
   text: {

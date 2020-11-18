@@ -23,7 +23,7 @@ export default function FilterColorsCheckbox() {
   const [colors, setColors] = useState([])
 
   useEffect(() => {
-    axios('/colors')
+    axios('/api/colors')
       .then((resp) => setColors(resp.data))
       .catch((e) => console.log(e))
   }, [])
@@ -45,7 +45,8 @@ export default function FilterColorsCheckbox() {
       control={
         <Checkbox
           checked={
-            actualFilters.color && actualFilters.color.includes(elem.name)
+            (actualFilters.color && actualFilters.color.includes(elem.name)) ||
+            false
           }
           icon={
             <CheckBoxOutlineBlankIcon
