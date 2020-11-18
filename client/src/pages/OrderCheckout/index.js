@@ -15,7 +15,7 @@ import Stepper from '@material-ui/core/Stepper'
 import Step from '@material-ui/core/Step'
 import StepLabel from '@material-ui/core/StepLabel'
 import StepConnector from '@material-ui/core/StepConnector'
-import Button from '@material-ui/core/Button'
+// import Button from '@material-ui/core/Button'
 
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import LocalShippingIcon from '@material-ui/icons/LocalShipping'
@@ -57,16 +57,16 @@ StepIcon.propTypes = {
   icon: PropTypes.node,
 }
 
-function getStepContent(step) {
-  switch (step) {
+function getStepContent({ activeStep, actions }) {
+  switch (activeStep) {
     case 0:
-      return <Customer />
+      return <Customer activeStep={activeStep} actions={actions} />
     case 1:
-      return <Shipping />
+      return <Shipping activeStep={activeStep} actions={actions} />
     case 2:
-      return <Payment />
+      return <Payment activeStep={activeStep} actions={actions} />
     case 3:
-      return <Confirm />
+      return <Confirm activeStep={activeStep} actions={actions} />
     default:
       return null
   }
@@ -76,7 +76,7 @@ function OrderCheckout() {
   const classes = useStyles()
 
   const [activeStep, setActiveStep] = useState(0)
-  const steps = ['Customer data', 'Shipping', 'Payment', 'Confirmation']
+  const steps = ['Customer Information', 'Shipping', 'Payment', 'Confirmation']
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1)
@@ -86,9 +86,9 @@ function OrderCheckout() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1)
   }
 
-  const handleReset = () => {
-    setActiveStep(0)
-  }
+  // const handleReset = () => {
+  //   setActiveStep(0)
+  // }
 
   return (
     <Container className={classes.root}>
@@ -130,15 +130,23 @@ function OrderCheckout() {
         >
           {steps.map((label) => (
             <Step key={label}>
-              <StepLabel StepIconComponent={StepIcon}>{label}</StepLabel>
+              <StepLabel
+                classes={{ label: classes.stepLabel }}
+                StepIconComponent={StepIcon}
+              >
+                {label}
+              </StepLabel>
             </Step>
           ))}
         </Stepper>
 
         <Grid container spacing={2}>
           <Grid item xs={12} md={8}>
-            {getStepContent(activeStep)}
-            <div>
+            {getStepContent({
+              activeStep,
+              actions: { back: handleBack, next: handleNext },
+            })}
+            {/* <div>
               {activeStep === steps.length ? (
                 <div>
                   <Typography className={classes.instructions}>
@@ -169,7 +177,7 @@ function OrderCheckout() {
                   </Button>
                 </div>
               )}
-            </div>
+            </div> */}
           </Grid>
           <Grid item xs={12} md={4}>
             <Summary />

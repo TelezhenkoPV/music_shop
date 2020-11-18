@@ -1,10 +1,9 @@
 import axios from 'axios'
+import { useStyles } from './styles'
 
 import React, { useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
-import { useStyles } from './styles'
 import FormGroup from '@material-ui/core/FormGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
@@ -12,41 +11,32 @@ import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank'
 import CheckBoxIcon from '@material-ui/icons/CheckBox'
 import FormLabel from '@material-ui/core/FormLabel'
 
-import {
-  filterPricesIntervalSelector,
-  filtersCategoriesSelector,
-  filterColorsSelector,
-} from '../../../store/filters/filtersSelectors'
-import { toggleFilterColorAction } from '../../../store/filters/filtersAction'
-import { createPathnameFromFiltersData } from '../utils'
+import { actualFiltersSelector } from '../../../store/filters/filtersSelectors'
+import { objToQueryString, toggleItemInArr } from '../utils'
+import { useHistory } from 'react-router'
 
 export default function FilterColorsCheckbox() {
   const classes = useStyles()
   const history = useHistory()
-  const dispatch = useDispatch()
-  const filtersCategories = useSelector(filtersCategoriesSelector)
-  const filtersColors = useSelector(filterColorsSelector)
-  const [minPrice, maxPrice] = useSelector(filterPricesIntervalSelector)
 
+  const actualFilters = useSelector(actualFiltersSelector)
   const [colors, setColors] = useState([])
 
-  // need all collection of colors only to render checkboxes
   useEffect(() => {
-    axios(' http://localhost:5000/api/colors')
+    axios('/api/colors')
       .then((resp) => setColors(resp.data))
       .catch((e) => console.log(e))
   }, [])
 
   const handleChange = (event) => {
-    dispatch(toggleFilterColorAction(event.target.name))
-
-    createPathnameFromFiltersData(
-      history,
-      filtersCategories,
-      filtersColors,
-      minPrice,
-      maxPrice
+    const newActualFilters = toggleItemInArr(
+      event.target.name,
+      'color',
+      actualFilters
     )
+
+    const queryString = objToQueryString(newActualFilters, '/products/&')
+    history.push(queryString)
   }
 
   const list = colors.map((elem) => (
@@ -54,9 +44,32 @@ export default function FilterColorsCheckbox() {
       key={elem._id}
       control={
         <Checkbox
-          checked={filtersColors.includes(elem.name)}
-          icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
-          checkedIcon={<CheckBoxIcon fontSize="small" />}
+          checked={
+            (actualFilters.color && actualFilters.color.includes(elem.name)) ||
+            false
+          }
+          icon={
+            <CheckBoxOutlineBlankIcon
+              htmlColor={
+                (elem.name !== 'white' &&
+                  elem.name !== 'multicolor' &&
+                  elem.name) ||
+                'primary'
+              }
+              fontSize="small"
+            />
+          }
+          checkedIcon={
+            <CheckBoxIcon
+              htmlColor={
+                (elem.name !== 'white' &&
+                  elem.name !== 'multicolor' &&
+                  elem.name) ||
+                'primary'
+              }
+              fontSize="small"
+            />
+          }
           onChange={handleChange}
           name={elem.name}
         />
@@ -68,7 +81,7 @@ export default function FilterColorsCheckbox() {
   return (
     <FormGroup row>
       <FormLabel component="legend" className={classes.text}>
-        Выбрать цвет:
+        Select colors:
       </FormLabel>
       {list}
     </FormGroup>

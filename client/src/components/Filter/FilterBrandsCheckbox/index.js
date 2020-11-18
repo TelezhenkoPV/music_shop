@@ -1,74 +1,66 @@
 import axios from 'axios'
-import { useDispatch, useSelector } from 'react-redux'
-import { useHistory } from 'react-router-dom'
 
 import React, { useEffect, useState } from 'react'
 
+import { useStyles } from './styles'
 import FormGroup from '@material-ui/core/FormGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank'
 import CheckBoxIcon from '@material-ui/icons/CheckBox'
-import { useStyles } from './styles'
-
 import FormLabel from '@material-ui/core/FormLabel'
 import { objToQueryString, toggleItemInArr } from '../utils'
-import { setFilterActualFiltersParamsAction } from '../../../store/filters/filtersAction'
-import {
-  actualFiltersSelector,
-  actualFiltersCategoriesSelector,
-} from '../../../store/filters/filtersSelectors'
+import { useHistory } from 'react-router'
+import { useSelector } from 'react-redux'
+import { actualFiltersSelector } from '../../../store/filters/filtersSelectors'
 
-export default function FilterCategoryCheckbox() {
+export default function FilterBrandsCheckbox() {
   const classes = useStyles()
-  const dispatch = useDispatch()
   const history = useHistory()
-  const actualFilters = useSelector(actualFiltersSelector)
-  const actualFiltersCategories = useSelector(actualFiltersCategoriesSelector)
 
-  const [categoriesData, setCategoriesData] = useState([])
+  const actualFilters = useSelector(actualFiltersSelector)
+  const [brands, setBrands] = useState([])
 
   useEffect(() => {
-    axios('/api/catalog')
-      .then((resp) => {
-        const arr = resp.data.map((elem) => [elem.name, elem.id])
-        setCategoriesData(arr)
-      })
+    axios('/api/filters/brand')
+      .then((resp) => setBrands(resp.data))
       .catch((e) => console.log(e))
   }, [])
 
   const handleChange = (event) => {
     const newActualFilters = toggleItemInArr(
       event.target.name,
-      'categories',
+      'brand',
       actualFilters
     )
-    dispatch(setFilterActualFiltersParamsAction(newActualFilters))
 
     const queryString = objToQueryString(newActualFilters, '/products/&')
     history.push(queryString)
   }
 
-  const list = categoriesData.map(([name, id]) => (
+  const list = brands.map((elem) => (
     <FormControlLabel
-      key={id}
+      key={elem._id}
       control={
         <Checkbox
+          checked={
+            (actualFilters.brand && actualFilters.brand.includes(elem.name)) ||
+            false
+          }
           icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
           checkedIcon={<CheckBoxIcon fontSize="small" />}
-          checked={actualFiltersCategories.includes(id)}
           onChange={handleChange}
-          name={id}
+          name={elem.name}
         />
       }
-      label={name}
+      label={elem.name}
     />
   ))
 
   return (
     <FormGroup row>
       <FormLabel component="legend" className={classes.text}>
-        Select categories:
+        Select brands:
       </FormLabel>
       {list}
     </FormGroup>
