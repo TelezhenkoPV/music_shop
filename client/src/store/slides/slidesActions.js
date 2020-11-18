@@ -5,7 +5,7 @@ import { notificate } from '../notification/notificationActions'
 export const getSlides = () => (dispatch) => {
   dispatch({ type: SLIDES_LOADING, payload: true })
   axios
-    .get('http://localhost:5000/api/slides')
+    .get('/api/slides')
     .then((response) => {
       if (response.status === 200) {
         const slidesProduct = response.data

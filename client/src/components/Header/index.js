@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
 import Popper from '@material-ui/core/Popper'
@@ -53,7 +53,6 @@ import Login from '../Login'
 export default function Header() {
   const classes = useStyles()
   const dispatch = useDispatch()
-  const history = useHistory()
 
   const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent)
   const [openDrawer, setOpenDrawer] = useState(false)
@@ -132,28 +131,12 @@ export default function Header() {
     setAnchorEl(event.currentTarget)
   }
 
-  const handleClickProfile = () => {
-    history.push('/customer/profile')
-    handleMenuClose()
-  }
-
-  const handleClickCart = () => {
-    history.push('/basket')
-    handleMenuClose()
-  }
-
-  const handleClickFavorites = () => {
-    history.push('/favorites')
-    handleMenuClose()
-  }
-
   const handleClickSignIn = () => {
     dispatch(openModal(<Login />))
     handleMenuClose()
   }
 
   const handleClickSignOut = () => {
-    history.push('/')
     handleMenuClose()
     dispatch(signOut())
   }
@@ -184,7 +167,12 @@ export default function Header() {
           <Divider key="menu-user-divider" />
         </div>
       ) : null}
-      <MenuItem onClick={handleClickCart}>
+      <MenuItem
+        key="menu-basket"
+        component={Link}
+        to="/basket"
+        onClick={handleMenuClose}
+      >
         <IconButton aria-label="show qty product in cart" color="inherit">
           <Badge badgeContent={totalCartCount} color="secondary">
             <ShoppingBasketIcon />
@@ -194,7 +182,12 @@ export default function Header() {
       </MenuItem>
       {isAuthenticated ? (
         [
-          <MenuItem key="menu-auth-favorites" onClick={handleClickFavorites}>
+          <MenuItem
+            key="menu-auth-favorites"
+            component={Link}
+            to="/favorites"
+            onClick={handleMenuClose}
+          >
             <IconButton
               aria-label="show qty product in favorites"
               color="inherit"
@@ -205,7 +198,12 @@ export default function Header() {
             </IconButton>
             <p>Favorites</p>
           </MenuItem>,
-          <MenuItem key="menu-auth-profile" onClick={handleClickProfile}>
+          <MenuItem
+            key="menu-auth-profile"
+            component={Link}
+            to="/customer/profile"
+            onClick={handleMenuClose}
+          >
             <IconButton
               aria-label="account of current user"
               aria-controls="primary-search-account-menu"
@@ -217,7 +215,12 @@ export default function Header() {
             <p>Profile</p>
           </MenuItem>,
           <Divider key="menu-auth-divider" />,
-          <MenuItem key="menu-auth-signout" onClick={handleClickSignOut}>
+          <MenuItem
+            key="menu-auth-signout"
+            component={Link}
+            to="/"
+            onClick={handleClickSignOut}
+          >
             <IconButton
               aria-label="SignOut for current user"
               aria-controls="primary-search-account-menu"
