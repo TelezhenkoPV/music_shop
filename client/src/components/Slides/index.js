@@ -46,7 +46,7 @@ export default function Slides({ items }) {
               aria-label="Prev"
               variant="contained"
               onClick={onClickHandler}
-              title="Предыдущий слайд"
+              title="Previous"
               className={classes.arrowButtonPrev}
               classes={{ root: classes.arrowButton }}
             >
@@ -60,7 +60,7 @@ export default function Slides({ items }) {
               aria-label="Next"
               variant="contained"
               onClick={onClickHandler}
-              title={'Следующий слайд'}
+              title={'Next'}
               className={classes.arrowButtonNext}
               classes={{ root: classes.arrowButton }}
             >

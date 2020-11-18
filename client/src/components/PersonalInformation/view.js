@@ -177,7 +177,7 @@ export default function ViewPersonalInformation({
           size="large"
           onClick={handleClickChangePassword}
         >
-          Сменить пароль
+          Change password
         </Button>
         <Button
           variant="contained"
@@ -185,7 +185,7 @@ export default function ViewPersonalInformation({
           size="large"
           onClick={handleClickEdit}
         >
-          Редактировать профиль
+          Edit profile
         </Button>
       </div>
     </div>

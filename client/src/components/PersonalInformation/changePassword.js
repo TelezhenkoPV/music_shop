@@ -4,8 +4,8 @@ import useStyles from './changePasswordStyles'
 import { useTheme } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 
-import * as Yup from 'yup'
 import { Formik, Form, Field } from 'formik'
+import { schemaChangePassword } from '../../validation/schema'
 import { TextField } from 'formik-material-ui'
 
 import Container from '@material-ui/core/Container'
@@ -24,22 +24,6 @@ import {
   getChangePasswordError,
   getIsChangePasswordSuccessful,
 } from '../../store/user/userSelectors'
-
-const changePasswordSchema = Yup.object().shape({
-  password: Yup.string()
-    .required('Необходимо указать пароль')
-    .min(7, 'Минимальная длина пароля 7 символов')
-    .max(30, 'Максимальная длина пароля 30 символов')
-    .matches(/^[a-zA-Z0-9]+$/, 'Разрешенные символы: a-z, A-Z, 0-9'),
-  newPassword: Yup.string()
-    .required('Необходимо указать пароль')
-    .min(7, 'Минимальная длина пароля 7 символов')
-    .max(30, 'Максимальная длина пароля 30 символов')
-    .matches(/^[a-zA-Z0-9]+$/, 'Разрешенные символы: a-z, A-Z, 0-9'),
-  confirmPassword: Yup.string()
-    .required('Необходимо подтвердить пароль')
-    .oneOf([Yup.ref('newPassword'), null], 'Пароли не совпадают'),
-})
 
 const initialValues = {
   password: '',
@@ -98,7 +82,7 @@ export default function ChangePassword() {
       <div className={classes.paper}>
         <Formik
           initialValues={initialValues}
-          validationSchema={changePasswordSchema}
+          validationSchema={schemaChangePassword}
           onSubmit={handleSubmit}
         >
           {({ submitForm, isValid, isSubmitting }) => (

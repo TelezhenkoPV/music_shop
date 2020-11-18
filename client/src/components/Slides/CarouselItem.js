@@ -40,7 +40,7 @@ export const CarouselItem = ({ item }) => {
           className="button"
           onClick={onBtnClick}
         >
-          Перейти
+          Detail
         </Button>
       </div>
     </div>
