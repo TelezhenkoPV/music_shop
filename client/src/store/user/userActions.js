@@ -22,7 +22,7 @@ import { notificate } from '../notification/notificationActions'
 export const signUp = (userData) => (dispatch) => {
   dispatch({ type: SIGNUP_PROCEED, payload: true })
   axios
-    .post('/api/customers', userData)
+    .post('customers', userData)
     .then((signUpResult) => {
       if (signUpResult.status === 200) {
         dispatch({ type: SIGNUP })
@@ -49,7 +49,7 @@ export const signIn = ({ loginOrEmail, password, rememberMe }) => (
 
   dispatch({ type: SIGNIN_PROCEED, payload: true })
   axios
-    .post('/api/customers/login', userData)
+    .post('customers/login', userData)
     .then((loginResult) => {
       if (loginResult.status === 200) {
         if (loginResult.data.success) {
@@ -91,7 +91,7 @@ export const getCustomer = () => (dispatch) => {
       },
     }
     axios
-      .get('/api/customers/customer', authOptions)
+      .get('customers/customer', authOptions)
       .then((loggedInCustomer) => {
         if (loggedInCustomer.status === 200) {
           const { data } = loggedInCustomer
@@ -124,7 +124,7 @@ export const update = (userData) => (dispatch) => {
     },
   }
   axios
-    .put('/api/customers', userData, authOptions)
+    .put('customers', userData, authOptions)
     .then((updateResult) => {
       if (updateResult.status === 200) {
         dispatch({ type: UPDATE_SUCCESS })
@@ -159,7 +159,7 @@ export const changePassword = (passwords) => (dispatch) => {
     },
   }
   axios
-    .put('/api/customers/password', passwords, authOptions)
+    .put('customers/password', passwords, authOptions)
     .then((result) => {
       if (result.status === 200) {
         dispatch({ type: CHANGE_PASSWORD_SUCCESS })
