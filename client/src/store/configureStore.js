@@ -9,8 +9,9 @@ const devTools = window.__REDUX_DEVTOOLS_EXTENSION__
   : (f) => f
 
 const persistConfig = {
-  key: 'authType',
+  key: 'basket',
   storage: storage,
+  whitelist: ['basket'],
 }
 const pReducer = persistReducer(persistConfig, rootReducer)
 
