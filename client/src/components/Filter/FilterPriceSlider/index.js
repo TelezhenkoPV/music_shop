@@ -47,7 +47,8 @@ export default function FilterPriceSlider() {
         min={0}
         max={1500}
         value={
-          [actualFilters.minPrice || 0, actualFilters.maxPrice || 1500] || value
+          [+actualFilters.minPrice || 0, +actualFilters.maxPrice || 1500] ||
+          value
         }
         onChangeCommitted={handleChange}
         valueLabelDisplay="auto"
