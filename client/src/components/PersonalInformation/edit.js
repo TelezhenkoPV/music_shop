@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import useStyles from './editStyles'
 
-import * as Yup from 'yup'
 import { Formik, Form, Field, FieldArray } from 'formik'
+import { schemaPersonalInformation } from '../../validation/schema'
 import { TextField, RadioGroup } from 'formik-material-ui'
 import { DatePicker } from 'formik-material-ui-pickers'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
@@ -43,40 +43,6 @@ import {
   getUpdateError,
   getIsUpdateSuccessful,
 } from '../../store/user/userSelectors'
-
-const UpdateSchema = Yup.object().shape({
-  firstName: Yup.string()
-    .required('First name is required')
-    .min(2, 'First name must have at least 2 chars')
-    .max(25, 'Max length of first name is 25 chars')
-    .matches(/^[А-ЯЁІЇЄ|A-Z]/, 'Первый символ должен быть заглавный')
-    .matches(
-      /^[А-ЯЁІЇЄ|A-Z][а-яёіїє'|a-z]*/,
-      "Разрешенные символы: a-zA-Zа-яА-ЯёiїєЁІЇЄ'"
-    ),
-  lastName: Yup.string()
-    .required('Last name is required')
-    .min(2, 'Last name must have at least 2 chars')
-    .max(25, 'Max length of last name is 25 chars')
-    .matches(/^[А-ЯЁІЇЄ|A-Z]/, 'The first char must be in the Uppercase')
-    .matches(
-      /^[А-ЯЁІЇЄ|A-Z][а-яёіїє'|a-z]*/,
-      "'Разрешенные символы: a-zA-Zа-яА-ЯёiїєЁІЇЄ'"
-    ),
-  middleName: Yup.string()
-    .min(2, 'Middle name must have at least 2 chars')
-    .max(25, 'Max length of middle name is 25 chars')
-    .matches(/^[А-ЯЁІЇЄ|A-Z]/, 'The first char must be in the Uppercase')
-    .matches(
-      /^[А-ЯЁІЇЄ|A-Z][а-яёіїє'|a-z]*/,
-      "'Permit chars: a-zA-Zа-яА-ЯёiїєЁІЇЄ'"
-    ),
-  telephone: Yup.string().matches(
-    /^\+380\d{3}\d{2}\d{2}\d{2}$/,
-    'Use template +380XXXXXXXXX'
-  ),
-  email: Yup.string().required('Email is required').email('Email is incorrect'),
-})
 
 export default function EditPersonalInformation({
   data: {
@@ -158,18 +124,10 @@ export default function EditPersonalInformation({
       <div className={classes.paper}>
         <Formik
           initialValues={initialValues}
-          validationSchema={UpdateSchema}
+          validationSchema={schemaPersonalInformation}
           onSubmit={handleSubmit}
         >
-          {({
-            values,
-            submitForm,
-            isValid,
-            isSubmitting,
-            setFieldValue,
-            handleChange,
-            handleBlur,
-          }) => (
+          {({ values, submitForm, isValid, isSubmitting, setFieldValue }) => (
             <Form className={classes.form}>
               <Grid container spacing={10}>
                 <Grid item xs={12} md={6}>
@@ -634,7 +592,7 @@ export default function EditPersonalInformation({
                   disabled={!isValid || isSubmitting}
                   onClick={submitForm}
                 >
-                  Сохранить изменения
+                  Save
                 </Button>
               </div>
             </Form>

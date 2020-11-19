@@ -51,6 +51,7 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/pickers": "^3.2.10",
     "@material-ui/styles": "^4.10.0",
+    "@material-ui/system": "^4.9.14",
     "axios": "^0.20.0",
     "date-fns": "^2.16.1",
     "formik": "^2.2.1",
@@ -73,10 +74,12 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.4",
+    "react-slick": "^0.27.13",
     "react-text-mask": "^5.4.3",
     "redux": "^4.0.5",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.3.0",
+    "slick-carousel": "^1.8.1",
     "yup": "^0.29.3"
   },
   "devDependencies": {
@@ -109,5 +112,6 @@
       "node_modules/.bin/eslint --max-warnings=0",
       "prettier --write"
     ]
-  }
+  },
+  "proxy": "http://localhost:5000"
 }

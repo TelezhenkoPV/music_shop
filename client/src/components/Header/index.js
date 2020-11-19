@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
 import Popper from '@material-ui/core/Popper'
@@ -35,25 +35,22 @@ import FavoriteIcon from '@material-ui/icons/Favorite'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 
 import logo from '../../assets/logo.svg'
-import tabLinks from './utilities'
 import useStyles from './styles'
 
 import { signOut } from '../../store/user/userActions'
 import { openModal } from '../../store/modal/modalAction'
 import { getIsAuthenticated, getUserData } from '../../store/user/userSelectors'
-
-import {
-  clearFilterColors,
-  setFilterCategoryAction,
-} from '../../store/filters/filtersAction'
+import { getCatalog } from '../../store/categories/categoriesSelectors'
 
 import SearchBar from '../SearchBar'
 import Login from '../Login'
+import { loadCatalog } from '../../store/categories/categoriesAction'
+import index from 'react-html-parser/lib/elementTypes'
 
 export default function Header() {
   const classes = useStyles()
   const dispatch = useDispatch()
-  const history = useHistory()
+  const catalog = useSelector(getCatalog)
 
   const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent)
   const [openDrawer, setOpenDrawer] = useState(false)
@@ -61,11 +58,6 @@ export default function Header() {
 
   const handleChangeCategoryTab = (event, newValue) => {
     setValue(newValue)
-
-    // clear earlier selected colors in filters
-    dispatch(clearFilterColors())
-
-    dispatch(setFilterCategoryAction(tabLinks[newValue].name))
   }
 
   const [value, setValue] = useState(0)
@@ -83,46 +75,8 @@ export default function Header() {
   const isMenuOpen = Boolean(anchorEl)
 
   useEffect(() => {
-    switch (window.location.pathname) {
-      case '/':
-        if (value !== 0) {
-          setValue(0)
-        }
-        break
-      case '/gitars':
-        if (value !== 0) {
-          setValue(0)
-        }
-        break
-      case '/booster':
-        if (value !== 1) {
-          setValue(1)
-        }
-        break
-      case '/percussion':
-        if (value !== 2) {
-          setValue(2)
-        }
-        break
-      case '/bass':
-        if (value !== 3) {
-          setValue(3)
-        }
-        break
-      case '/keybords':
-        if (value !== 4) {
-          setValue(4)
-        }
-        break
-      case '/accessories':
-        if (value !== 5) {
-          setValue(5)
-        }
-        break
-      default:
-        break
-    }
-  }, [value])
+    dispatch(loadCatalog())
+  }, [dispatch])
 
   const handleMenuClose = () => {
     setAnchorEl(null)
@@ -132,28 +86,12 @@ export default function Header() {
     setAnchorEl(event.currentTarget)
   }
 
-  const handleClickProfile = () => {
-    history.push('/customer/profile')
-    handleMenuClose()
-  }
-
-  const handleClickCart = () => {
-    history.push('/basket')
-    handleMenuClose()
-  }
-
-  const handleClickFavorites = () => {
-    history.push('/favorites')
-    handleMenuClose()
-  }
-
   const handleClickSignIn = () => {
     dispatch(openModal(<Login />))
     handleMenuClose()
   }
 
   const handleClickSignOut = () => {
-    history.push('/')
     handleMenuClose()
     dispatch(signOut())
   }
@@ -184,7 +122,12 @@ export default function Header() {
           <Divider key="menu-user-divider" />
         </div>
       ) : null}
-      <MenuItem onClick={handleClickCart}>
+      <MenuItem
+        key="menu-basket"
+        component={Link}
+        to="/basket"
+        onClick={handleMenuClose}
+      >
         <IconButton aria-label="show qty product in cart" color="inherit">
           <Badge badgeContent={totalCartCount} color="secondary">
             <ShoppingBasketIcon />
@@ -194,7 +137,12 @@ export default function Header() {
       </MenuItem>
       {isAuthenticated ? (
         [
-          <MenuItem key="menu-auth-favorites" onClick={handleClickFavorites}>
+          <MenuItem
+            key="menu-auth-favorites"
+            component={Link}
+            to="/favorites"
+            onClick={handleMenuClose}
+          >
             <IconButton
               aria-label="show qty product in favorites"
               color="inherit"
@@ -205,7 +153,12 @@ export default function Header() {
             </IconButton>
             <p>Favorites</p>
           </MenuItem>,
-          <MenuItem key="menu-auth-profile" onClick={handleClickProfile}>
+          <MenuItem
+            key="menu-auth-profile"
+            component={Link}
+            to="/customer/profile"
+            onClick={handleMenuClose}
+          >
             <IconButton
               aria-label="account of current user"
               aria-controls="primary-search-account-menu"
@@ -217,7 +170,12 @@ export default function Header() {
             <p>Profile</p>
           </MenuItem>,
           <Divider key="menu-auth-divider" />,
-          <MenuItem key="menu-auth-signout" onClick={handleClickSignOut}>
+          <MenuItem
+            key="menu-auth-signout"
+            component={Link}
+            to="/"
+            onClick={handleClickSignOut}
+          >
             <IconButton
               aria-label="SignOut for current user"
               aria-controls="primary-search-account-menu"
@@ -251,13 +209,13 @@ export default function Header() {
       onChange={handleChangeCategoryTab}
       value={value}
     >
-      {tabLinks.map((tab, index) => {
+      {catalog.map((item) => {
         return (
           <Tab
-            key={`${tab}${index}`}
+            key={item.id}
             component={Link}
-            to={tab.to}
-            label={tab.label}
+            to={item.url}
+            label={item.name}
             classes={{
               root: classes.tab,
               selected: classes.selectedTab,
@@ -287,11 +245,11 @@ export default function Header() {
       </div>
       <Divider classes={{ root: classes.dividerThik }} />
       <List disablePadding>
-        {tabLinks.map((tab, index) => (
+        {catalog.map((item) => (
           <ListItem
-            key={tab + index}
+            key={item.id}
             component={Link}
-            to={tab.to}
+            to={item.url}
             divider
             button
             onClick={() => {
@@ -305,7 +263,7 @@ export default function Header() {
             }}
           >
             <ListItemText disableTypography className={classes.drawerItem}>
-              {tab.label}
+              {item.name}
             </ListItemText>
           </ListItem>
         ))}
