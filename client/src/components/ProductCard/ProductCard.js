@@ -60,14 +60,7 @@ export const ProductCard = (props) => {
   }
 
   const onAddProduct = () => {
-    const { _id, name, currentPrice, imageUrls } = element
-    const productObj = {
-      _id,
-      name,
-      currentPrice,
-      imageUrls,
-    }
-    onClickAddProduct(productObj)
+    onClickAddProduct(element)
   }
 
   return (

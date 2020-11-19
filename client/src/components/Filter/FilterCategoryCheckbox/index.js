@@ -29,7 +29,7 @@ export default function FilterCategoryCheckbox() {
   const [categoriesData, setCategoriesData] = useState([])
 
   useEffect(() => {
-    axios('/catalog')
+    axios('/api/catalog')
       .then((resp) => {
         const arr = resp.data.map((elem) => [elem.name, elem.id])
         setCategoriesData(arr)

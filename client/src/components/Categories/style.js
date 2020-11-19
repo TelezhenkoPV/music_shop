@@ -70,6 +70,7 @@ const useStyles = makeStyles((theme) => ({
   },
   line: {
     border: '1px solid #112667',
+    margin: '7px 20px',
     width: '30vw',
     backgroundColor: '#112667',
   },

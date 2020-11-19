@@ -19,7 +19,7 @@ const Categories = () => {
     <div className={style.root}>
       <Box className={style.categoriesTitle}>
         <hr className={style.line} />
-        <h1 style={{ padding: '10px' }}>CATEGORIES</h1>
+        <h1 style={{ padding: '10px' }}>Categories</h1>
         <hr className={style.line} />
       </Box>
       <Grid container>
