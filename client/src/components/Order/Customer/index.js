@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import useStyles from './styles'
 
@@ -16,11 +16,15 @@ import {
   getUserData,
 } from '../../../store/user/userSelectors'
 import {
+  getActiveStep,
   getIsCustomerSet,
   getCustomerData,
 } from '../../../store/order/orderSelectors'
 
-import { saveCustomerData } from '../../../store/order/orderActions'
+import {
+  setActiveStep,
+  saveCustomerData,
+} from '../../../store/order/orderActions'
 
 const UpdateValueAuth = () => {
   const { setValues } = useFormikContext()
@@ -38,7 +42,8 @@ const UpdateValueAuth = () => {
 
   useEffect(() => {
     if (isCustomerSet) {
-      setValues(customer)
+      console.log('Customer already SET:', customer)
+      setValues({ ...customer, customerId: null })
     } else {
       if (isAuthenticated) {
         setValues({
@@ -52,8 +57,8 @@ const UpdateValueAuth = () => {
       }
     }
   }, [
-    isAuthenticated,
     isCustomerSet,
+    isAuthenticated,
     customer,
     firstName,
     lastName,
@@ -66,9 +71,22 @@ const UpdateValueAuth = () => {
   return null
 }
 
-export default function Customer({ activeStep, actions: { back, next } }) {
+export default function Customer() {
+  // export default function Customer({ activeStep, actions: { back, next } }) {
   const classes = useStyles()
   const dispatch = useDispatch()
+
+  const activeStep = useSelector(getActiveStep)
+
+  const back = (submitForm) => {
+    submitForm()
+    dispatch(setActiveStep(activeStep - 1))
+  }
+
+  const next = (submitForm) => {
+    submitForm()
+    dispatch(setActiveStep(activeStep + 1))
+  }
 
   const initialValues = {
     firstName: '',
@@ -76,13 +94,11 @@ export default function Customer({ activeStep, actions: { back, next } }) {
     middleName: '',
     telephone: '+380',
     email: '',
+    customerId: null,
   }
-
-  const [actions, setActions] = useState({ func: null })
 
   const handleSubmit = (values) => {
     dispatch(saveCustomerData(values))
-    actions.func()
   }
 
   return (
@@ -203,10 +219,7 @@ export default function Customer({ activeStep, actions: { back, next } }) {
                 color="primary"
                 size="large"
                 disabled={activeStep === 0}
-                onClick={() => {
-                  setActions({ func: back })
-                  submitForm()
-                }}
+                onClick={() => back(submitForm)}
                 className={classes.button}
               >
                 Back
@@ -216,10 +229,7 @@ export default function Customer({ activeStep, actions: { back, next } }) {
                 color="primary"
                 size="large"
                 disabled={!isValid || isSubmitting}
-                onClick={() => {
-                  setActions({ func: next })
-                  submitForm()
-                }}
+                onClick={() => next(submitForm)}
                 className={classes.button}
               >
                 Next

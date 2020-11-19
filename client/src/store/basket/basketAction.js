@@ -1,7 +1,7 @@
-export const addProductToBasket = (obj) => (dispatch) =>
+export const addProductToBasket = (products) => (dispatch) =>
   dispatch({
     type: 'ADD_PRODUCT_TO_BASKET',
-    payload: obj,
+    payload: products,
   })
 
 export const removeCartItem = (_id) => (dispatch) =>
