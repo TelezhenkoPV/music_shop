@@ -106,7 +106,9 @@ exports.placeOrder = async (req, res, next) => {
 
           for (item of order.products){
             const id = item.product._id;
-            await Product.findOneAndUpdate({ _id: id }, { quantity: item.product.quantity - 1 }, { new: true })
+            const product = await Product.findOne({ _id: id });
+            const productQuantity = product.quantity;
+            await Product.findOneAndUpdate({ _id: id }, { quantity: productQuantity - item.product.quantity }, { new: true })
           }
 
           res.json({ order, mailResult });

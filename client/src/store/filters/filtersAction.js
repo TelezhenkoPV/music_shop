@@ -1,51 +1,7 @@
-import axios from 'axios'
-import {
-  FILTERS_GET_DATA,
-  FILTERS_SET_CATEGORY,
-  FILTERS_TOGGLE_CATEGORY,
-  FILTER_CLEAR_CATEGORIES_CHECKBOXES,
-  FILTER_TOGGLE_CATEGORY_CHECKBOX,
-  FILTER_SET_PRODUCTS_DATA,
-  FILTER_SET_PRICE_INTERVAL,
-  FILTER_SET_NON_SORTED_PRODUCTS,
-} from '../actionTypes'
-const qs = require('qs')
+import { FILTERS_SET_PARSED_FILTERS_PARAMS } from '../actionTypes'
 
-export const getDataForFilterAction = (data) => (dispatch) => {
-  // dispatch({ type: LOADING_DATA, payload: true })
-  axios(`http://localhost:5000/api/products/filter?${qs.stringify(data)}`).then(
-    (res) => {
-      dispatch({ type: FILTERS_GET_DATA, payload: res.data })
-      // dispatch({ type: LOADING_DATA, payload: false })
-    }
-  )
-}
-
-export const setFilterCategoryAction = (categoryName) => (dispatch) => {
-  dispatch({ type: FILTERS_SET_CATEGORY, payload: categoryName })
-}
-
-export const toggleFilterCategoryAction = (categoryName) => (dispatch) => {
-  dispatch({ type: FILTERS_TOGGLE_CATEGORY, payload: categoryName })
-}
-
-export const clearFilterCategoriesCheckboxesAction = () => (dispatch) => {
-  dispatch({ type: FILTER_CLEAR_CATEGORIES_CHECKBOXES })
-}
-
-export const toggleFilterCategoryCheckboxAction = (categoryName) => (
+export const setFilterActualFiltersParamsAction = (filtersParams) => (
   dispatch
 ) => {
-  dispatch({ type: FILTER_TOGGLE_CATEGORY_CHECKBOX, payload: categoryName })
-}
-
-export const setFilterProductsDataAction = (data) => (dispatch) =>
-  dispatch({ type: FILTER_SET_PRODUCTS_DATA, payload: data })
-
-export const setFilterPriceIntervalAction = (newValues) => (dispatch) => {
-  dispatch({ type: FILTER_SET_PRICE_INTERVAL, payload: newValues })
-}
-
-export const setNonSortedDataAction = (data) => (dispatch) => {
-  dispatch({ type: FILTER_SET_NON_SORTED_PRODUCTS, payload: data })
+  dispatch({ type: FILTERS_SET_PARSED_FILTERS_PARAMS, payload: filtersParams })
 }

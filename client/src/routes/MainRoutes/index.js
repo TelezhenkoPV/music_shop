@@ -12,68 +12,16 @@ import PLP from '../../pages/PLP'
 import AboutOurTeam from '../../pages/AboutOurTeam'
 import FAQ from '../../pages/FAQ'
 import Contacts from '../../pages/Contacts'
-import * as staticNames from '../../util/staticNames'
+import OrderCheckout from '../../pages/OrderCheckout'
 
 const MainRoutes = () => {
   return (
     <>
       <Switch>
         <Route exact path="/" render={() => <Main />} />
-        <Route
-          exact
-          path="/gitars"
-          render={() => (
-            <PLP
-              title={staticNames.guitar.name}
-              product={staticNames.guitar.product}
-              description={staticNames.guitar.text}
-            />
-          )}
-        />
-        <Route
-          exact
-          path="/booster"
-          render={() => (
-            <PLP
-              title={staticNames.booster.name}
-              product={staticNames.booster.product}
-              description={staticNames.booster.text}
-            />
-          )}
-        />
-        <Route
-          exact
-          path="/percussion"
-          render={() => (
-            <PLP
-              title={staticNames.percussion.name}
-              product={staticNames.percussion.product}
-              description={staticNames.percussion.text}
-            />
-          )}
-        />
-        <Route
-          exact
-          path="/bass"
-          render={() => (
-            <PLP
-              title={staticNames.bass.name}
-              product={staticNames.bass.product}
-              description={staticNames.bass.text}
-            />
-          )}
-        />
-        <Route
-          exact
-          path="/keybords"
-          render={() => (
-            <PLP
-              title={staticNames.keybords.name}
-              product={staticNames.keybords.product}
-              description={staticNames.keybords.text}
-            />
-          )}
-        />
+
+        <Route exact path="/products/:params" render={() => <PLP />} />
+
         <Route
           exact
           path="/about-us/about-our-team"
@@ -115,11 +63,11 @@ const MainRoutes = () => {
         <Route exact path="/basket" render={() => <Basket />} />
         <Route exact path="/product-details" render={() => <PDP />} />
         <Route exact path="/products-list" render={() => <PLP />} />
-
-        <ProtectedRoute path="/protected">
+        <Route exact path="/checkout" render={() => <OrderCheckout />} />
+        <ProtectedRoute exact path="/customer/profile">
           <UserProfile />
         </ProtectedRoute>
-        <ProtectedRoute path="/admin" adminOnly>
+        <ProtectedRoute exact path="/admin" adminOnly>
           <AdminPanel />
         </ProtectedRoute>
         <Route exact path="/prohibited" render={() => <Prohibited />} />

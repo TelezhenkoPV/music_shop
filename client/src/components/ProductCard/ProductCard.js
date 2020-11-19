@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import FavoriteIcon from '@material-ui/icons/Favorite'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
+import ProductCardSlide from '../ProductCardSlide/ProductCardSlide'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -59,13 +60,7 @@ export const ProductCard = (props) => {
   }
 
   const onAddProduct = () => {
-    const { _id, name, currentPrice } = element
-    const productObj = {
-      _id,
-      name,
-      currentPrice,
-    }
-    onClickAddProduct(productObj)
+    onClickAddProduct(element)
   }
 
   return (
@@ -76,7 +71,9 @@ export const ProductCard = (props) => {
           style={{ background: element.color }}
         />
       </div>
-      <img className={classes.media} src={'/guitar.png'} alt="guitar" />
+
+      <ProductCardSlide data={element.imageUrls} />
+
       <CardContent>
         <div style={{ display: 'flex' }}>
           <Typography variant="h6" style={{ textTransform: 'uppercase' }}>
@@ -86,8 +83,6 @@ export const ProductCard = (props) => {
         <Typography variant="body2">Цена: {element.currentPrice}</Typography>
         <Typography variant="body2">Код товара: {element.itemNo}</Typography>
         <Typography variant="body2">Бренд: {element.brand}</Typography>
-        <Typography variant="body2">Гриф: {element.griff}</Typography>
-        <Typography variant="body2">Корпус: {element.guitarBody}</Typography>
       </CardContent>
       <div className={classes.rightCardBlock}>
         <div className={classes.actionsBlock}>
@@ -101,14 +96,16 @@ export const ProductCard = (props) => {
           >
             В корзину
           </Button>
-          <IconButton aria-label="like" style={{ width: 50 }}>
+
+          <IconButton
+            aria-label="like"
+            style={{ width: 50 }}
+            onClick={handleFavorite}
+          >
             {isFavorite ? (
-              <FavoriteIcon
-                style={{ color: '#C22A2A' }}
-                onClick={handleFavorite}
-              />
+              <FavoriteIcon style={{ color: '#C22A2A' }} />
             ) : (
-              <FavoriteIcon onClick={handleFavorite} />
+              <FavoriteIcon />
             )}
           </IconButton>
         </div>
