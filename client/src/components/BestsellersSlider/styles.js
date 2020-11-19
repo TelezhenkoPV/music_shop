@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   },
   largeSlider: {
     display: 'none',
-    [theme.breakpoints.only('lg')]: {
+    [theme.breakpoints.up('lg')]: {
       display: 'block',
     },
   },
