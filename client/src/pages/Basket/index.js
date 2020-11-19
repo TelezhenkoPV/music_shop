@@ -16,6 +16,11 @@ import {
   plusItem,
   minusItem,
 } from '../../store/basket/basketAction'
+import {
+  basketSelector,
+  totalCountSelector,
+  totalPriceSelector,
+} from '../../store/basket/basketSelectors'
 
 const useStyles = makeStyles((theme) => ({
   title_box: {
@@ -70,15 +75,10 @@ function Basket() {
   const classes = useStyles()
   const dispatch = useDispatch()
 
-  const { totalPrice } = useSelector(({ basket }) => ({
-    totalPrice: basket.totalPrice,
-  }))
+  const basket = useSelector(basketSelector)
+  const totalPrice = useSelector(totalPriceSelector)
 
-  const productsObject = useSelector(({ basket }) => basket.items)
-
-  const addedProducts = Object.keys(productsObject).map((key) => {
-    return productsObject[key].items[0]
-  })
+  const totalCount = useSelector(totalCountSelector)
 
   const onRemoveItem = (_id) => {
     dispatch(removeCartItem(_id))
@@ -90,6 +90,26 @@ function Basket() {
 
   const onMinusItem = (_id) => {
     dispatch(minusItem(_id))
+  }
+
+  const basketCard = () => {
+    return basket.map((elem) => {
+      return (
+        <BasketCard
+          key={elem._id}
+          img={elem.imageUrls}
+          id={elem._id}
+          color={elem.color}
+          name={elem.name}
+          price={elem.currentPrice}
+          onRemove={onRemoveItem}
+          totalPrice={totalPrice}
+          totalCount={totalCount}
+          onMinus={onMinusItem}
+          onPlus={onPlusItem}
+        />
+      )
+    })
   }
 
   return (
@@ -129,22 +149,9 @@ function Basket() {
         </Container>
       </Box>
 
-      {addedProducts.map((elem) => (
-        <BasketCard
-          key={elem._id}
-          img={elem.imageUrls}
-          id={elem._id}
-          name={elem.name}
-          price={elem.currentPrice}
-          onRemove={onRemoveItem}
-          totalPrice={productsObject[elem._id].totalPrice}
-          totalCount={productsObject[elem._id].items.length}
-          onMinus={onMinusItem}
-          onPlus={onPlusItem}
-        />
-      ))}
+      {basketCard()}
 
-      {totalPrice ? (
+      {totalCount ? (
         <Container maxWidth="xl" className={classes.end_box}>
           <div className={classes.wrapper}>
             <Box className={classes.price_box}>
