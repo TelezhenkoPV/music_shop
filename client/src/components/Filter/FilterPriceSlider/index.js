@@ -1,26 +1,12 @@
-import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
+import React, { useState } from 'react'
+
 import Typography from '@material-ui/core/Typography'
 import Slider from '@material-ui/core/Slider'
-import { useDispatch, useSelector } from 'react-redux'
-import { setFilterPriceIntervalAction } from '../../../store/filters/filtersAction'
-import {
-  filterPricesIntervalSelector,
-  filtersCategoriesSelector,
-} from '../../../store/filters/filtersSelectors'
-import { useHistory } from 'react-router-dom'
-
-const useStyles = makeStyles({
-  root: {
-    width: 300,
-    height: 200,
-    paddingLeft: 5,
-    paddingTop: 50,
-  },
-  text: {
-    textAlign: 'center',
-  },
-})
+import { useStyles } from './styles'
+import { objToQueryString, toggleItemInArr } from '../utils'
+import { useHistory } from 'react-router'
+import { useSelector } from 'react-redux'
+import { actualFiltersSelector } from '../../../store/filters/filtersSelectors'
 
 function valuetext(value) {
   return `${value}$`
@@ -28,32 +14,43 @@ function valuetext(value) {
 
 export default function FilterPriceSlider() {
   const classes = useStyles()
-  const dispatch = useDispatch()
-  const pricesInterval = useSelector(filterPricesIntervalSelector)
-  const categoriesName = useSelector(filtersCategoriesSelector)
-  const [minPrice, maxPrice] = pricesInterval
   const history = useHistory()
+  const [value, setValue] = useState([0, 1500])
+  const actualFilters = useSelector(actualFiltersSelector)
 
   const handleChange = (event, newValue) => {
-    dispatch(setFilterPriceIntervalAction(newValue))
+    setValue([newValue[0], newValue[1]])
 
-    const categoriesPath = categoriesName.join(',')
+    const newActualFilters = toggleItemInArr(
+      newValue[0],
+      'minPrice',
+      actualFilters
+    )
 
-    history.push({
-      pathname: `/products/${categoriesPath}&minPrice=${newValue[0]}&maxPrice=${newValue[1]}`,
-    })
+    const superNewActualFilters = toggleItemInArr(
+      newValue[1],
+      'maxPrice',
+      newActualFilters
+    )
+
+    const queryString = objToQueryString(superNewActualFilters, '/products/&')
+    history.push(queryString)
   }
 
   return (
     <div className={classes.root}>
       <Typography id="range-slider" className={classes.text} gutterBottom>
-        Цена "от {minPrice}" - "до {maxPrice}"
+        Price "from {actualFilters.minPrice || value[0]}" - "to{' '}
+        {actualFilters.maxPrice || value[1]}"
       </Typography>
       <Slider
         min={0}
         max={1500}
-        value={pricesInterval}
-        onChange={handleChange}
+        value={
+          [+actualFilters.minPrice || 0, +actualFilters.maxPrice || 1500] ||
+          value
+        }
+        onChangeCommitted={handleChange}
         valueLabelDisplay="auto"
         step={10}
         aria-labelledby="range-slider"

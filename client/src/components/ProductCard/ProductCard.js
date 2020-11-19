@@ -9,7 +9,6 @@ import FavoriteIcon from '@material-ui/icons/Favorite'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import ProductCardSlide from '../ProductCardSlide/ProductCardSlide'
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: '100%',
@@ -61,13 +60,7 @@ export const ProductCard = (props) => {
   }
 
   const onAddProduct = () => {
-    const { _id, name, currentPrice } = element
-    const productObj = {
-      _id,
-      name,
-      currentPrice,
-    }
-    onClickAddProduct(productObj)
+    onClickAddProduct(element)
   }
 
   return (
@@ -113,7 +106,6 @@ export const ProductCard = (props) => {
               <FavoriteIcon style={{ color: '#C22A2A' }} />
             ) : (
               <FavoriteIcon />
-
             )}
           </IconButton>
         </div>

@@ -24,7 +24,6 @@ ReactDOM.render(
         </CssBaseline>
       </BrowserRouter>
     </PersistGate>
-
   </Provider>,
   document.getElementById('root')
 )

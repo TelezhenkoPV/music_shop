@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import * as Yup from 'yup'
 import { Formik, Form, Field } from 'formik'
+import { schemaSignUp } from '../../validation/schema'
 import { TextField } from 'formik-material-ui'
 
-import { makeStyles, useTheme } from '@material-ui/core/styles'
+import useStyles from './signUpStyles'
+import { useTheme } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import Container from '@material-ui/core/Container'
 import Button from '@material-ui/core/Button'
@@ -18,113 +19,13 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff'
 
 import { signUp } from '../../store/user/userActions'
 import { closeModal } from '../../store/modal/modalAction'
+import { notificate } from '../../store/notification/notificationActions'
 
 import {
   getIsSignUpProceed,
   getSignUpError,
   getIsSignUpSuccessful,
 } from '../../store/user/userSelectors'
-
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(1),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  formWrapper: {
-    [theme.breakpoints.down('xs')]: {
-      padding: '15px',
-    },
-  },
-  form: {
-    width: '100%',
-  },
-  textField: {
-    '&>.MuiInputLabel-root': {
-      [theme.breakpoints.down('xs')]: {
-        fontSize: '12px',
-      },
-    },
-    '&>.MuiInputBase-root': {
-      [theme.breakpoints.down('xs')]: {
-        fontSize: '12px',
-      },
-    },
-  },
-  button: {
-    margin: theme.spacing(1, 0, 1),
-    [theme.breakpoints.down('xs')]: {
-      marginBottom: theme.spacing(1),
-      fontSize: '10px',
-    },
-  },
-  marginBottom: {
-    marginBottom: theme.spacing(4),
-    [theme.breakpoints.down('xs')]: {
-      marginBottom: theme.spacing(2),
-    },
-  },
-  marginBottomLast: {
-    marginBottom: theme.spacing(2),
-    [theme.breakpoints.down('xs')]: {
-      marginBottom: theme.spacing(1),
-    },
-  },
-  helperText: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    transform: 'translateY(100%)',
-    [theme.breakpoints.down('xs')]: {
-      fontSize: '10px',
-    },
-  },
-  devider: {
-    margin: '3px 0 1px',
-  },
-}))
-
-const SignUpSchema = Yup.object().shape({
-  firstName: Yup.string()
-    .required('Имя обязательно для заполнения')
-    .min(2, 'Имя должно содержать как минимум 2 символа')
-    .max(25, 'Длина имени не может быть больше 25 символов')
-    .matches(/^[А-ЯЁІЇЄ|A-Z]/, 'Первый символ должен быть заглавный')
-    .matches(
-      /^[А-ЯЁІЇЄ|A-Z][а-яёіїє'|a-z]*/,
-      "Разрешенные символы: a-zA-Zа-яА-ЯёiїєЁІЇЄ'"
-    ),
-  lastName: Yup.string()
-    .required('Фамилия обязательна для заполнения')
-    .min(2, 'Фамилия должна содержать как минимум 2 символа')
-    .max(25, 'Длина фамилии не может быть больше 25 символов')
-    .matches(/^[А-ЯЁІЇЄ|A-Z]/, 'Первый символ должен быть заглавный')
-    .matches(
-      /^[А-ЯЁІЇЄ|A-Z][а-яёіїє'|a-z]*/,
-      "'Разрешенные символы: a-zA-Zа-яА-ЯёiїєЁІЇЄ'"
-    ),
-  telephone: Yup.string().matches(
-    /^\+380\d{3}\d{2}\d{2}\d{2}$/,
-    'Используйте формат +380XXXXXXXXX'
-  ),
-  email: Yup.string()
-    .required('Email обязательный для заполнения')
-    .email('Адрес электронной почты введен некорректно'),
-  login: Yup.string()
-    .required('Логин обязательный для заполнения')
-    .min(3, 'Логин должен содержать как минимум 3 символа')
-    .max(10, 'Длина логина не может быть больше 10 символов')
-    .matches(/^[a-zA-Z0-9]+$/, 'Разрешенные символы: a-z, A-Z, 0-9'),
-  password: Yup.string()
-    .required('Пароль обязательный для заполнения')
-    .min(7, 'Минимальная длина пароля 7 символов')
-    .max(30, 'Максимальная длина пароля 30 символов')
-    .matches(/^[a-zA-Z0-9]+$/, 'Разрешенные символы: a-z, A-Z, 0-9'),
-  confirmPassword: Yup.string()
-    .required('Необходимо подтвердить пароль')
-    .oneOf([Yup.ref('password'), null], 'Пароли не совпадают'),
-})
 
 const initialValues = {
   firstName: '',
@@ -159,9 +60,27 @@ export default function SignUp() {
     if (submit.isSubmitting && !isSignUpProceed) {
       submit.setSubmitting(false)
       setSubmit({ isSubmitting: false })
-      submit.setErrors({ ...signUpError })
+      if (signUpError !== null) {
+        submit.setErrors({ ...signUpError })
+        dispatch(
+          notificate({
+            variant: 'error',
+            data: signUpError,
+            key: 'signUpError',
+          })
+        )
+      }
 
-      if (isSignUpSuccessful) dispatch(closeModal())
+      if (isSignUpSuccessful) {
+        dispatch(
+          notificate({
+            variant: 'success',
+            data: 'Registered succsessfully.',
+            key: 'signUpSuccess',
+          })
+        )
+        dispatch(closeModal())
+      }
     }
   }, [isSignUpSuccessful, isSignUpProceed, signUpError, submit, dispatch])
 
@@ -176,7 +95,7 @@ export default function SignUp() {
       <div className={classes.paper}>
         <Formik
           initialValues={initialValues}
-          validationSchema={SignUpSchema}
+          validationSchema={schemaSignUp}
           onSubmit={handleSubmit}
         >
           {({ submitForm, isValid, isSubmitting }) => (
@@ -191,7 +110,7 @@ export default function SignUp() {
                 fullWidth
                 id="firstName"
                 name="firstName"
-                label="Имя"
+                label="First name"
                 required
                 autoComplete="name given-name"
                 autoFocus
@@ -212,7 +131,7 @@ export default function SignUp() {
                 fullWidth
                 id="lastName"
                 name="lastName"
-                label="Фамилия"
+                label="Last name"
                 required
                 autoComplete="name family-name"
                 FormHelperTextProps={{
@@ -230,7 +149,7 @@ export default function SignUp() {
                 fullWidth
                 id="telephone"
                 name="telephone"
-                label="Телефон"
+                label="Phone"
                 autoComplete="tel"
                 FormHelperTextProps={{
                   className: classes.helperText,
@@ -265,7 +184,7 @@ export default function SignUp() {
                 fullWidth
                 id="login"
                 name="login"
-                label="Логин"
+                label="Login"
                 required
                 autoComplete="username"
                 FormHelperTextProps={{
@@ -283,7 +202,7 @@ export default function SignUp() {
                 fullWidth
                 id="password"
                 name="password"
-                label="Пароль"
+                label="Password"
                 required
                 type={showPassword ? 'text' : 'password'}
                 autoComplete="new-password"
@@ -316,7 +235,7 @@ export default function SignUp() {
                 fullWidth
                 id="confirmPassword"
                 name="confirmPassword"
-                label="Повторите пароль"
+                label="Confirm password"
                 required
                 type={showConfirmPassword ? 'text' : 'password'}
                 autoComplete="off"
@@ -359,7 +278,7 @@ export default function SignUp() {
                 disabled={!isValid || isSubmitting}
                 onClick={submitForm}
               >
-                Регистрация
+                SignUp
               </Button>
             </Form>
           )}

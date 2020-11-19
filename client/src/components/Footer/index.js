@@ -35,15 +35,13 @@ const Footer = () => {
             </Typography>
             <img alt="company logo" src={logo} className={classes.logo} />
             <Typography className={classes.logoName} variant="subtitle2">
-
-
               Музыкальный интернет-гипермаркет
             </Typography>
           </Grid>
           {allLinks.map((item) => {
             const links = item.links.map((link) => (
               <Typography
-                key={link._id}
+                key={link.id}
                 style={{
                   color: 'white',
                   textDecoration: 'none',
@@ -57,7 +55,7 @@ const Footer = () => {
               </Typography>
             ))
             return (
-              <Grid item>
+              <Grid item key={item._id}>
                 <Typography className={classes.titleLinks}>
                   {item.title}
                 </Typography>
@@ -65,7 +63,6 @@ const Footer = () => {
                   {item.title === 'Контакты' ? (
                     <Grid item className={classes.boxLinks}>
                       <RoomIcon
-
                         style={{ margin: '2px', color: '#fff' }}
                         fontSize="small"
                       />
@@ -76,8 +73,6 @@ const Footer = () => {
                       <MailOutlineIcon
                         style={{ margin: '2px', color: '#fff' }}
                         fontSize="small"
-
-
                       />
                     </Grid>
                   ) : null}
