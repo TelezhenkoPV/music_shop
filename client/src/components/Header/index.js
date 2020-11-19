@@ -47,6 +47,8 @@ import Login from '../Login'
 import { loadCatalog } from '../../store/categories/categoriesAction'
 import index from 'react-html-parser/lib/elementTypes'
 
+import { totalCountSelector } from '../../store/basket/basketSelectors'
+
 export default function Header() {
   const classes = useStyles()
   const dispatch = useDispatch()
@@ -63,7 +65,7 @@ export default function Header() {
   const [value, setValue] = useState(0)
   const [anchorEl, setAnchorEl] = useState(null)
 
-  const totalCartCount = useSelector(({ basket }) => basket.totalCount)
+  const totalCount = useSelector(totalCountSelector)
   const totalFavoriteCount = useSelector(
     ({ favorite }) => Boolean(favorite) || 0
   )
@@ -129,7 +131,7 @@ export default function Header() {
         onClick={handleMenuClose}
       >
         <IconButton aria-label="show qty product in cart" color="inherit">
-          <Badge badgeContent={totalCartCount} color="secondary">
+          <Badge badgeContent={totalCount} color="secondary">
             <ShoppingBasketIcon />
           </Badge>
         </IconButton>
@@ -323,7 +325,7 @@ export default function Header() {
               aria-label="show qty product in cart"
               color="inherit"
             >
-              <Badge badgeContent={totalCartCount} color="secondary">
+              <Badge badgeContent={totalCount} color="secondary">
                 <ShoppingBasketIcon />
               </Badge>
             </IconButton>
