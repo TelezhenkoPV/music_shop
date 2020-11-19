@@ -10,7 +10,7 @@ import Footer from './components/Footer'
 import Modal from './components/Modal'
 import Notifier from './components/Notifier'
 
-import { getCustomer } from './store/user/userActions'
+import { getCustomer, checkToken } from './store/user/userActions'
 
 // import { getDataFromServe } from './func'
 
@@ -26,6 +26,7 @@ function App() {
 
   useEffect(() => {
     dispatch(getCustomer())
+    dispatch(checkToken())
   })
 
   // getDataFromServe('http://localhost:5000/api/products/filter?&color=red')

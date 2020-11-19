@@ -1,4 +1,7 @@
 import axios from 'axios'
+import jwt_decode from 'jwt-decode'
+import setAuthToken from '../../util/setAuthToken'
+import { notificate } from '../notification/notificationActions'
 import {
   SIGNUP,
   SIGNUP_PROCEED,
@@ -17,7 +20,19 @@ import {
   CHANGE_PASSWORD_PROCEED,
   CHANGE_PASSWORD_ERROR,
 } from './userConstants'
-import { notificate } from '../notification/notificationActions'
+
+export const checkToken = () => (dispatch) => {
+  const token = sessionStorage.token || localStorage.token || null
+  if (token) {
+    setAuthToken(token)
+    const decodedToken = jwt_decode(token)
+    console.log('Token', token)
+    console.log('Decoded token', decodedToken)
+  }
+  // localStorage.removeItem('token')
+  // sessionStorage.removeItem('token')
+  // dispatch({ type: SIGNOUT })
+}
 
 export const signUp = (userData) => (dispatch) => {
   dispatch({ type: SIGNUP_PROCEED, payload: true })
