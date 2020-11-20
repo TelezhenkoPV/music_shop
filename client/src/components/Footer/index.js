@@ -35,7 +35,7 @@ const Footer = () => {
             </Typography>
             <img alt="company logo" src={logo} className={classes.logo} />
             <Typography className={classes.logoName} variant="subtitle2">
-              Музыкальный интернет-гипермаркет
+              Music Internet Hypermarket
             </Typography>
           </Grid>
           {allLinks.map((item) => {
@@ -60,7 +60,7 @@ const Footer = () => {
                   {item.title}
                 </Typography>
                 <Grid container>
-                  {item.title === 'Контакты' ? (
+                  {item.title === 'Contacts' ? (
                     <Grid item className={classes.boxLinks}>
                       <RoomIcon
                         style={{ margin: '2px', color: '#fff' }}

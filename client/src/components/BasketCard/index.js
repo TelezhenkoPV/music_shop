@@ -1,8 +1,7 @@
 import React from 'react'
 import { Box } from '@material-ui/core'
-import { makeStyles, withStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
-import Radio from '@material-ui/core/Radio'
 import IconButton from '@material-ui/core/IconButton'
 import ClearIcon from '@material-ui/icons/Clear'
 import Container from '@material-ui/core/Container'
@@ -34,35 +33,14 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
   },
+  color_circle: {
+    border: '2px solid black',
+    width: '20px',
+    height: '20px',
+    borderRadius: '35%',
+    marginLeft: '5px',
+  },
 }))
-
-const BlueRadio = withStyles({
-  root: {
-    color: 'blue',
-    '&$checked': {
-      color: 'blue',
-    },
-  },
-  checked: {},
-})((props) => <Radio color="default" {...props} />)
-const RedRadio = withStyles({
-  root: {
-    color: 'red',
-    '&$checked': {
-      color: 'red',
-    },
-  },
-  checked: {},
-})((props) => <Radio color="default" {...props} />)
-const GreenRadio = withStyles({
-  root: {
-    color: 'lightgreen',
-    '&$checked': {
-      color: 'lightgreen',
-    },
-  },
-  checked: {},
-})((props) => <Radio color="default" {...props} />)
 
 const BasketCard = (props) => {
   const {
@@ -71,17 +49,13 @@ const BasketCard = (props) => {
     name,
     price,
     onRemove,
-    totalPrice,
-    totalCount,
+    // totalPrice,
+    // totalCount,
     onPlus,
     onMinus,
+    color,
   } = props
   const classes = useStyles()
-  const [selectedValue, setSelectedValue] = React.useState('a')
-
-  const handleChange = (event) => {
-    setSelectedValue(event.target.value)
-  }
 
   const handleRemoveClick = () => {
     onRemove(id)
@@ -117,29 +91,9 @@ const BasketCard = (props) => {
           <Grid item xs>
             <Box className={classes.card_radio}>
               <Typography variant="subtitle1">Цвет</Typography>
-              <BlueRadio
-                checked={selectedValue === 'a'}
-                onChange={handleChange}
-                value="a"
-                name="radio-button-demo"
-                inputProps={{ 'aria-label': 'A' }}
-                style={{ padding: '2px' }}
-              />
-              <RedRadio
-                checked={selectedValue === 'b'}
-                onChange={handleChange}
-                value="b"
-                name="radio-button-demo"
-                inputProps={{ 'aria-label': 'B' }}
-                style={{ padding: '2px' }}
-              />
-              <GreenRadio
-                checked={selectedValue === 'c'}
-                onChange={handleChange}
-                value="c"
-                name="radio-button-demo"
-                inputProps={{ 'aria-label': 'C' }}
-                style={{ padding: '2px' }}
+              <div
+                className={classes.color_circle}
+                style={{ backgroundColor: `${color}` }}
               />
             </Box>
           </Grid>
@@ -151,14 +105,14 @@ const BasketCard = (props) => {
               <IconButton aria-label="remove" onClick={handleMinusItem}>
                 <RemoveIcon color="primary" style={{ fontSize: 20 }} />
               </IconButton>
-              <Typography variant="h6">{totalCount}</Typography>
+              <Typography variant="h6">1</Typography>
               <IconButton aria-label="add" onClick={handlePlusItem}>
                 <AddIcon color="primary" style={{ fontSize: 20 }} />
               </IconButton>
             </Box>
           </Grid>
           <Grid item xs>
-            <Typography variant="h5">${totalPrice}</Typography>
+            <Typography variant="h5">${price}</Typography>
           </Grid>
         </Grid>
       </Box>
