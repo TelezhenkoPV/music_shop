@@ -10,7 +10,7 @@ const ProductCardSmall = (props) => {
 
   return (
     <Link style={{ textDecoration: 'none' }} to={`/product/${product.itemNo}`}>
-      <Box>
+      <Box style={{ width: '250px' }}>
         <Box zIndex="tooltip" className={style.newBox}>
           <Typography className={style.new}>New</Typography>
         </Box>
