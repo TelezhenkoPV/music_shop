@@ -1,102 +1,28 @@
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React from 'react'
+// import React, { useState } from 'react'
+// import { useSelector } from 'react-redux'
 import useStyles from './styles'
 
-import { Formik, Form, Field, useFormikContext } from 'formik'
-import { schemaOrderCustomer } from '../../../validation/schema'
-
-import { TextField } from 'formik-material-ui'
-import Grid from '@material-ui/core/Grid'
 import Divider from '@material-ui/core/Divider'
 import { Typography } from '@material-ui/core'
-import Button from '@material-ui/core/Button'
 
-import {
-  getIsAuthenticated,
-  getUserData,
-} from '../../../store/user/userSelectors'
-import {
-  getActiveStep,
-  getIsCustomerSet,
-  getCustomerData,
-} from '../../../store/order/orderSelectors'
+// import AddressDelivery from './addressDelivery'
+// import NovaPoshta from './novaPoshta'
 
-import {
-  setActiveStep,
-  saveCustomerData,
-} from '../../../store/order/orderActions'
-
-const UpdateValueAuth = () => {
-  const { setValues } = useFormikContext()
-  const isAuthenticated = useSelector(getIsAuthenticated)
-  const isCustomerSet = useSelector(getIsCustomerSet)
-  const customer = useSelector(getCustomerData)
-  const {
-    firstName = '',
-    lastName = '',
-    middleName = '',
-    telephone = '+380',
-    email = '',
-    _id,
-  } = useSelector(getUserData)
-
-  useEffect(() => {
-    if (isCustomerSet) {
-      setValues(customer)
-    } else {
-      if (isAuthenticated) {
-        setValues({
-          firstName,
-          lastName,
-          middleName,
-          telephone,
-          email,
-          customerId: _id,
-        })
-      }
-    }
-  }, [
-    isAuthenticated,
-    isCustomerSet,
-    customer,
-    firstName,
-    lastName,
-    middleName,
-    telephone,
-    email,
-    _id,
-    setValues,
-  ])
-  return null
-}
+// import { getPaymentMethod } from '../../../store/order/orderSelectors'
 
 export default function Payment() {
   const classes = useStyles()
-  const dispatch = useDispatch()
 
-  const activeStep = useSelector(getActiveStep)
+  // const paymentMethods = ['cash', 'creditCard']
+  // const selectedPaymentMethod = useSelector(getPaymentMethod)
+  // const [radioIndex, setRadioIndex] = useState(
+  //   paymentMethods.indexOf(selectedPaymentMethod || paymentMethods[0])
+  // )
 
-  const back = (submitForm) => {
-    submitForm()
-    dispatch(setActiveStep(activeStep - 1))
-  }
-
-  const next = (submitForm) => {
-    submitForm()
-    dispatch(setActiveStep(activeStep + 1))
-  }
-
-  const initialValues = {
-    firstName: '',
-    lastName: '',
-    middleName: '',
-    telephone: '+380',
-    email: '',
-  }
-
-  const handleSubmit = (values) => {
-    dispatch(saveCustomerData(values))
-  }
+  // const handleChangeTab = (event, newTabIndex) => {
+  //   setTabIndex(newTabIndex)
+  // }
 
   return (
     <div className={classes.root}>
@@ -105,138 +31,6 @@ export default function Payment() {
         <Typography>Payment</Typography>
         <Divider className={classes.titleDivider} variant="middle" />
       </div>
-
-      <Formik
-        initialValues={initialValues}
-        validationSchema={schemaOrderCustomer}
-        onSubmit={handleSubmit}
-      >
-        {({ submitForm, isValid, isSubmitting }) => (
-          <Form className={classes.form}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={6}>
-                <Field
-                  component={TextField}
-                  className={classes.marginBottom}
-                  classes={{ root: classes.textField }}
-                  variant="outlined"
-                  margin="dense"
-                  size="small"
-                  fullWidth
-                  id="firstName"
-                  name="firstName"
-                  label="First Name"
-                  required
-                  autoComplete="name given-name"
-                  autoFocus
-                  FormHelperTextProps={{
-                    className: classes.helperText,
-                  }}
-                />
-
-                <Field
-                  component={TextField}
-                  className={classes.marginBottom}
-                  classes={{
-                    root: classes.textField,
-                  }}
-                  variant="outlined"
-                  margin="dense"
-                  size="small"
-                  fullWidth
-                  id="lastName"
-                  name="lastName"
-                  label="Last Name"
-                  autoComplete="name family-name"
-                  FormHelperTextProps={{
-                    className: classes.helperText,
-                  }}
-                />
-
-                <Field
-                  component={TextField}
-                  className={classes.marginBottom}
-                  classes={{
-                    root: classes.textField,
-                  }}
-                  variant="outlined"
-                  margin="dense"
-                  size="small"
-                  fullWidth
-                  id="middleName"
-                  name="middleName"
-                  label="Middle Name"
-                  autoComplete="name middle-name"
-                  FormHelperTextProps={{
-                    className: classes.helperText,
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Field
-                  component={TextField}
-                  className={classes.marginBottom}
-                  classes={{ root: classes.textField }}
-                  variant="outlined"
-                  margin="dense"
-                  size="small"
-                  fullWidth
-                  id="email"
-                  name="email"
-                  label="Email"
-                  autoComplete="email"
-                  FormHelperTextProps={{
-                    className: classes.helperText,
-                  }}
-                />
-
-                <Field
-                  component={TextField}
-                  className={classes.marginBottom}
-                  classes={{ root: classes.textField }}
-                  variant="outlined"
-                  margin="dense"
-                  size="small"
-                  fullWidth
-                  required
-                  id="telephone"
-                  name="telephone"
-                  label="Telephone"
-                  autoComplete="tel"
-                  FormHelperTextProps={{
-                    className: classes.helperText,
-                  }}
-                />
-              </Grid>
-            </Grid>
-
-            <div className={classes.actions}>
-              <Button
-                variant="contained"
-                color="primary"
-                size="large"
-                disabled={activeStep === 0}
-                onClick={() => back(submitForm)}
-                className={classes.button}
-              >
-                Back
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                size="large"
-                disabled={!isValid || isSubmitting}
-                onClick={() => next(submitForm)}
-                className={classes.button}
-              >
-                Next
-              </Button>
-            </div>
-
-            <UpdateValueAuth />
-          </Form>
-        )}
-      </Formik>
     </div>
   )
 }

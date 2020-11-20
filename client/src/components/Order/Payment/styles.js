@@ -17,13 +17,16 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.primary.dark,
     },
   },
-  button: {
-    marginRight: theme.spacing(1),
+  tabs: {
+    margin: theme.spacing(2, 0),
   },
-  actions: {
-    marginTop: theme.spacing(2),
-    display: 'flex',
-    justifyContent: 'space-between',
+  tabRoot: {
+    border: `1px solid ${theme.palette.primary.dark}`,
+    flexGrow: 1,
+  },
+  tabSelected: {
+    background: theme.palette.primary.dark,
+    color: theme.palette.primary.contrastText,
   },
 }))
 

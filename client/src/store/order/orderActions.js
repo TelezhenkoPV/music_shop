@@ -21,6 +21,10 @@ export const saveShippingData = (shippingData) => (dispatch) => {
   })
 }
 
-export const savePaymentData = (data) => (dispatch) => {
-  dispatch({ type: SAVE_PAYMENT_DATA, payload: data })
+export const savePaymentData = (paymentData) => (dispatch) => {
+  const { type, data } = paymentData
+  dispatch({
+    type: SAVE_PAYMENT_DATA,
+    payload: { type, [type]: { isPaymentSet: true, data } },
+  })
 }

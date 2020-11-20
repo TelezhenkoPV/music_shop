@@ -18,5 +18,11 @@ export const getIsNovaPoshtaSet = (store) =>
 export const getNovaPoshtaData = (store) => store.order.shipping.novaPoshta.data
 
 // Payment
-export const getIsPaymentSet = (store) => store.order.isPaymentSet
-export const getPaymentData = (store) => store.order.payment
+export const getPaymentMethod = (store) => store.order.payment.type
+
+export const getIsCashSet = (store) => store.order.payment.cash.isPaymentSet
+export const getCashData = (store) => store.order.payment.cash.data
+
+export const getIsCreditCardSet = (store) =>
+  store.order.payment.creditCard.isPaymentSet
+export const getCreditCardData = (store) => store.order.payment.creditCard.data
