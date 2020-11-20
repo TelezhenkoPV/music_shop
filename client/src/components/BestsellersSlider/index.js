@@ -50,7 +50,7 @@ const BestsellersSlider = () => {
     axios('http://localhost:5000/api/products').then((res) => {
       setProducts(res.data)
     })
-  })
+  }, [])
   return (
     <div>
       <Box className={style.categoriesTitle}>
@@ -61,28 +61,28 @@ const BestsellersSlider = () => {
       <Box className={style.largeSlider}>
         <Slider {...settingsLarge}>
           {bestsellers.map((item) => {
-            return <ProductCardSmall product={item} />
+            return <ProductCardSmall key={item._id} product={item} />
           })}
         </Slider>
       </Box>
       <Box className={style.mediumSlider}>
         <Slider {...settingsMedium}>
           {bestsellers.map((item) => {
-            return <ProductCardSmall product={item} />
+            return <ProductCardSmall key={item._id} product={item} />
           })}
         </Slider>
       </Box>
       <Box className={style.smallSlider}>
         <Slider {...settingsSmall}>
           {bestsellers.map((item) => {
-            return <ProductCardSmall product={item} />
+            return <ProductCardSmall key={item._id} product={item} />
           })}
         </Slider>
       </Box>
       <Box className={style.tinySlider}>
         <Slider {...settingsTiny}>
           {bestsellers.map((item) => {
-            return <ProductCardSmall product={item} />
+            return <ProductCardSmall key={item._id} product={item} />
           })}
         </Slider>
       </Box>

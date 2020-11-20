@@ -9,10 +9,7 @@ const ProductCardSmall = (props) => {
   const style = useStyles()
 
   return (
-    <Link
-      style={{ textDecoration: 'none' }}
-      to={`/product/${product.categories}/${product._id}`}
-    >
+    <Link style={{ textDecoration: 'none' }} to={`/product/${product.itemNo}`}>
       <Box>
         <Box zIndex="tooltip" className={style.newBox}>
           <Typography className={style.new}>New</Typography>

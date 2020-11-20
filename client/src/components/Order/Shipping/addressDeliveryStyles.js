@@ -5,17 +5,12 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     padding: theme.spacing(2),
   },
-  title: {
-    marginBottom: theme.spacing(2),
+  radioGroup: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center',
-
-    '&>.MuiDivider-root': {
-      flexGrow: 1,
-      height: '2px',
-      backgroundColor: theme.palette.primary.dark,
-    },
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    padding: theme.spacing(2),
   },
   button: {
     marginRight: theme.spacing(1),
