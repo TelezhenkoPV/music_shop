@@ -2,6 +2,7 @@ const initialStore = {
   products: [],
   totalPrice: 0,
   totalCount: 0,
+  productAmount: 0,
 }
 
 const reducer = (store = initialStore, action) => {
@@ -11,12 +12,12 @@ const reducer = (store = initialStore, action) => {
         console.log('+1 item for', action.payload._id)
       } else {
         console.log('Add item to cart')
-        // store.products.push(action.payload)
+        store.products.push(action.payload)
       }
 
       return {
         ...store,
-        products: [...store.products, action.payload],
+        products: [...store.products],
         totalPrice: store.totalPrice + action.payload.currentPrice,
         totalCount: store.totalCount + 1,
       }

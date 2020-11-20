@@ -1,5 +1,4 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
 import { Box } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
 import Breadcrumbs from '@material-ui/core/Breadcrumbs'
@@ -18,58 +17,11 @@ import {
 } from '../../store/basket/basketAction'
 import {
   basketSelector,
+  productCountSelector,
   totalCountSelector,
   totalPriceSelector,
 } from '../../store/basket/basketSelectors'
-
-const useStyles = makeStyles((theme) => ({
-  title_box: {
-    backgroundColor: '#f0f0ff',
-    height: '120px',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: '3%',
-  },
-  tabs_box: {
-    backgroundColor: theme.palette.primary.main,
-    height: '70px',
-    display: 'flex',
-    alignItems: 'center',
-    color: 'white',
-    textAlign: 'center',
-    marginBottom: '15px',
-  },
-  noitems_box: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '600px',
-  },
-  end_box: {},
-  price_box: {
-    border: '1px solid black',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    width: '25%',
-    padding: '25px 50px',
-    boxSizing: 'border-box',
-  },
-  buttons_box: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: '60px',
-  },
-  wrapper: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    marginBottom: '30px',
-  },
-}))
+import useStyles from './styles'
 
 function Basket() {
   const classes = useStyles()
@@ -77,7 +29,7 @@ function Basket() {
 
   const basket = useSelector(basketSelector)
   const totalPrice = useSelector(totalPriceSelector)
-
+  const productCount = useSelector(productCountSelector)
   const totalCount = useSelector(totalCountSelector)
 
   const onRemoveItem = (_id) => {
@@ -104,9 +56,10 @@ function Basket() {
           price={elem.currentPrice}
           onRemove={onRemoveItem}
           totalPrice={totalPrice}
-          totalCount={totalCount}
+          totalCount={productCount}
           onMinus={onMinusItem}
           onPlus={onPlusItem}
+          product={elem}
         />
       )
     })
@@ -116,14 +69,14 @@ function Basket() {
     <Box>
       <Box className={classes.title_box}>
         <Typography variant="h4" style={{ marginBottom: '1%' }}>
-          Корзина
+          Cart
         </Typography>
         <Breadcrumbs aria-label="breadcrumb">
           <Link color="inherit" href="/">
-            Главная
+            Home
           </Link>
           <Link color="textPrimary" href="/basket" aria-current="page">
-            Корзина
+            Cart
           </Link>
         </Breadcrumbs>
       </Box>
@@ -131,19 +84,19 @@ function Basket() {
         <Container>
           <Grid container direction="row">
             <Grid item xs={5}>
-              <Typography variant="subtitle1">Название</Typography>
+              <Typography variant="subtitle1">Name</Typography>
             </Grid>
             <Grid item xs={1}>
-              <Typography variant="subtitle1">Цвет</Typography>
+              <Typography variant="subtitle1">Color</Typography>
             </Grid>
             <Grid item xs>
-              <Typography variant="subtitle1">Цена</Typography>
+              <Typography variant="subtitle1">Price</Typography>
             </Grid>
             <Grid item xs>
-              <Typography variant="subtitle1">Количество</Typography>
+              <Typography variant="subtitle1">Quantity</Typography>
             </Grid>
             <Grid item xs>
-              <Typography variant="subtitle1">Итоговая цена</Typography>
+              <Typography variant="subtitle1">Total price</Typography>
             </Grid>
           </Grid>
         </Container>
@@ -155,8 +108,12 @@ function Basket() {
         <Container maxWidth="xl" className={classes.end_box}>
           <div className={classes.wrapper}>
             <Box className={classes.price_box}>
-              <Typography variant="h5">Итого</Typography>
-              <Typography variant="h4">${totalPrice}</Typography>
+              <Typography variant="h5" className={classes.price_box_text}>
+                Total
+              </Typography>
+              <Typography variant="h4" className={classes.price_box_text}>
+                ${totalPrice}
+              </Typography>
             </Box>
           </div>
           <Box className={classes.buttons_box}>
@@ -165,22 +122,37 @@ function Basket() {
               variant="contained"
               color="secondary"
               href="/"
+              className={classes.buttons_box_font}
             >
-              Продолжить покупки
+              Continue shopping
             </Button>
-            <Button variant="contained" color="primary" href="/checkout">
-              Оформить заказ
+            <Button
+              variant="contained"
+              color="primary"
+              href="/checkout"
+              className={classes.buttons_box_font}
+            >
+              Checkout
             </Button>
           </Box>
         </Container>
       ) : (
         <Box className={classes.noitems_box}>
-          <img src={cart_icon} alt="cart icon" style={{ marginBottom: '2%' }} />
-          <Typography variant="h6" style={{ marginBottom: '2%' }}>
-            Здесь пока нет товаров
+          <img
+            src={cart_icon}
+            alt="cart icon"
+            className={classes.noitems_box_img}
+            style={{ marginBottom: '2%' }}
+          />
+          <Typography
+            variant="h6"
+            className={classes.noitems_box_text}
+            style={{ marginBottom: '2%' }}
+          >
+            There are no products here yet
           </Typography>
           <Button variant="contained" color="primary" href="/">
-            Перейти к каталогу
+            Go to catalog
           </Button>
         </Box>
       )}
