@@ -17,13 +17,13 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   title: {
-    flexGrow: 1,
+    marginRight: 20
   },
 }))
 
 const CatalogProductBar = () => {
   const classes = useStyles()
-  const [sortType, setSortType] = React.useState('По возврастанию цены')
+  const [sortType, setSortType] = React.useState('Ascending price')
 
   const handleChange = (event) => {
     setSortType(event.target.value)
@@ -53,10 +53,7 @@ const CatalogProductBar = () => {
           <TocIcon />
         </IconButton>
         <Typography variant="body2" className={classes.title}>
-          9 едениц товара
-        </Typography>
-        <Typography variant="body2" className={classes.title}>
-          Сортировать по:
+          Sort by:
         </Typography>
         <Select
           labelId="sort"
@@ -64,10 +61,10 @@ const CatalogProductBar = () => {
           value={sortType}
           onChange={handleChange}
         >
-          <MenuItem value={'По возврастанию цены'}>
-            По возврастанию цены
+          <MenuItem value={'Ascending price'}>
+            Ascending price
           </MenuItem>
-          <MenuItem value={'По убыванию цены'}>По убыванию цены</MenuItem>
+          <MenuItem value={'Descending price'}>Descending price</MenuItem>
         </Select>
       </Toolbar>
     </AppBar>
