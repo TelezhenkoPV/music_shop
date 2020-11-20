@@ -14,6 +14,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite'
 import IconButton from '@material-ui/core/IconButton'
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward'
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward'
+import Comment from '../../components/Comment'
 
 const PDP = () => {
   const classes = useStyles()
@@ -145,10 +146,14 @@ const PDP = () => {
           </Grid>
         </Grid>
       </Container>
-      <Youtube
-        style={{ display: 'flex', margin: 100 }}
-        videoLink={product.videoLink}
-      />
+      <Youtube videoLink={product.videoLink} />
+      <Typography
+        variant="h3"
+        style={{ textAlign: 'center', margin: '30px 0 20px' }}
+      >
+        Why i choose it?
+      </Typography>
+      <Comment productId={product._id} />
     </>
   )
 }
