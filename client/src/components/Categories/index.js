@@ -26,7 +26,13 @@ const Categories = () => {
         {catalog.map((item) => {
           if (item.imgUrl && item.imgUrl !== 'null') {
             return (
-              <Grid item sm={12} md={6} key={item.id}>
+              <Grid
+                item
+                sm={12}
+                md={6}
+                key={item.id}
+                style={{ margin: '0 auto' }}
+              >
                 <Link style={{ textDecoration: 'none' }} to={item.url}>
                   <Box zIndex="tooltip" className={style.titleBox}>
                     <Typography className={style.title}>{item.name}</Typography>

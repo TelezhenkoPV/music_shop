@@ -12,28 +12,28 @@ const BestsellersSlider = () => {
   const settingsLarge = {
     dots: false,
     infinite: true,
-    speed: 1000,
+    speed: 500,
     slidesToShow: 4,
     slidesToScroll: 1,
   }
   const settingsMedium = {
     dots: false,
     infinite: true,
-    speed: 1000,
+    speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
   }
   const settingsSmall = {
     dots: false,
     infinite: true,
-    speed: 1000,
+    speed: 500,
     slidesToShow: 2,
     slidesToScroll: 1,
   }
   const settingsTiny = {
     dots: false,
     infinite: true,
-    speed: 1000,
+    speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
   }

@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
     right: '5px',
     [theme.breakpoints.down('md')]: {
       width: '300px',
+      margin: '0 auto',
     },
     [theme.breakpoints.down('sm')]: {
       width: '200px',
@@ -39,10 +40,11 @@ const useStyles = makeStyles((theme) => ({
     top: '-56px',
     left: '340px',
     [theme.breakpoints.down('md')]: {
-      left: '183px',
+      left: '0px',
       height: '40px',
       top: '-45px',
       padding: '7px',
+      margin: '0 auto',
     },
     [theme.breakpoints.down('sm')]: {
       width: '117px',
