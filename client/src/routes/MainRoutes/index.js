@@ -22,6 +22,8 @@ const MainRoutes = () => {
 
         <Route exact path="/products/:params" render={() => <PLP />} />
 
+        <Route exact path="/product/:id" render={() => <PDP />} />
+
         <Route
           exact
           path="/about-us/about-our-team"

@@ -84,10 +84,14 @@ export const ProductCard = (props) => {
         <Typography variant="body2">Price: {element.currentPrice}</Typography>
         <Typography variant="body2">Vendor code: {element.itemNo}</Typography>
         <Typography variant="body2">Brand: {element.brand}</Typography>
-        <NavLink to={{
-          pathname: '/product-details',
-          state: { product: element}
-        }}>Details</NavLink>
+        <NavLink
+          to={{
+            pathname: `/product/${element.itemNo}`,
+            state: { product: element },
+          }}
+        >
+          Details
+        </NavLink>
       </CardContent>
       <div className={classes.rightCardBlock}>
         <div className={classes.actionsBlock}>
