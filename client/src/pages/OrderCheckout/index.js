@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
+import { useSelector } from 'react-redux'
 
 import clsx from 'clsx'
 import useStyles, { useStepIconStyles } from './styles'
@@ -27,6 +28,8 @@ import Shipping from '../../components/Order/Shipping'
 import Payment from '../../components/Order/Payment'
 import Confirm from '../../components/Order/Confirm'
 import Summary from '../../components/Order/Summary'
+
+import { getActiveStep } from '../../store/order/orderSelectors'
 
 function StepIcon(props) {
   const classes = useStepIconStyles()
@@ -57,16 +60,16 @@ StepIcon.propTypes = {
   icon: PropTypes.node,
 }
 
-function getStepContent({ activeStep, actions }) {
+function getStepContent(activeStep) {
   switch (activeStep) {
     case 0:
-      return <Customer activeStep={activeStep} actions={actions} />
+      return <Customer />
     case 1:
-      return <Shipping activeStep={activeStep} actions={actions} />
+      return <Shipping />
     case 2:
-      return <Payment activeStep={activeStep} actions={actions} />
+      return <Payment />
     case 3:
-      return <Confirm activeStep={activeStep} actions={actions} />
+      return <Confirm />
     default:
       return null
   }
@@ -75,20 +78,9 @@ function getStepContent({ activeStep, actions }) {
 function OrderCheckout() {
   const classes = useStyles()
 
-  const [activeStep, setActiveStep] = useState(0)
+  const activeStep = useSelector(getActiveStep)
+
   const steps = ['Customer Information', 'Shipping', 'Payment', 'Confirmation']
-
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1)
-  }
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1)
-  }
-
-  // const handleReset = () => {
-  //   setActiveStep(0)
-  // }
 
   return (
     <Container className={classes.root}>
@@ -142,42 +134,7 @@ function OrderCheckout() {
 
         <Grid container spacing={2}>
           <Grid item xs={12} md={8}>
-            {getStepContent({
-              activeStep,
-              actions: { back: handleBack, next: handleNext },
-            })}
-            {/* <div>
-              {activeStep === steps.length ? (
-                <div>
-                  <Typography className={classes.instructions}>
-                    All steps completed - you&apos;re finished
-                  </Typography>
-                  <Button onClick={handleReset} className={classes.button}>
-                    Reset
-                  </Button>
-                </div>
-              ) : (
-                <div className={classes.actions}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    disabled={activeStep === 0}
-                    onClick={handleBack}
-                    className={classes.button}
-                  >
-                    Back
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleNext}
-                    className={classes.button}
-                  >
-                    {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                  </Button>
-                </div>
-              )}
-            </div> */}
+            {getStepContent(activeStep)}
           </Grid>
           <Grid item xs={12} md={4}>
             <Summary />
@@ -189,3 +146,36 @@ function OrderCheckout() {
 }
 
 export default OrderCheckout
+
+// {/* <div>
+//   {activeStep === steps.length ? (
+//     <div>
+//       <Typography className={classes.instructions}>
+//         All steps completed - you&apos;re finished
+//       </Typography>
+//       <Button onClick={handleReset} className={classes.button}>
+//         Reset
+//       </Button>
+//     </div>
+//   ) : (
+//     <div className={classes.actions}>
+//       <Button
+//         variant="contained"
+//         color="primary"
+//         disabled={activeStep === 0}
+//         onClick={handleBack}
+//         className={classes.button}
+//       >
+//         Back
+//       </Button>
+//       <Button
+//         variant="contained"
+//         color="primary"
+//         onClick={handleNext}
+//         className={classes.button}
+//       >
+//         {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+//       </Button>
+//     </div>
+//   )}
+// </div> */}
