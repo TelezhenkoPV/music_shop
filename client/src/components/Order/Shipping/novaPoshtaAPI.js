@@ -43,7 +43,11 @@ export default function getNovaposhtaAPI({
 
   request &&
     axios
-      .post('https://api.novaposhta.ua/v2.0/json/', request, options)
+      .post('https://api.novaposhta.ua/v2.0/json/', request, options, {
+        transformRequest: (request, headers) => {
+          delete headers.common.Authorization
+        },
+      })
       .then(({ status, data: { success, data, errors } }) => {
         if ((status === 200) & success) {
           const list = data.map((item) => item.DescriptionRu)
