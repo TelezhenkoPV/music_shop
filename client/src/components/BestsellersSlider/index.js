@@ -6,6 +6,7 @@ import { Box } from '@material-ui/core'
 import useStyles from './styles'
 import axios from 'axios'
 import ProductCardSmall from '../ProductCardSmall'
+import './slick-style.scss'
 
 const BestsellersSlider = () => {
   const style = useStyles()
