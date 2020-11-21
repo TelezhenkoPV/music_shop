@@ -58,6 +58,7 @@ const useStyles = makeStyles((theme) => ({
       width: '300px',
     },
     width: '557px',
+    margin: 'auto',
   },
   goTo: {
     fontSize: '20px',

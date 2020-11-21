@@ -1,0 +1,23 @@
+.slick-next:before
+{
+  content: '>';
+}
+[dir='rtl'] .slick-next:before {
+  content: '<';
+}
+
+.slick-prev:before
+{
+  content: '<';
+}
+[dir='rtl'] .slick-prev:before
+{
+  content: '>';
+}
+
+.slick-initialized .slick-slide
+{
+  display: flex;
+  justify-content: center;
+}
+
