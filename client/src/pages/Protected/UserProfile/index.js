@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import useStyles from './styles'
 import { useTheme } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
@@ -20,6 +20,7 @@ import LocalMallIcon from '@material-ui/icons/LocalMall'
 import PersonalInformation from '../../../components/PersonalInformation'
 
 import { getUserData } from '../../../store/user/userSelectors'
+import { getCustomer } from '../../../store/user/userActions'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props
@@ -39,6 +40,12 @@ function TabPanel(props) {
 
 function UserProfile() {
   const classes = useStyles()
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getCustomer())
+  }, [dispatch])
+
   const upMD = useMediaQuery(useTheme().breakpoints.up('md'))
   const upSM = useMediaQuery('(min-width:500px)')
 

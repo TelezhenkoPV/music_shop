@@ -28,7 +28,7 @@ export default function Search() {
 
   const handleClickItem = (item) => {
     handleClose()
-    history.push(`/products/${item.categories}/${item.itemNo}`)
+    history.push(`/product/${item.itemNo}`)
   }
 
   useEffect(() => {

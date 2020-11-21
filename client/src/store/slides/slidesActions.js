@@ -11,7 +11,7 @@ export const getSlides = () => (dispatch) => {
         const slidesProduct = response.data
           .filter((slide) => 'product' in slide)
           .map((slide) => {
-            return { ...slide, slideUrl: slide.product.productUrl }
+            return { ...slide, slideUrl: `/product/${slide.product.itemNo}` }
           })
         const slidesCategory = response.data
           .filter((slide) => 'category' in slide)

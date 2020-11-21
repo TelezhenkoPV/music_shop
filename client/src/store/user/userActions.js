@@ -1,9 +1,13 @@
 import axios from 'axios'
+import jwt_decode from 'jwt-decode'
+import setAuthToken from '../../util/setAuthToken'
+import { notificate } from '../notification/notificationActions'
 import {
-  SIGNUP,
+  SET_AUTHENTICATED,
+  SIGNUP_SUCCESS,
   SIGNUP_PROCEED,
   SIGNUP_ERROR,
-  SIGNIN,
+  SIGNIN_SUCCESS,
   SIGNOUT,
   SIGNIN_PROCEED,
   SIGNIN_ERROR,
@@ -17,7 +21,35 @@ import {
   CHANGE_PASSWORD_PROCEED,
   CHANGE_PASSWORD_ERROR,
 } from './userConstants'
-import { notificate } from '../notification/notificationActions'
+
+export const checkToken = () => (dispatch) => {
+  const token = sessionStorage.token || localStorage.token || null
+  if (token) {
+    setAuthToken(token)
+    const decodedToken = jwt_decode(token)
+    const { firstName, lastName, isAdmin, exp } = decodedToken
+    // console.log('Token', token)
+    // const {firstName, lastName, isAdmin, exp, iat} = decodedToken
+    // console.log('Decoded token', decodedToken)
+    // console.log('Token firstName, lastName, isAdmin:', firstName, lastName, isAdmin)
+    // const expUTC = new Date(new Date(0).setUTCSeconds(exp))
+    // const iatUTC = new Date(new Date(0).setUTCSeconds(iat))
+    // console.log('Token created', iatUTC)
+    // console.log('Token expired', expUTC)
+    dispatch({
+      type: SET_AUTHENTICATED,
+      payload: {
+        isAuthenticated: true,
+        token,
+        data: { isAdmin, firstName, lastName },
+      },
+    })
+    if (exp < Date.now() / 1000) {
+      dispatch(signOut())
+      window.location.href = '/'
+    }
+  }
+}
 
 export const signUp = (userData) => (dispatch) => {
   dispatch({ type: SIGNUP_PROCEED, payload: true })
@@ -25,7 +57,7 @@ export const signUp = (userData) => (dispatch) => {
     .post('/api/customers', userData)
     .then((signUpResult) => {
       if (signUpResult.status === 200) {
-        dispatch({ type: SIGNUP })
+        dispatch({ type: SIGNUP_SUCCESS })
       }
     })
     .catch(({ response: { status, data } }) => {
@@ -58,8 +90,9 @@ export const signIn = ({ loginOrEmail, password, rememberMe }) => (
           if (rememberMe) localStorage.setItem('token', token)
           sessionStorage.setItem('token', token)
 
-          dispatch({ type: SIGNIN, payload: token })
-          dispatch(getCustomer())
+          dispatch(checkToken())
+          dispatch({ type: SIGNIN_SUCCESS })
+          // dispatch(getCustomer())
         }
       }
     })
@@ -78,35 +111,33 @@ export const signOut = () => (dispatch) => {
   localStorage.removeItem('token')
   sessionStorage.removeItem('token')
   dispatch({ type: SIGNOUT })
+  notificate({
+    variant: 'info',
+    data: 'Loged out.',
+  })
 }
 
 export const getCustomer = () => (dispatch) => {
-  const token = sessionStorage.token || localStorage.token || null
+  dispatch({ type: GET_CUSTOMER_PROCEED, payload: true })
+  axios
+    .get('/api/customers/customer')
+    .then((loggedInCustomer) => {
+      if (loggedInCustomer.status === 200) {
+        const { data } = loggedInCustomer
 
-  if (token) {
-    dispatch({ type: GET_CUSTOMER_PROCEED, payload: true })
-    var authOptions = {
-      headers: {
-        Authorization: token,
-      },
-    }
-    axios
-      .get('/api/customers/customer', authOptions)
-      .then((loggedInCustomer) => {
-        if (loggedInCustomer.status === 200) {
-          const { data } = loggedInCustomer
-
-          dispatch({ type: SIGNIN, payload: token })
-          dispatch({ type: SAVE_USER_DATA, payload: data })
-        }
-      })
-      .catch(() => {
-        dispatch(signOut())
-      })
-      .finally(() => {
-        dispatch({ type: GET_CUSTOMER_PROCEED, payload: false })
-      })
-  }
+        dispatch({ type: SAVE_USER_DATA, payload: data })
+        notificate({
+          variant: 'success',
+          data: 'Customer personal information recieved.',
+        })
+      }
+    })
+    .catch(() => {
+      dispatch(signOut())
+    })
+    .finally(() => {
+      dispatch({ type: GET_CUSTOMER_PROCEED, payload: false })
+    })
 }
 
 export const toogleProfileEdit = (isEdit) => (dispatch) => {
@@ -115,16 +146,8 @@ export const toogleProfileEdit = (isEdit) => (dispatch) => {
 
 export const update = (userData) => (dispatch) => {
   dispatch({ type: UPDATE_PROCEED, payload: true })
-
-  const token = sessionStorage.token || localStorage.token || null
-
-  var authOptions = {
-    headers: {
-      Authorization: token,
-    },
-  }
   axios
-    .put('/api/customers', userData, authOptions)
+    .put('/api/customers', userData)
     .then((updateResult) => {
       if (updateResult.status === 200) {
         dispatch({ type: UPDATE_SUCCESS })
@@ -151,15 +174,8 @@ export const update = (userData) => (dispatch) => {
 
 export const changePassword = (passwords) => (dispatch) => {
   dispatch({ type: CHANGE_PASSWORD_PROCEED, payload: true })
-  const token = sessionStorage.token || localStorage.token || null
-
-  var authOptions = {
-    headers: {
-      Authorization: token,
-    },
-  }
   axios
-    .put('/api/customers/password', passwords, authOptions)
+    .put('/api/customers/password', passwords)
     .then((result) => {
       if (result.status === 200) {
         dispatch({ type: CHANGE_PASSWORD_SUCCESS })

@@ -62,6 +62,7 @@
     "history": "^5.0.0",
     "html-react-parser": "^0.14.1",
     "immutability-helper": "^3.1.1",
+    "jwt-decode": "^3.1.2",
     "material": "^0.4.3",
     "material-ui-search-bar": "^1.0.0",
     "node-sass": "^4.14.1",

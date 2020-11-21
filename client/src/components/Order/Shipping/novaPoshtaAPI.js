@@ -10,6 +10,9 @@ export default function getNovaposhtaAPI({
 }) {
   setLoading(true)
 
+  const token = axios.defaults.headers.common.Authorization
+  delete axios.defaults.headers.common.Authorization
+
   const options = {
     headers: {
       'Content-Type': 'application/json',
@@ -62,6 +65,7 @@ export default function getNovaposhtaAPI({
         )
       })
       .finally(() => {
+        axios.defaults.headers.common.Authorization = token
         setLoading(false)
       })
 }
