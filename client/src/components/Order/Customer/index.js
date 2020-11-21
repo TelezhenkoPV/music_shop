@@ -21,6 +21,8 @@ import {
   getCustomerData,
 } from '../../../store/order/orderSelectors'
 
+import { getCustomer } from '../../../store/user/userActions'
+
 import {
   setActiveStep,
   saveCustomerData,
@@ -42,7 +44,6 @@ const UpdateValueAuth = () => {
 
   useEffect(() => {
     if (isCustomerSet) {
-      console.log('Customer already SET:', customer)
       setValues({ ...customer, customerId: null })
     } else {
       if (isAuthenticated) {
@@ -72,7 +73,6 @@ const UpdateValueAuth = () => {
 }
 
 export default function Customer() {
-  // export default function Customer({ activeStep, actions: { back, next } }) {
   const classes = useStyles()
   const dispatch = useDispatch()
 
@@ -87,6 +87,11 @@ export default function Customer() {
     submitForm()
     dispatch(setActiveStep(activeStep + 1))
   }
+
+  const isAuthenticated = useSelector(getIsAuthenticated)
+  useEffect(() => {
+    if (isAuthenticated) dispatch(getCustomer())
+  }, [dispatch, isAuthenticated])
 
   const initialValues = {
     firstName: '',
@@ -243,27 +248,3 @@ export default function Customer() {
     </div>
   )
 }
-
-// const MyField = (props) => {
-//   const isAuthenticated = useSelector(getIsAuthenticated)
-//   const data = useSelector(getUserData)
-//   console.log('userData!!!',data )
-
-//   const {
-//     setFieldValue,
-//   } = useFormikContext();
-//   const [field] = useField(props);
-
-//   useEffect(() => {
-//     if (isAuthenticated) {
-//       console.log('SetValues!!!',props.name, data[props.name] )
-//       data[props.name] && setFieldValue(props.name, data[props.name]);
-//     }
-//   },[isAuthenticated, data, setFieldValue, props.name])
-
-//   return (
-//     <>
-//       <Field {...props} {...field} />
-//     </>
-//   )
-// }

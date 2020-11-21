@@ -45,7 +45,6 @@ import { getCatalog } from '../../store/categories/categoriesSelectors'
 import SearchBar from '../SearchBar'
 import Login from '../Login'
 import { loadCatalog } from '../../store/categories/categoriesAction'
-import index from 'react-html-parser/lib/elementTypes'
 
 import { totalCountSelector } from '../../store/basket/basketSelectors'
 
@@ -57,11 +56,6 @@ export default function Header() {
   const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent)
   const [openDrawer, setOpenDrawer] = useState(false)
   const [searchPopperOpen, setSearchPopperOpen] = useState(false)
-
-  const handleChangeCategoryTab = (event, newValue) => {
-    setValue(newValue)
-  }
-
   const [value, setValue] = useState(0)
   const [anchorEl, setAnchorEl] = useState(null)
 
@@ -79,6 +73,10 @@ export default function Header() {
   useEffect(() => {
     dispatch(loadCatalog())
   }, [dispatch])
+
+  const handleChangeCategoryTab = (event, newValue) => {
+    setValue(newValue)
+  }
 
   const handleMenuClose = () => {
     setAnchorEl(null)
@@ -204,7 +202,6 @@ export default function Header() {
       )}
     </Menu>
   )
-
   const downTab = (
     <Tabs
       indicatorColor={'primary'}
@@ -214,7 +211,7 @@ export default function Header() {
       {catalog.map((item) => {
         return (
           <Tab
-            key={item.id}
+            key={item._id}
             component={Link}
             to={item.url}
             label={item.name}
@@ -246,7 +243,7 @@ export default function Header() {
         </IconButton>
       </div>
       <Divider classes={{ root: classes.dividerThik }} />
-      <List disablePadding>
+      <List component="nav" disablePadding>
         {catalog.map((item) => (
           <ListItem
             key={item.id}
@@ -256,9 +253,8 @@ export default function Header() {
             button
             onClick={() => {
               setOpenDrawer(false)
-              setValue(index)
+              setValue(value)
             }}
-            selected={value === index}
             classes={{
               selected: classes.drawerItemSelected,
               divider: classes.dividerThin,

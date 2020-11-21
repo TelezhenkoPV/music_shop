@@ -1,4 +1,4 @@
-export const getIsAuthenticated = (store) => !!store.user.token
+export const getIsAuthenticated = (store) => store.user.isAuthenticated
 export const getIsAdmin = (store) => store.user.data.isAdmin
 export const getUserData = (store) => store.user.data
 
