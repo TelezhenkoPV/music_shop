@@ -7,8 +7,10 @@ import {
 
 const initialStore = {
   activeStep: 0,
-  isCustomerSet: false,
-  customer: {},
+  customer: {
+    isCustomerSet: false,
+    data: {},
+  },
   shipping: {
     type: null,
     addressDelivery: {
@@ -20,8 +22,17 @@ const initialStore = {
       data: {},
     },
   },
-  isPaymentSet: false,
-  payment: {},
+  payment: {
+    type: null,
+    cash: {
+      isPaymentSet: true,
+      data: {},
+    },
+    creditCard: {
+      isPaymentSet: false,
+      data: {},
+    },
+  },
   products: {},
 }
 
@@ -35,8 +46,10 @@ const reducer = (store = initialStore, action) => {
     case SAVE_CUSTOMER_DATA:
       return {
         ...store,
-        customer: action.payload,
-        isCustomerSet: true,
+        customer: {
+          ...store.customer,
+          ...action.payload,
+        },
       }
     case SAVE_SHIPPING_DATA:
       return {
@@ -49,10 +62,11 @@ const reducer = (store = initialStore, action) => {
     case SAVE_PAYMENT_DATA:
       return {
         ...store,
-        payment: action.payload,
-        isPaymentSet: true,
+        payment: {
+          ...store.payment,
+          ...action.payload,
+        },
       }
-
     default:
       return store
   }

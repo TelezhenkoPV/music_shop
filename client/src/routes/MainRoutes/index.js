@@ -1,5 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Route, Switch } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { checkToken } from '../../store/user/userActions'
 import ProtectedRoute from '../ProtectedRoute'
 import UserProfile from '../../pages/Protected/UserProfile'
 import AdminPanel from '../../pages/AdminOnly/AdminPanel'
@@ -15,6 +17,12 @@ import Contacts from '../../pages/Contacts'
 import OrderCheckout from '../../pages/OrderCheckout'
 
 const MainRoutes = () => {
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(checkToken())
+  })
+
   return (
     <>
       <Switch>
