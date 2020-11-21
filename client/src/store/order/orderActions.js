@@ -10,7 +10,10 @@ export const setActiveStep = (data) => (dispatch) => {
 }
 
 export const saveCustomerData = (data) => (dispatch) => {
-  dispatch({ type: SAVE_CUSTOMER_DATA, payload: data })
+  dispatch({
+    type: SAVE_CUSTOMER_DATA,
+    payload: { isCustomerSet: true, data },
+  })
 }
 
 export const saveShippingData = (shippingData) => (dispatch) => {
@@ -27,4 +30,8 @@ export const savePaymentData = (paymentData) => (dispatch) => {
     type: SAVE_PAYMENT_DATA,
     payload: { type, [type]: { isPaymentSet: true, data } },
   })
+}
+
+export const sendOrder = (order) => (dispatch) => {
+  console.log('Order sended to server', order)
 }

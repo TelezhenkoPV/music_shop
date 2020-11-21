@@ -46,6 +46,7 @@ export default function getNovaposhtaAPI({
       .post('https://api.novaposhta.ua/v2.0/json/', request, options, {
         transformRequest: (request, headers) => {
           delete headers.common.Authorization
+          return request
         },
       })
       .then(({ status, data: { success, data, errors } }) => {

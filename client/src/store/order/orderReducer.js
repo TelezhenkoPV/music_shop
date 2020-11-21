@@ -7,8 +7,10 @@ import {
 
 const initialStore = {
   activeStep: 0,
-  isCustomerSet: false,
-  customer: {},
+  customer: {
+    isCustomerSet: false,
+    data: {},
+  },
   shipping: {
     type: null,
     addressDelivery: {
@@ -44,8 +46,10 @@ const reducer = (store = initialStore, action) => {
     case SAVE_CUSTOMER_DATA:
       return {
         ...store,
-        customer: action.payload,
-        isCustomerSet: true,
+        customer: {
+          ...store.customer,
+          ...action.payload,
+        },
       }
     case SAVE_SHIPPING_DATA:
       return {

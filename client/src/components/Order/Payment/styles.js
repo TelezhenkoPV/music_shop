@@ -17,16 +17,47 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.primary.dark,
     },
   },
-  tabs: {
-    margin: theme.spacing(2, 0),
+  paymentMethodRoot: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
-  tabRoot: {
-    border: `1px solid ${theme.palette.primary.dark}`,
-    flexGrow: 1,
+  paymentMethodWrapper: {
+    margin: theme.spacing(2, 4),
   },
-  tabSelected: {
-    background: theme.palette.primary.dark,
+  paymentMethod: {
+    minWidth: '150px',
+    minHeight: '150px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    backgroundColor: theme.palette.primary.dark,
     color: theme.palette.primary.contrastText,
+  },
+  paymentMethodControl: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  paymentMethodIcon: {
+    width: '64px',
+    height: '64px',
+    marginTop: theme.spacing(2),
+    padding: theme.spacing(2),
+    backgroundColor: theme.palette.primary.contrastText,
+    borderRadius: '50%',
+  },
+  radioRoot: {
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
+  },
+  radioIcon: {
+    width: 16,
+    height: 16,
+    backgroundColor: theme.palette.primary.contrastText,
+    color: theme.palette.primary.dark,
   },
 }))
 
