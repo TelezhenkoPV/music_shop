@@ -10,6 +10,9 @@ export default function getNovaposhtaAPI({
 }) {
   setLoading(true)
 
+  const token = axios.defaults.headers.common.Authorization
+  delete axios.defaults.headers.common.Authorization
+
   const options = {
     headers: {
       'Content-Type': 'application/json',
@@ -43,12 +46,7 @@ export default function getNovaposhtaAPI({
 
   request &&
     axios
-      .post('https://api.novaposhta.ua/v2.0/json/', request, options, {
-        transformRequest: (request, headers) => {
-          delete headers.common.Authorization
-          return request
-        },
-      })
+      .post('https://api.novaposhta.ua/v2.0/json/', request, options)
       .then(({ status, data: { success, data, errors } }) => {
         if ((status === 200) & success) {
           const list = data.map((item) => item.DescriptionRu)
@@ -67,6 +65,7 @@ export default function getNovaposhtaAPI({
         )
       })
       .finally(() => {
+        axios.defaults.headers.common.Authorization = token
         setLoading(false)
       })
 }
