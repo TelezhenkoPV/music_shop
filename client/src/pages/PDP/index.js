@@ -14,9 +14,13 @@ import FavoriteIcon from '@material-ui/icons/Favorite'
 import IconButton from '@material-ui/core/IconButton'
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward'
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward'
+import Comment from '../../components/Comment'
+import { addProductToBasket } from '../../store/basket/basketAction'
+import { useDispatch } from 'react-redux'
 
 const PDP = () => {
   const classes = useStyles()
+  const dispatch = useDispatch()
   const { id } = useParams()
 
   const [product, setProduct] = useState({})
@@ -40,6 +44,14 @@ const PDP = () => {
 
   const handleFavorite = () => {
     setFavorite(!isFavorite)
+  }
+
+  const handleAddProductToBasket = (elem) => {
+    dispatch(addProductToBasket(elem))
+  }
+
+  const onAddProduct = () => {
+    handleAddProductToBasket(product)
   }
 
   return (
@@ -115,6 +127,7 @@ const PDP = () => {
                 color="primary"
                 size="small"
                 className={classes.button}
+                onClick={onAddProduct}
                 startIcon={<ShoppingCartIcon style={{ color: '#fff' }} />}
               >
                 Add to cart
@@ -145,10 +158,14 @@ const PDP = () => {
           </Grid>
         </Grid>
       </Container>
-      <Youtube
-        style={{ display: 'flex', margin: 100 }}
-        videoLink={product.videoLink}
-      />
+      <Youtube videoLink={product.videoLink} />
+      <Typography
+        variant="h3"
+        style={{ textAlign: 'center', margin: '30px 0 20px' }}
+      >
+        Why i choose it?
+      </Typography>
+      <Comment productId={product._id} />
     </>
   )
 }
