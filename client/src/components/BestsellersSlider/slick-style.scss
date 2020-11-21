@@ -21,3 +21,14 @@
   justify-content: center;
 }
 
+.slick-prev, .slick-next{
+  width:50px;
+  height: 50px;
+}
+
+.slick-prev:before, .slick-next:before {
+  font-size: 50px;
+  color: #112667;
+  font-weight: bold;
+}
+
