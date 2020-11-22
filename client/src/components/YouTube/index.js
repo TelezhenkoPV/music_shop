@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { useStylesYoutubeVideo } from './styles'
 
 export default function Youtube(props) {
@@ -15,4 +16,8 @@ export default function Youtube(props) {
       allowFullScreen
     />
   )
+}
+
+Youtube.propTypes = {
+  videoLink: PropTypes.string,
 }

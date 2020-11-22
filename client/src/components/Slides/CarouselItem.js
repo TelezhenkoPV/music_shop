@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { useHistory } from 'react-router-dom'
 import Button from '@material-ui/core/Button'
 import { useStylesItem } from './styles'
@@ -45,4 +46,13 @@ export const CarouselItem = ({ item }) => {
       </div>
     </div>
   )
+}
+
+CarouselItem.propTypes = {
+  item: PropTypes.shape({
+    imageUrl: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    slideUrl: PropTypes.string.isRequired,
+  }).isRequired,
 }

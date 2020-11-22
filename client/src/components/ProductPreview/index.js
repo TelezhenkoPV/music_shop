@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 // import React, { useState, useEffect } from 'react'
 // import { useDispatch, useSelector } from 'react-redux'
 import useStyles from './styles'
@@ -39,4 +40,11 @@ export default function ProductPreview(props) {
       </Box>
     </Box>
   )
+}
+
+ProductPreview.propTypes = {
+  img: PropTypes.arrayOf(PropTypes.string).isRequired,
+  name: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
+  color: PropTypes.string.isRequired,
 }
