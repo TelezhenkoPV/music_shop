@@ -18,7 +18,7 @@ const Contacts = () => {
   }))
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/pages/contacts').then((res) => {
+    axios.get('/api/pages/contacts').then((res) => {
       setHtml(res.data.htmlContent)
     })
   })
