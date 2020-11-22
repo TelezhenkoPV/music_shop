@@ -48,7 +48,7 @@ const BestsellersSlider = () => {
   })
 
   useEffect(() => {
-    axios('http://localhost:5000/api/products').then((res) => {
+    axios('/api/products').then((res) => {
       setProducts(res.data)
     })
   }, [])
