@@ -38,13 +38,7 @@ const MainRoutes = () => {
           render={() => <AboutOurTeam />}
         />
         <Route exact path="/about-us/faq" render={() => <FAQ />} />
-        <Route exact path="/contacts/address" render={() => <Contacts />} />
-        <Route
-          exact
-          path="/contacts/phone-number"
-          render={() => <Contacts />}
-        />
-        <Route exact path="/contacts/email" render={() => <Contacts />} />
+        <Route exact path="/contacts" render={() => <Contacts />} />
         <Route
           exact
           path="/popular-tags/guitar"

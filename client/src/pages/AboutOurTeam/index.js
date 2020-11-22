@@ -18,7 +18,7 @@ const AboutOurTeam = () => {
   }))
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/pages/about-our-team').then((res) => {
+    axios.get('/api/pages/about-our-team').then((res) => {
       setHtml(res.data.htmlContent)
     })
   })
