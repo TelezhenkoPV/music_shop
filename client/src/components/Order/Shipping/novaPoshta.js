@@ -53,12 +53,17 @@ export default function NovaPoshta() {
 
   useEffect(() => {
     if (isShippingSet) {
-      setCity(shipping.city)
-      setWarehouse(shipping.warehouse)
-      setOptionsCity([shipping.city])
-      setOptionsWarehouse([shipping.warehouse])
+      const cityInStore = shipping.data.find((field) => field.key === 'city')
+        .value
+      const warehouseInStore = shipping.data.find(
+        (field) => field.key === 'warehouse'
+      ).value
+      setCity(cityInStore)
+      setWarehouse(warehouseInStore)
+      setOptionsCity([cityInStore])
+      setOptionsWarehouse([warehouseInStore])
     }
-  }, [isShippingSet, shipping.city, shipping.warehouse])
+  }, [isShippingSet, shipping])
 
   useEffect(() => {
     const searchTimeout = setTimeout(() => {
@@ -83,7 +88,14 @@ export default function NovaPoshta() {
 
   const handleSubmit = () => {
     dispatch(
-      saveShippingData({ type: 'novaPoshta', data: { city, warehouse } })
+      saveShippingData({
+        type: { key: 'novaPoshta', label: 'Nova Poshta' },
+        isAddressFromProfile: 'false',
+        data: [
+          { key: 'city', value: city, label: 'City/Town' },
+          { key: 'warehouse', value: warehouse, label: 'Warehouse' },
+        ],
+      })
     )
   }
 

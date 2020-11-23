@@ -17,10 +17,13 @@ export const saveCustomerData = (data) => (dispatch) => {
 }
 
 export const saveShippingData = (shippingData) => (dispatch) => {
-  const { type, data } = shippingData
+  const { type, isAddressFromProfile = 'false', data } = shippingData
   dispatch({
     type: SAVE_SHIPPING_DATA,
-    payload: { type, [type]: { isShippingSet: true, data } },
+    payload: {
+      type,
+      [type.key]: { isShippingSet: true, isAddressFromProfile, data },
+    },
   })
 }
 
@@ -28,7 +31,7 @@ export const savePaymentData = (paymentData) => (dispatch) => {
   const { type, data } = paymentData
   dispatch({
     type: SAVE_PAYMENT_DATA,
-    payload: { type, [type]: { isPaymentSet: true, data } },
+    payload: { type, [type.key]: { isPaymentSet: true, data } },
   })
 }
 

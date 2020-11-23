@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   button: {
-    marginRight: theme.spacing(1),
+    margin: theme.spacing(1),
   },
   actions: {
     marginTop: theme.spacing(2),

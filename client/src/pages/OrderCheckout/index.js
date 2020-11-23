@@ -32,7 +32,7 @@ import { getActiveStep } from '../../store/order/orderSelectors'
 
 function StepIcon(props) {
   const classes = useStepIconStyles()
-  const { active, completed } = props
+  const { active, completed, icon } = props
 
   const icons = {
     1: <AccountCircle />,
@@ -48,7 +48,7 @@ function StepIcon(props) {
         [classes.completed]: completed,
       })}
     >
-      {icons[String(props.icon)]}
+      {icons[String(icon)]}
     </div>
   )
 }

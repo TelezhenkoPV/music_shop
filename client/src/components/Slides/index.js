@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { useHistory } from 'react-router-dom'
 import { Carousel } from 'react-responsive-carousel'
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
@@ -79,4 +80,16 @@ export default function Slides({ items }) {
       </Carousel>
     </div>
   )
+}
+
+Slides.propTypes = {
+  items: PropTypes.arrayOf(
+    PropTypes.shape({
+      customId: PropTypes.string.isRequired,
+      imageUrl: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      description: PropTypes.string.isRequired,
+      slideUrl: PropTypes.string.isRequired,
+    })
+  ).isRequired,
 }
