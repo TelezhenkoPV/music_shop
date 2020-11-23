@@ -1,13 +1,31 @@
 import React from 'react'
+
+import Box from '@material-ui/core/Box'
+import { makeStyles } from '@material-ui/core/styles'
+
 import Header from './components/Header'
+import MainRoutes from './routes/MainRoutes'
+import Footer from './components/Footer'
+import Modal from './components/Modal'
+import Notifier from './components/Notifier'
+
+const useStyles = makeStyles((theme) => ({
+  mainBlock: {
+    height: '100vh',
+  },
+}))
 
 function App() {
-  return (
-    <div>
-      <Header />
+  const classes = useStyles()
 
-      <p></p>
-    </div>
+  return (
+    <Box component={'div'} className={classes.mainBlock} bgcolor="garys.gray">
+      <Header />
+      <MainRoutes />
+      <Footer />
+      <Modal />
+      <Notifier />
+    </Box>
   )
 }
 

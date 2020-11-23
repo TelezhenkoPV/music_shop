@@ -1,12 +1,22 @@
-import { createStore, compose, applyMiddleware } from 'redux';
-import rootReducer from './rootReducer';
-import thunk from 'redux-thunk';
+import { createStore, compose, applyMiddleware } from 'redux'
+import rootReducer from './rootReducer'
+import thunk from 'redux-thunk'
+import { persistStore, persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
 
-const devTools = window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f;
+const devTools = window.__REDUX_DEVTOOLS_EXTENSION__
+  ? window.__REDUX_DEVTOOLS_EXTENSION__()
+  : (f) => f
 
-const store = createStore(
-  rootReducer,
-  compose(applyMiddleware(thunk), devTools)
-);
+const persistConfig = {
+  key: 'basket',
+  storage: storage,
+  whitelist: ['basket'],
+}
+const pReducer = persistReducer(persistConfig, rootReducer)
 
-export default store;
+const store = createStore(pReducer, compose(applyMiddleware(thunk), devTools))
+
+const persistor = persistStore(store)
+
+export { store, persistor }
