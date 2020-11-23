@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import useStyles from './addressDeliveryStyles'
 
@@ -39,7 +39,13 @@ export default function AddressDelivery() {
   // Data from profile
   const isAuthenticated = useSelector(getIsAuthenticated)
   const { addressDelivery = [] } = useSelector(getUserData)
-  const isProfileAddressExist = addressDelivery.length > 0
+  const [isProfileAddressExist, setIsProfileAddressExist] = useState(
+    addressDelivery.length > 0
+  )
+
+  useEffect(() => {
+    setIsProfileAddressExist(addressDelivery.length > 0)
+  }, [addressDelivery, isAuthenticated, isProfileAddressExist])
 
   const addressFromProfile = () => {
     const defProfileAddress = isProfileAddressExist
@@ -66,7 +72,10 @@ export default function AddressDelivery() {
   }
 
   const initialValues = isShippingSet
-    ? shipping
+    ? {
+        isAddressFromProfile: shipping.isAddressFromProfile,
+        address: shipping.data.find((field) => field.key === 'address').value,
+      }
     : {
         isAddressFromProfile:
           isAuthenticated && isProfileAddressExist ? 'true' : 'false',
@@ -74,7 +83,13 @@ export default function AddressDelivery() {
       }
 
   const handleSubmit = (values) => {
-    dispatch(saveShippingData({ type: 'addressDelivery', data: values }))
+    dispatch(
+      saveShippingData({
+        type: { key: 'addressDelivery', label: 'Address Delivery' },
+        isAddressFromProfile: values.isAddressFromProfile,
+        data: [{ key: 'address', value: values.address, label: 'Address' }],
+      })
+    )
   }
 
   const setAddressValue = (event, setFieldValue) => {

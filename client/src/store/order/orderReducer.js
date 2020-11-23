@@ -12,20 +12,22 @@ const initialStore = {
     data: {},
   },
   shipping: {
-    type: null,
+    type: { key: null, label: '' },
     addressDelivery: {
       isShippingSet: false,
-      data: {},
+      isAddressFromProfile: false,
+      data: [{}],
     },
     novaPoshta: {
       isShippingSet: false,
-      data: {},
+      isAddressFromProfile: false,
+      data: [{}],
     },
   },
   payment: {
-    type: null,
+    type: { key: null, label: '' },
     cash: {
-      isPaymentSet: true,
+      isPaymentSet: false,
       data: {},
     },
     creditCard: {

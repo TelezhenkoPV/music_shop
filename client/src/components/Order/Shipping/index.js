@@ -41,7 +41,7 @@ export default function Shipping() {
   const shippingMethods = ['addressDelivery', 'novaPoshta']
   const selectedShippingMethod = useSelector(getShippingMethod)
   const [tabIndex, setTabIndex] = useState(
-    shippingMethods.indexOf(selectedShippingMethod || shippingMethods[0])
+    shippingMethods.indexOf(selectedShippingMethod.key || shippingMethods[0])
   )
 
   const handleChangeTab = (event, newTabIndex) => {

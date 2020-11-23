@@ -90,7 +90,7 @@ export default function Payment() {
   const [radioIndex, setRadioIndex] = useState(
     paymentMethods.find(
       (item) =>
-        item.value === (selectedPaymentMethod || paymentMethods[0].value)
+        item.value === (selectedPaymentMethod.key || paymentMethods[0].value)
     ).value
   )
 

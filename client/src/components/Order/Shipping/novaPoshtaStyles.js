@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
   },
   button: {
-    marginRight: theme.spacing(1),
+    margin: theme.spacing(1),
   },
   actions: {
     marginTop: theme.spacing(2),
