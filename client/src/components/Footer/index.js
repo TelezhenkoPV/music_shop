@@ -16,7 +16,7 @@ const Footer = () => {
 
   useEffect(() => {
     axios
-      .get('http://localhost:5000/api/links')
+      .get('/api/links')
       .then((res) => {
         setLinks(res.data)
       })
@@ -40,26 +40,54 @@ const Footer = () => {
           </Grid>
           {allLinks &&
             allLinks.map((item) => {
-              const links = item.links.map((link) => (
-                <Typography
-                  key={link._id}
-                  style={{
-                    color: 'white',
-                    textDecoration: 'none',
-                    fontSize: '13px',
-                    padding: '3px',
-                  }}
-                  component={Link}
-                  to={link.url}
-                >
-                  {link.description}
-                </Typography>
-              ))
+              const links = item.links.map((link) => {
+                if (item.title === 'Contacts') {
+                  return (
+                    <Typography
+                      key={link._id}
+                      style={{
+                        color: 'white',
+                        textDecoration: 'none',
+                        fontSize: '13px',
+                        padding: '3px',
+                      }}
+                    >
+                      {link.description}
+                    </Typography>
+                  )
+                }
+                return (
+                  <Typography
+                    key={link._id}
+                    style={{
+                      color: 'white',
+                      textDecoration: 'none',
+                      fontSize: '13px',
+                      padding: '3px',
+                    }}
+                    component={Link}
+                    to={link.url}
+                  >
+                    {link.description}
+                  </Typography>
+                )
+              })
               return (
                 <Grid item key={item._id}>
-                  <Typography className={classes.titleLinks}>
-                    {item.title}
-                  </Typography>
+                  {item.title === 'Contacts' ? (
+                    <Typography
+                      className={classes.titleLinks}
+                      component={Link}
+                      style={{ textDecoration: 'none' }}
+                      to="/contacts"
+                    >
+                      {item.title}
+                    </Typography>
+                  ) : (
+                    <Typography className={classes.titleLinks}>
+                      {item.title}
+                    </Typography>
+                  )}
                   <Grid container>
                     {item.title === 'Contacts' ? (
                       <Grid item className={classes.boxLinks}>

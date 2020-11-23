@@ -7,21 +7,34 @@ import {
 
 const initialStore = {
   activeStep: 0,
-  isCustomerSet: false,
-  customer: {},
+  customer: {
+    isCustomerSet: false,
+    data: {},
+  },
   shipping: {
-    type: null,
+    type: { key: null, label: '' },
     addressDelivery: {
       isShippingSet: false,
-      data: {},
+      isAddressFromProfile: false,
+      data: [{}],
     },
     novaPoshta: {
       isShippingSet: false,
+      isAddressFromProfile: false,
+      data: [{}],
+    },
+  },
+  payment: {
+    type: { key: null, label: '' },
+    cash: {
+      isPaymentSet: false,
+      data: {},
+    },
+    creditCard: {
+      isPaymentSet: false,
       data: {},
     },
   },
-  isPaymentSet: false,
-  payment: {},
   products: {},
 }
 
@@ -35,8 +48,10 @@ const reducer = (store = initialStore, action) => {
     case SAVE_CUSTOMER_DATA:
       return {
         ...store,
-        customer: action.payload,
-        isCustomerSet: true,
+        customer: {
+          ...store.customer,
+          ...action.payload,
+        },
       }
     case SAVE_SHIPPING_DATA:
       return {
@@ -49,10 +64,11 @@ const reducer = (store = initialStore, action) => {
     case SAVE_PAYMENT_DATA:
       return {
         ...store,
-        payment: action.payload,
-        isPaymentSet: true,
+        payment: {
+          ...store.payment,
+          ...action.payload,
+        },
       }
-
     default:
       return store
   }

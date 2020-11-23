@@ -143,8 +143,3 @@ export const schemaOrderCustomer = Yup.object().shape({
 export const schemaOrderShippingAddress = Yup.object().shape({
   address: Yup.string().required('Please provide delivery address'),
 })
-
-export const schemaOrderShippingNovaPoshta = Yup.object().shape({
-  city: Yup.string().required('Please provide city'),
-  departNo: Yup.string().required('Please provide department'),
-})

@@ -105,8 +105,7 @@ export default function ViewPersonalInformation({
             </div>
             <Typography className={classes.infoData} noWrap>
               {birthdate &&
-                birthdate.length === 10 &&
-                `${birthdate.substring(8)}.${birthdate.substring(
+                `${birthdate.substring(8, 10)}.${birthdate.substring(
                   5,
                   7
                 )}.${birthdate.substring(0, 4)}`}

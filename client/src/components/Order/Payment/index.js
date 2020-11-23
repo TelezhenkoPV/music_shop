@@ -1,103 +1,102 @@
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useState } from 'react'
+import PropTypes from 'prop-types'
+import { useSelector } from 'react-redux'
+// import clsx from 'clsx'
 import useStyles from './styles'
 
-import { Formik, Form, Field, useFormikContext } from 'formik'
-import { schemaOrderCustomer } from '../../../validation/schema'
-
-import { TextField } from 'formik-material-ui'
-import Grid from '@material-ui/core/Grid'
 import Divider from '@material-ui/core/Divider'
 import { Typography } from '@material-ui/core'
-import Button from '@material-ui/core/Button'
+import Radio from '@material-ui/core/Radio'
+import RadioGroup from '@material-ui/core/RadioGroup'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import FormControl from '@material-ui/core/FormControl'
+import iconCash from '../../../assets/cash_icon.svg'
+import iconCreditCard from '../../../assets/creditCard_icon.svg'
+import CheckBoxOutlineBlankOutlinedIcon from '@material-ui/icons/CheckBoxOutlineBlankOutlined'
+import CheckBoxOutlinedIcon from '@material-ui/icons/CheckBoxOutlined'
 
-import {
-  getIsAuthenticated,
-  getUserData,
-} from '../../../store/user/userSelectors'
-import {
-  getActiveStep,
-  getIsCustomerSet,
-  getCustomerData,
-} from '../../../store/order/orderSelectors'
+import Cash from './cash'
+import CreditCard from './creditCard'
+// import NovaPoshta from './novaPoshta'
 
-import {
-  setActiveStep,
-  saveCustomerData,
-} from '../../../store/order/orderActions'
+import { getPaymentMethod } from '../../../store/order/orderSelectors'
 
-const UpdateValueAuth = () => {
-  const { setValues } = useFormikContext()
-  const isAuthenticated = useSelector(getIsAuthenticated)
-  const isCustomerSet = useSelector(getIsCustomerSet)
-  const customer = useSelector(getCustomerData)
-  const {
-    firstName = '',
-    lastName = '',
-    middleName = '',
-    telephone = '+380',
-    email = '',
-    _id,
-  } = useSelector(getUserData)
+function StyledRadio({ label, icon, ...props }) {
+  const classes = useStyles()
 
-  useEffect(() => {
-    if (isCustomerSet) {
-      setValues(customer)
-    } else {
-      if (isAuthenticated) {
-        setValues({
-          firstName,
-          lastName,
-          middleName,
-          telephone,
-          email,
-          customerId: _id,
-        })
-      }
-    }
-  }, [
-    isAuthenticated,
-    isCustomerSet,
-    customer,
-    firstName,
-    lastName,
-    middleName,
-    telephone,
-    email,
-    _id,
-    setValues,
-  ])
-  return null
+  return (
+    <div className={classes.paymentMethod}>
+      <div className={classes.paymentMethodControl}>
+        <Radio
+          className={classes.radioRoot}
+          disableRipple
+          color="default"
+          checkedIcon={<CheckBoxOutlinedIcon className={classes.radioIcon} />}
+          icon={
+            <CheckBoxOutlineBlankOutlinedIcon className={classes.radioIcon} />
+          }
+          {...props}
+        />
+        <Typography>{label}</Typography>
+      </div>
+      <div className={classes.paymentMethodIcon}>
+        <img src={icon} alt={`${label} icon`} />
+      </div>
+    </div>
+  )
+}
+
+StyledRadio.propTypes = {
+  label: PropTypes.string.isRequired,
+  icon: PropTypes.string.isRequired,
+}
+
+function RadioPanel(props) {
+  const { children, value, index, ...other } = props
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`tabpanel-${index}`}
+      aria-labelledby={`tab-${index}`}
+      {...other}
+    >
+      {value === index && <div>{children}</div>}
+    </div>
+  )
+}
+
+RadioPanel.propTypes = {
+  values: PropTypes.string,
+  index: PropTypes.string.isRequired,
+  children: PropTypes.element.isRequired,
 }
 
 export default function Payment() {
   const classes = useStyles()
-  const dispatch = useDispatch()
 
-  const activeStep = useSelector(getActiveStep)
+  const paymentMethods = [
+    { value: 'cash', label: 'Cash', icon: iconCash, children: <Cash /> },
+    {
+      value: 'creditCard',
+      label: 'Credit card',
+      icon: iconCreditCard,
+      children: <CreditCard />,
+    },
+  ]
 
-  const back = (submitForm) => {
-    submitForm()
-    dispatch(setActiveStep(activeStep - 1))
-  }
+  const selectedPaymentMethod = useSelector(getPaymentMethod)
+  const [radioIndex, setRadioIndex] = useState(
+    paymentMethods.find(
+      (item) =>
+        item.value === (selectedPaymentMethod.key || paymentMethods[0].value)
+    ).value
+  )
 
-  const next = (submitForm) => {
-    submitForm()
-    dispatch(setActiveStep(activeStep + 1))
-  }
-
-  const initialValues = {
-    firstName: '',
-    lastName: '',
-    middleName: '',
-    telephone: '+380',
-    email: '',
-  }
-
-  const handleSubmit = (values) => {
-    dispatch(saveCustomerData(values))
-  }
-
+  // const handleChangeTab = (event, newTabIndex) => {
+  //   setTabIndex(newTabIndex)
+  // }
   return (
     <div className={classes.root}>
       <div className={classes.title}>
@@ -106,137 +105,42 @@ export default function Payment() {
         <Divider className={classes.titleDivider} variant="middle" />
       </div>
 
-      <Formik
-        initialValues={initialValues}
-        validationSchema={schemaOrderCustomer}
-        onSubmit={handleSubmit}
-      >
-        {({ submitForm, isValid, isSubmitting }) => (
-          <Form className={classes.form}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={6}>
-                <Field
-                  component={TextField}
-                  className={classes.marginBottom}
-                  classes={{ root: classes.textField }}
-                  variant="outlined"
-                  margin="dense"
-                  size="small"
-                  fullWidth
-                  id="firstName"
-                  name="firstName"
-                  label="First Name"
-                  required
-                  autoComplete="name given-name"
-                  autoFocus
-                  FormHelperTextProps={{
-                    className: classes.helperText,
-                  }}
+      <div className={classes.paper}>
+        <FormControl component="fieldset" fullWidth>
+          <RadioGroup
+            className={classes.paymentMethodRoot}
+            value={radioIndex}
+            aria-label="Payment method"
+            name="PaymentMethod"
+            onChange={(event) => setRadioIndex(event.target.value)}
+          >
+            {paymentMethods.map(({ value, label, icon }) => {
+              return (
+                <FormControlLabel
+                  key={value}
+                  value={value}
+                  control={<StyledRadio label={label} icon={icon} />}
+                  aria-label={label}
+                  classes={{ root: classes.paymentMethodWrapper }}
                 />
+              )
+            })}
+          </RadioGroup>
+        </FormControl>
 
-                <Field
-                  component={TextField}
-                  className={classes.marginBottom}
-                  classes={{
-                    root: classes.textField,
-                  }}
-                  variant="outlined"
-                  margin="dense"
-                  size="small"
-                  fullWidth
-                  id="lastName"
-                  name="lastName"
-                  label="Last Name"
-                  autoComplete="name family-name"
-                  FormHelperTextProps={{
-                    className: classes.helperText,
-                  }}
-                />
-
-                <Field
-                  component={TextField}
-                  className={classes.marginBottom}
-                  classes={{
-                    root: classes.textField,
-                  }}
-                  variant="outlined"
-                  margin="dense"
-                  size="small"
-                  fullWidth
-                  id="middleName"
-                  name="middleName"
-                  label="Middle Name"
-                  autoComplete="name middle-name"
-                  FormHelperTextProps={{
-                    className: classes.helperText,
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Field
-                  component={TextField}
-                  className={classes.marginBottom}
-                  classes={{ root: classes.textField }}
-                  variant="outlined"
-                  margin="dense"
-                  size="small"
-                  fullWidth
-                  id="email"
-                  name="email"
-                  label="Email"
-                  autoComplete="email"
-                  FormHelperTextProps={{
-                    className: classes.helperText,
-                  }}
-                />
-
-                <Field
-                  component={TextField}
-                  className={classes.marginBottom}
-                  classes={{ root: classes.textField }}
-                  variant="outlined"
-                  margin="dense"
-                  size="small"
-                  fullWidth
-                  required
-                  id="telephone"
-                  name="telephone"
-                  label="Telephone"
-                  autoComplete="tel"
-                  FormHelperTextProps={{
-                    className: classes.helperText,
-                  }}
-                />
-              </Grid>
-            </Grid>
-
-            <div className={classes.actions}>
-              <Button
-                variant="contained"
-                color="primary"
-                size="large"
-                disabled={activeStep === 0}
-                onClick={() => back(submitForm)}
-                className={classes.button}
-              >
-                Back
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                size="large"
-                disabled={!isValid || isSubmitting}
-                onClick={() => next(submitForm)}
-                className={classes.button}
-              >
-                Next
-              </Button>
-            </div>
-
-            <UpdateValueAuth />
-          </Form>
-        )}
-      </Formik>
+        {paymentMethods.map(({ value, children }) => {
+          return (
+            <RadioPanel
+              key={value}
+              value={radioIndex}
+              index={value}
+              className={classes.tabPanel}
+            >
+              {children}
+            </RadioPanel>
+          )
+        })}
+      </div>
     </div>
   )
 }

@@ -16,7 +16,6 @@ import Stepper from '@material-ui/core/Stepper'
 import Step from '@material-ui/core/Step'
 import StepLabel from '@material-ui/core/StepLabel'
 import StepConnector from '@material-ui/core/StepConnector'
-// import Button from '@material-ui/core/Button'
 
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import LocalShippingIcon from '@material-ui/icons/LocalShipping'
@@ -33,7 +32,7 @@ import { getActiveStep } from '../../store/order/orderSelectors'
 
 function StepIcon(props) {
   const classes = useStepIconStyles()
-  const { active, completed } = props
+  const { active, completed, icon } = props
 
   const icons = {
     1: <AccountCircle />,
@@ -49,7 +48,7 @@ function StepIcon(props) {
         [classes.completed]: completed,
       })}
     >
-      {icons[String(props.icon)]}
+      {icons[String(icon)]}
     </div>
   )
 }
@@ -146,36 +145,3 @@ function OrderCheckout() {
 }
 
 export default OrderCheckout
-
-// {/* <div>
-//   {activeStep === steps.length ? (
-//     <div>
-//       <Typography className={classes.instructions}>
-//         All steps completed - you&apos;re finished
-//       </Typography>
-//       <Button onClick={handleReset} className={classes.button}>
-//         Reset
-//       </Button>
-//     </div>
-//   ) : (
-//     <div className={classes.actions}>
-//       <Button
-//         variant="contained"
-//         color="primary"
-//         disabled={activeStep === 0}
-//         onClick={handleBack}
-//         className={classes.button}
-//       >
-//         Back
-//       </Button>
-//       <Button
-//         variant="contained"
-//         color="primary"
-//         onClick={handleNext}
-//         className={classes.button}
-//       >
-//         {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-//       </Button>
-//     </div>
-//   )}
-// </div> */}

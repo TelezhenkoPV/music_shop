@@ -18,7 +18,7 @@ const FAQ = () => {
   }))
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/pages/faq').then((res) => {
+    axios.get('/api/pages/faq').then((res) => {
       setHtml(res.data.htmlContent)
     })
   })

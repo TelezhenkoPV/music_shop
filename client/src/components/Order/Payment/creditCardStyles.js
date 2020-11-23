@@ -5,17 +5,24 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     padding: theme.spacing(2),
   },
-  title: {
+  creditCardTitle: {
     marginBottom: theme.spacing(2),
+    padding: theme.spacing(1),
+    backgroundColor: theme.palette.primary.dark,
+    color: theme.palette.primary.contrastText,
+  },
+  creditCardWrapper: {
+    padding: theme.spacing(2),
+  },
+  creditCard: {
     display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-
-    '&>.MuiDivider-root': {
-      flexGrow: 1,
-      height: '2px',
-      backgroundColor: theme.palette.primary.dark,
-    },
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  creditCardControl: {
+    margin: theme.spacing(2),
+    minWidth: '160px',
+    flexGrow: 1,
   },
   button: {
     margin: theme.spacing(1),

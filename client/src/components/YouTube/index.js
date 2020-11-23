@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { useStylesYoutubeVideo } from './styles'
 
 export default function Youtube(props) {
@@ -11,8 +12,12 @@ export default function Youtube(props) {
       title="Product video"
       src={videoLink}
       frameBorder="0"
-      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
       allowFullScreen
-    ></iframe>
+    />
   )
+}
+
+Youtube.propTypes = {
+  videoLink: PropTypes.string,
 }

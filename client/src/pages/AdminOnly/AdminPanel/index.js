@@ -1,14 +1,8 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
+import useStyles from './styles'
 import Container from '@material-ui/core/Container'
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    height: '90%',
-  },
-}))
 
 function AdminPanel() {
   const classes = useStyles()

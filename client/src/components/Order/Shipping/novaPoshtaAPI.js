@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { notificate } from '../../../store/notification/notificationActions'
+import { checkToken } from '../../../store/user/userActions'
 
 export default function getNovaposhtaAPI({
   type,
@@ -41,7 +42,9 @@ export default function getNovaposhtaAPI({
     }
   })()
 
-  request &&
+  if (request) {
+    const token = axios.defaults.headers.common.Authorization
+    delete axios.defaults.headers.common.Authorization
     axios
       .post('https://api.novaposhta.ua/v2.0/json/', request, options)
       .then(({ status, data: { success, data, errors } }) => {
@@ -62,6 +65,8 @@ export default function getNovaposhtaAPI({
         )
       })
       .finally(() => {
+        dispatch(checkToken(token))
         setLoading(false)
       })
+  }
 }

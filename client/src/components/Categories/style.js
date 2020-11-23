@@ -58,6 +58,7 @@ const useStyles = makeStyles((theme) => ({
       width: '300px',
     },
     width: '557px',
+    margin: 'auto',
   },
   goTo: {
     fontSize: '20px',
@@ -69,6 +70,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    width: '100%',
   },
   line: {
     border: '1px solid #112667',

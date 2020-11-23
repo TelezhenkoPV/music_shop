@@ -1,29 +1,12 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
+import PropTypes from 'prop-types'
+import useStyles from './styles'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import { withRouter } from 'react-router'
 import Container from '@material-ui/core/Container'
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    height: '90%',
-  },
-  errorContainer: {
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    alignItems: 'center',
-  },
-  btn: {
-    margin: 20,
-  },
-}))
 function NotFound(props) {
   const classes = useStyles()
   const { history } = props
@@ -44,6 +27,10 @@ function NotFound(props) {
       </Grid>
     </Container>
   )
+}
+
+NotFound.propTypes = {
+  history: PropTypes.object,
 }
 
 export default withRouter(NotFound)
