@@ -5,7 +5,6 @@ import { useStyles } from './styles'
 import { Grid, Typography } from '@material-ui/core'
 import Paper from '@material-ui/core/Paper'
 
-import CatalogProductBar from '../../components/CatalogProductBar/CatalogProductBar'
 import FilterCategoryCheckbox from '../../components/Filter/FilterCategoryCheckbox'
 import FilterPriceSlider from '../../components/Filter/FilterPriceSlider'
 import { addProductToBasket } from '../../store/basket/basketAction'
@@ -41,7 +40,7 @@ function PLP() {
           </div>
           <div className={classes.productBlock}>
             <Typography variant={'body2'} style={{ padding: 10 }} />
-            <CatalogProductBar />
+
             <ProductsScroll onClickAddProduct={handleAddProductToBasket} />
           </div>
         </Grid>
