@@ -92,7 +92,12 @@ export default function CreditCard() {
   }, [dispatch, isPaymentSet, payment])
 
   const handleSubmit = () => {
-    dispatch(savePaymentData({ type: 'creditCard', data: creditCard }))
+    dispatch(
+      savePaymentData({
+        type: { key: 'creditCard', label: 'Credit card' },
+        data: creditCard,
+      })
+    )
   }
 
   const handleCustomChange = (event) => {

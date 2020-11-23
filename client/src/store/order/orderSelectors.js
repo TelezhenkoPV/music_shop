@@ -8,27 +8,36 @@ export const getCustomerData = (store) => store.order.customer.data
 // Shipping
 export const getShippingMethod = (store) => store.order.shipping.type
 export const getShippingData = (store) => {
-  return {
-    type: getShippingMethod(store),
-    data: store.order.shipping[getShippingMethod(store)].data,
-  }
+  const type = getShippingMethod(store)
+  const data = store.order.shipping[getShippingMethod(store).key].data
+  return { type, data }
 }
 
 export const getIsAddressDeliverySet = (store) =>
   store.order.shipping.addressDelivery.isShippingSet
-export const getAddressDeliveryData = (store) =>
-  store.order.shipping.addressDelivery.data
+export const getAddressDeliveryData = (store) => {
+  return {
+    data: store.order.shipping.addressDelivery.data,
+    isAddressFromProfile:
+      store.order.shipping.addressDelivery.isAddressFromProfile,
+  }
+}
 
 export const getIsNovaPoshtaSet = (store) =>
   store.order.shipping.novaPoshta.isShippingSet
-export const getNovaPoshtaData = (store) => store.order.shipping.novaPoshta.data
+export const getNovaPoshtaData = (store) => {
+  return {
+    data: store.order.shipping.novaPoshta.data,
+    isAddressFromProfile: store.order.shipping.novaPoshta.isAddressFromProfile,
+  }
+}
 
 // Payment
 export const getPaymentMethod = (store) => store.order.payment.type
 export const getPaymentData = (store) => {
   return {
     type: getPaymentMethod(store),
-    data: store.order.payment[getPaymentMethod(store)].data,
+    data: store.order.payment[getPaymentMethod(store).key].data,
   }
 }
 

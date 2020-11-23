@@ -42,7 +42,9 @@ export default function NovaPoshta() {
   // }, [isPaymentSet, payment.value])
 
   const handleSubmit = () => {
-    dispatch(savePaymentData({ type: 'cash', data: {} }))
+    dispatch(
+      savePaymentData({ type: { key: 'cash', label: 'Cash' }, data: {} })
+    )
   }
 
   return (

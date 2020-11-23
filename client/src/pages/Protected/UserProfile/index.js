@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
 import { useDispatch, useSelector } from 'react-redux'
 import useStyles from './styles'
 import { useTheme } from '@material-ui/core/styles'
@@ -36,6 +37,12 @@ function TabPanel(props) {
       {value === index && <div>{children}</div>}
     </div>
   )
+}
+
+TabPanel.propTypes = {
+  cheldren: PropTypes.element,
+  value: PropTypes.number,
+  index: PropTypes.number,
 }
 
 function UserProfile() {
