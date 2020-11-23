@@ -22,11 +22,12 @@ import {
   CHANGE_PASSWORD_ERROR,
 } from './userConstants'
 
-export const checkToken = () => (dispatch) => {
-  const token = sessionStorage.token || localStorage.token || null
-  if (token) {
-    setAuthToken(token)
-    const decodedToken = jwt_decode(token)
+export const checkToken = (token = null) => (dispatch) => {
+  const tokenToCheck =
+    token || sessionStorage.token || localStorage.token || null
+  if (tokenToCheck) {
+    setAuthToken(tokenToCheck)
+    const decodedToken = jwt_decode(tokenToCheck)
     const { firstName, lastName, isAdmin, exp } = decodedToken
     // console.log('Token', token)
     // const {firstName, lastName, isAdmin, exp, iat} = decodedToken
@@ -40,7 +41,7 @@ export const checkToken = () => (dispatch) => {
       type: SET_AUTHENTICATED,
       payload: {
         isAuthenticated: true,
-        token,
+        token: tokenToCheck,
         data: { isAdmin, firstName, lastName },
       },
     })
@@ -92,7 +93,7 @@ export const signIn = ({ loginOrEmail, password, rememberMe }) => (
 
           dispatch(checkToken())
           dispatch({ type: SIGNIN_SUCCESS })
-          // dispatch(getCustomer())
+          dispatch(getCustomer())
         }
       }
     })
