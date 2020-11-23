@@ -13,9 +13,10 @@ export default function Comment(props) {
   const [comments, setComments] = useState([])
 
   useEffect(() => {
-    axios(`/api/comments/product/${productId}`)
-      .then((response) => setComments(response.data))
-      .catch((e) => console.log(e))
+    productId &&
+      axios(`/api/comments/product/${productId}`)
+        .then((response) => setComments(response.data))
+        .catch((e) => console.log(e))
   }, [productId, setComments])
 
   const list = (comments.length > 0 &&
