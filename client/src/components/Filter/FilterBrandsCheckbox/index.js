@@ -23,7 +23,9 @@ export default function FilterBrandsCheckbox() {
 
   useEffect(() => {
     axios('/api/filters/brand')
-      .then((resp) => setBrands(resp.data))
+      .then((resp) =>
+        setBrands(resp.data.sort((a, b) => a.name.localeCompare(b.name)))
+      )
       .catch((e) => console.log(e))
   }, [])
 
@@ -40,6 +42,7 @@ export default function FilterBrandsCheckbox() {
 
   const list = brands.map((elem) => (
     <FormControlLabel
+      className={classes.columns}
       key={elem._id}
       control={
         <Checkbox
@@ -47,8 +50,15 @@ export default function FilterBrandsCheckbox() {
             (actualFilters.brand && actualFilters.brand.includes(elem.name)) ||
             false
           }
-          icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
-          checkedIcon={<CheckBoxIcon fontSize="small" />}
+          icon={
+            <CheckBoxOutlineBlankIcon
+              className={classes.smallerText}
+              fontSize="small"
+            />
+          }
+          checkedIcon={
+            <CheckBoxIcon className={classes.smallerText} fontSize="small" />
+          }
           onChange={handleChange}
           name={elem.name}
         />
