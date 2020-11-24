@@ -51,6 +51,7 @@ export default function FilterCategoryCheckbox() {
 
   const list = categoriesData.map(([name, id]) => (
     <FormControlLabel
+      className={classes.columns}
       key={id}
       control={
         <Checkbox

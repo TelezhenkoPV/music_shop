@@ -24,12 +24,12 @@ export default function ProductsScroll(props) {
   useEffect(() => {
     setPage(1)
     setCards([])
-    getMoreData()
+    page !== 0 && getMoreData()
     // eslint-disable-next-line
   }, [params])
 
   useEffect(() => {
-    getMoreData()
+    page !== 0 && getMoreData()
     // eslint-disable-next-line
   }, [page])
 
