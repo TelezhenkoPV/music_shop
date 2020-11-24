@@ -29,6 +29,8 @@ const reducer = (store = initialStore, action) => {
       return { ...store }
     case 'MINUS_CART_ITEM':
       return { ...store }
+    case 'CLEAN':
+      return { ...initialStore }
     default:
       return store
   }

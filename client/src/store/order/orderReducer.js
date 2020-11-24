@@ -3,10 +3,21 @@ import {
   SAVE_CUSTOMER_DATA,
   SAVE_SHIPPING_DATA,
   SAVE_PAYMENT_DATA,
+  ORDER_PROCEED,
+  ORDER_CREATE_SUCCESS,
+  ORDER_CREATE_ERROR,
+  CLEAN_ORDER,
 } from './orderConstants'
 
 const initialStore = {
   activeStep: 0,
+  isProceed: false,
+  success: {
+    create: null,
+  },
+  error: {
+    create: null,
+  },
   customer: {
     isCustomerSet: false,
     data: {},
@@ -69,6 +80,29 @@ const reducer = (store = initialStore, action) => {
           ...action.payload,
         },
       }
+    case ORDER_PROCEED:
+      return {
+        ...store,
+        isProceed: action.payload,
+      }
+    case ORDER_CREATE_SUCCESS:
+      return {
+        ...store,
+        success: {
+          ...store.success,
+          create: action.payload,
+        },
+      }
+    case ORDER_CREATE_ERROR:
+      return {
+        ...store,
+        error: {
+          ...store.success,
+          create: action.payload,
+        },
+      }
+    case CLEAN_ORDER:
+      return { ...initialStore }
     default:
       return store
   }
