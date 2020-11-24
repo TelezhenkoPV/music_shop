@@ -44,12 +44,10 @@ export const savePaymentData = (paymentData) => (dispatch) => {
 
 export const sendOrder = (order) => (dispatch) => {
   dispatch({ type: ORDER_PROCEED, payload: true })
-  console.log('Order sended to server', order)
   axios
     .post('/api/orders', order)
     .then((response) => {
       if (response.status === 200) {
-        console.log('Server response', response)
         const { data } = response
         dispatch({ type: ORDER_CREATE_SUCCESS, payload: data })
         dispatch(basketClean())

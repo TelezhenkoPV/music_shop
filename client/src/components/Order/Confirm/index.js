@@ -17,12 +17,14 @@ import LocationOnIcon from '@material-ui/icons/LocationOn'
 import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet'
 import CreditCardIcon from '@material-ui/icons/CreditCard'
 
+import { MailSubject, MailBody } from '../../../mails/orderCreated'
+
+import { getIsAuthenticated } from '../../../store/user/userSelectors'
 import {
   getActiveStep,
   getOrderData,
   getOrderProceed,
   getOrderCreateSuccess,
-  getOrderCreateError,
 } from '../../../store/order/orderSelectors'
 import { setActiveStep, sendOrder } from '../../../store/order/orderActions'
 
@@ -61,6 +63,7 @@ export default function Confirm() {
   const dispatch = useDispatch()
 
   const activeStep = useSelector(getActiveStep)
+  const isAuthenticated = useSelector(getIsAuthenticated)
 
   const order = useSelector(getOrderData)
 
@@ -138,39 +141,35 @@ export default function Confirm() {
   }
 
   const handleSubmit = () => {
+    const orderNo = `${new Date().getTime()}-${Math.floor(
+      Math.random() * 1000
+    )}`
     const formedOrder = {
+      orderNo,
       status: 'new',
       email: order.customer.email,
       mobile: order.customer.telephone,
-      letterSubject: 'Thank you for order! You are welcome!',
-      letterHtml:
-        '<h1>Your order is placed. OrderNo is ????.</h1><p>{Other details about order in your HTML}</p>',
+      letterSubject: MailSubject({ orderNo }),
+      letterHtml: MailBody({ ...order, orderNo, isAuthenticated }),
       products: JSON.stringify([]),
       shipping: JSON.stringify(order.shipping),
       paymentInfo: JSON.stringify(order.payment),
       customer: JSON.stringify(order.customer),
     }
     order.customer._id && (formedOrder.customerId = order.customer._id)
-    console.log('FormedOrder', formedOrder)
 
     dispatch(sendOrder(formedOrder))
   }
 
   const isOrderProceed = useSelector(getOrderProceed)
   const orderCreateSuccess = useSelector(getOrderCreateSuccess)
-  const orderCreateError = useSelector(getOrderCreateError)
 
   const [isSuccess, setIsSuccess] = useState(false)
-  const [isError, setIsError] = useState(false)
-
-  console.log('orderCreateSuccess', isSuccess, orderCreateSuccess)
-  console.log('orderCreateError', isError, orderCreateError)
 
   useEffect(() => {
     orderCreateSuccess && setIsSuccess(true)
-    orderCreateError && setIsError(true)
     isSuccess && dispatch(setActiveStep(activeStep + 1))
-  }, [orderCreateSuccess, orderCreateError, isSuccess, activeStep, dispatch])
+  }, [orderCreateSuccess, isSuccess, activeStep, dispatch])
 
   return (
     <div className={classes.root}>

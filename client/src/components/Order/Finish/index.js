@@ -10,6 +10,7 @@ import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlin
 
 import { getOrderCreateSuccess } from '../../../store/order/orderSelectors'
 import { getIsAuthenticated } from '../../../store/user/userSelectors'
+import { rootURL } from '../../../config.js'
 
 export default function Finish() {
   const classes = useStyles()
@@ -17,7 +18,6 @@ export default function Finish() {
   const { order } = useSelector(getOrderCreateSuccess)
 
   const isAuthenticated = useSelector(getIsAuthenticated)
-  console.log('Finish', order)
 
   return (
     <div className={classes.root}>
@@ -27,7 +27,7 @@ export default function Finish() {
         <Divider className={classes.titleDivider} variant="middle" />
       </div>
 
-      <div>
+      <div className={classes.order}>
         <div className={classes.orderData}>
           <Typography
             style={{ fontSize: 'inherit', fontWeight: 'inherit' }}
@@ -92,8 +92,8 @@ export default function Finish() {
                 Status of your order you can see folowing to
               </Typography>
               <Link
-                to={`http://soundtower.com/order/${order.orderNo}`}
-              >{`http://soundtower.com/order/${order.orderNo}`}</Link>
+                to={`${rootURL}/order/${order.orderNo}`}
+              >{`${rootURL}/order/${order.orderNo}`}</Link>
             </>
           )}
         </div>

@@ -17,6 +17,9 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.primary.dark,
     },
   },
+  order: {
+    color: theme.palette.primary.dark,
+  },
   orderData: {
     margin: theme.spacing(10, 0, 2),
     fontSize: '30px',
