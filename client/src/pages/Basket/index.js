@@ -17,7 +17,6 @@ import {
 } from '../../store/basket/basketAction'
 import {
   basketSelector,
-  productCountSelector,
   totalCountSelector,
   totalPriceSelector,
 } from '../../store/basket/basketSelectors'
@@ -29,7 +28,6 @@ function Basket() {
 
   const basket = useSelector(basketSelector)
   const totalPrice = useSelector(totalPriceSelector)
-  const productCount = useSelector(productCountSelector)
   const totalCount = useSelector(totalCountSelector)
 
   const onRemoveItem = (_id) => {
@@ -48,18 +46,18 @@ function Basket() {
     return basket.map((elem) => {
       return (
         <BasketCard
-          key={elem._id}
-          img={elem.imageUrls}
-          id={elem._id}
-          color={elem.color}
-          name={elem.name}
-          price={elem.currentPrice}
+          key={elem.product._id}
+          img={elem.product.imageUrls}
+          id={elem.product._id}
+          color={elem.product.color}
+          name={elem.product.name}
+          price={elem.product.currentPrice}
           onRemove={onRemoveItem}
-          totalPrice={totalPrice}
-          totalCount={productCount}
+          totalPrice={elem.productPrice}
+          totalCount={elem.cartQuantity}
           onMinus={onMinusItem}
           onPlus={onPlusItem}
-          product={elem}
+          product={elem.product}
         />
       )
     })

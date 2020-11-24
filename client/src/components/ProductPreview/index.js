@@ -1,20 +1,16 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-// import React, { useState, useEffect } from 'react'
-// import { useDispatch, useSelector } from 'react-redux'
 import useStyles from './styles'
 import { Box } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
 
 export default function ProductPreview(props) {
   const classes = useStyles()
-  const {
-    img,
-    name,
-    price,
-    color,
-    // onRemove,
-  } = props
+  const { img, id, name, price, color, onRemove, totalCount } = props
+
+  const handleRemoveClick = () => {
+    onRemove(id)
+  }
 
   return (
     <Box className={classes.card_wrapper}>
@@ -31,10 +27,15 @@ export default function ProductPreview(props) {
               style={{ backgroundColor: `${color}` }}
             />
           </Box>
-          <Typography className={classes.card_link_delete}>Delete</Typography>
+          <Typography
+            className={classes.card_link_delete}
+            onClick={handleRemoveClick}
+          >
+            Delete
+          </Typography>
         </Box>
         <Box className={classes.flex_styled}>
-          <Typography>1 pc</Typography>
+          <Typography>{totalCount} pc</Typography>
           <Typography>${price}</Typography>
         </Box>
       </Box>
