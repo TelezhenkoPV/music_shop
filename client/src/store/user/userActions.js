@@ -20,6 +20,8 @@ import {
   CHANGE_PASSWORD_SUCCESS,
   CHANGE_PASSWORD_PROCEED,
   CHANGE_PASSWORD_ERROR,
+  GET_USER_ORDERS_PROCEED,
+  SAVE_USER_ORDERS,
 } from './userConstants'
 
 export const checkToken = (token = null) => (dispatch) => {
@@ -197,5 +199,28 @@ export const changePassword = (passwords) => (dispatch) => {
       setTimeout(() => {
         dispatch({ type: CHANGE_PASSWORD_PROCEED, payload: false })
       }, 3000)
+    })
+}
+
+export const getUserOrders = () => (dispatch) => {
+  dispatch({ type: GET_USER_ORDERS_PROCEED, payload: true })
+  axios
+    .get('/api/orders')
+    .then((result) => {
+      if (result.status === 200) {
+        const { data } = result
+
+        dispatch({ type: SAVE_USER_ORDERS, payload: data })
+        notificate({
+          variant: 'success',
+          data: 'Customer orders recieved.',
+        })
+      }
+    })
+    .catch(({ response: { status, data } }) => {
+      dispatch(notificate({ variant: 'error', data }))
+    })
+    .finally(() => {
+      dispatch({ type: GET_USER_ORDERS_PROCEED, payload: false })
     })
 }

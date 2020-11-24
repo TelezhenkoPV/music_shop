@@ -156,7 +156,8 @@ export default function Confirm() {
       paymentInfo: JSON.stringify(order.payment),
       customer: JSON.stringify(order.customer),
     }
-    order.customer._id && (formedOrder.customerId = order.customer._id)
+    order.customer.customerId &&
+      (formedOrder.customerId = order.customer.customerId)
 
     dispatch(sendOrder(formedOrder))
   }

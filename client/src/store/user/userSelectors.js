@@ -23,3 +23,7 @@ export const getChangePasswordError = (store) =>
   store.user.errors.changePassword
 export const getIsChangePasswordSuccessful = (store) =>
   store.user.errors.changePassword === null
+
+export const isGetUserOrdersProceed = (store) =>
+  store.user.isGetUserOrdersProceed
+export const userOrders = (store) => store.user.orders
