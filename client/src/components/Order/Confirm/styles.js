@@ -46,6 +46,9 @@ const useStyles = makeStyles((theme) => ({
   iconInline: {
     margin: theme.spacing(0, 1),
   },
+  orderData: {
+    margin: theme.spacing(1, 1, 2, 1),
+  },
   button: {
     margin: theme.spacing(1),
   },
@@ -53,6 +56,9 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
     display: 'flex',
     justifyContent: 'space-between',
+  },
+  marginTop: {
+    marginTop: theme.spacing(2),
   },
 }))
 

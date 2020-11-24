@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import clsx from 'clsx'
 import useStyles, { useStepIconStyles } from './styles'
@@ -20,15 +20,18 @@ import StepConnector from '@material-ui/core/StepConnector'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import LocalShippingIcon from '@material-ui/icons/LocalShipping'
 import PaymentIcon from '@material-ui/icons/Payment'
-import DoneAllIcon from '@material-ui/icons/DoneAll'
+import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck'
+import DoneOutlineIcon from '@material-ui/icons/DoneOutline'
 
+import Summary from '../../components/Order/Summary'
 import Customer from '../../components/Order/Customer'
 import Shipping from '../../components/Order/Shipping'
 import Payment from '../../components/Order/Payment'
 import Confirm from '../../components/Order/Confirm'
-import Summary from '../../components/Order/Summary'
+import Finish from '../../components/Order/Finish'
 
 import { getActiveStep } from '../../store/order/orderSelectors'
+import { cleanOrder } from '../../store/order/orderActions'
 
 function StepIcon(props) {
   const classes = useStepIconStyles()
@@ -38,7 +41,8 @@ function StepIcon(props) {
     1: <AccountCircle />,
     2: <LocalShippingIcon />,
     3: <PaymentIcon />,
-    4: <DoneAllIcon />,
+    4: <PlaylistAddCheckIcon />,
+    5: <DoneOutlineIcon />,
   }
 
   return (
@@ -69,6 +73,8 @@ function getStepContent(activeStep) {
       return <Payment />
     case 3:
       return <Confirm />
+    case 4:
+      return <Finish />
     default:
       return null
   }
@@ -76,10 +82,20 @@ function getStepContent(activeStep) {
 
 function OrderCheckout() {
   const classes = useStyles()
+  const dispatch = useDispatch()
 
+  useEffect(() => {
+    dispatch(cleanOrder())
+  }, [dispatch])
+
+  const steps = [
+    'Customer Information',
+    'Shipping',
+    'Payment',
+    'Confirmation',
+    'Finish',
+  ]
   const activeStep = useSelector(getActiveStep)
-
-  const steps = ['Customer Information', 'Shipping', 'Payment', 'Confirmation']
 
   return (
     <Container className={classes.root}>
@@ -132,12 +148,14 @@ function OrderCheckout() {
         </Stepper>
 
         <Grid container spacing={2}>
-          <Grid item xs={12} md={8}>
+          <Grid item xs={12} md={activeStep < 4 ? 8 : 12}>
             {getStepContent(activeStep)}
           </Grid>
-          <Grid item xs={12} md={4}>
-            <Summary />
-          </Grid>
+          {activeStep < 4 && (
+            <Grid item xs={12} md={4}>
+              <Summary />
+            </Grid>
+          )}
         </Grid>
       </Paper>
     </Container>

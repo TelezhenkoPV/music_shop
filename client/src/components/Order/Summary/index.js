@@ -29,16 +29,14 @@ export default function Summary() {
     return basket.map((elem) => {
       return (
         <ProductPreview
-          key={elem._id}
-          img={elem.imageUrls}
-          id={elem._id}
-          color={elem.color}
-          name={elem.name}
-          price={elem.currentPrice}
+          key={elem.product._id}
+          img={elem.product.imageUrls}
+          id={elem.product._id}
+          color={elem.product.color}
+          name={elem.product.name}
+          price={elem.product.currentPrice}
+          totalCount={elem.cartQuantity}
           onRemove={onRemoveItem}
-          totalPrice={totalPrice}
-          totalCount={totalCount}
-          product={elem}
         />
       )
     })

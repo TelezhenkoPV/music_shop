@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Box } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
@@ -11,7 +11,6 @@ import useStyles from './styles'
 
 const BasketCard = (props) => {
   const classes = useStyles()
-  const [productAmount, setProductAmount] = useState(1)
 
   const {
     id,
@@ -19,34 +18,24 @@ const BasketCard = (props) => {
     name,
     price,
     onRemove,
-    // totalPrice,
-    // totalCount,
-    // onPlus,
-    // onMinus,
+    totalPrice,
+    totalCount,
+    onPlus,
+    onMinus,
     color,
-    product,
   } = props
-
-  useEffect(() => {
-    if (productAmount < 1) {
-      setProductAmount(1)
-    }
-    if (productAmount > product.quantity) {
-      setProductAmount(productAmount - 1)
-    }
-  }, [productAmount, product])
 
   const handleRemoveClick = () => {
     onRemove(id)
   }
 
-  // const handlePlusItem = () => {
-  //   onPlus(id)
-  // }
-  //
-  // const handleMinusItem = () => {
-  //   onMinus(id)
-  // }
+  const handlePlusItem = () => {
+    onPlus(id)
+  }
+
+  const handleMinusItem = () => {
+    onMinus(id)
+  }
 
   return (
     <Container maxWidth="xl">
@@ -92,19 +81,11 @@ const BasketCard = (props) => {
           </Grid>
           <Grid item xs>
             <Box className={classes.count_buttons}>
-              <IconButton
-                aria-label="remove"
-                onClick={() => setProductAmount(productAmount - 1)}
-                // onClick={handleMinusItem}
-              >
+              <IconButton aria-label="remove" onClick={handleMinusItem}>
                 <RemoveIcon color="primary" style={{ fontSize: 20 }} />
               </IconButton>
-              <Typography variant="h6">{productAmount}</Typography>
-              <IconButton
-                aria-label="add"
-                onClick={() => setProductAmount(productAmount + 1)}
-                // onClick={handlePlusItem}
-              >
+              <Typography variant="h6">{totalCount}</Typography>
+              <IconButton aria-label="add" onClick={handlePlusItem}>
                 <AddIcon color="primary" style={{ fontSize: 20 }} />
               </IconButton>
             </Box>
@@ -114,7 +95,7 @@ const BasketCard = (props) => {
               variant="h5"
               className={classes.card_content_totalPrice}
             >
-              $ {productAmount * product.currentPrice}{' '}
+              $ {totalPrice}
             </Typography>
           </Grid>
         </Grid>
