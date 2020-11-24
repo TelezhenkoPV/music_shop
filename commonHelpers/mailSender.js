@@ -11,6 +11,9 @@ module.exports = async (subscriberMail, letterSubject, letterHtml, res) => {
       process.env.NODE_ENV === "production"
         ? configs.production.email.mailService
         : configs.development.email.mailService,
+    port: 587,
+    secure: false,
+    requireTLS: true,
     auth: {
       user:
         process.env.NODE_ENV === "production"

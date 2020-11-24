@@ -21,3 +21,5 @@ export const minusItem = (_id) => (dispatch) =>
     type: 'MINUS_CART_ITEM',
     payload: _id,
   })
+
+export const clean = () => (dispatch) => dispatch({ type: 'CLEAN' })
