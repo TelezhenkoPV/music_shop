@@ -4,11 +4,7 @@ import useStyles from './cashStyles'
 
 import Button from '@material-ui/core/Button'
 
-import {
-  getActiveStep,
-  // getIsCashSet as getIsPaymentSet,
-  // getCashData as getPaymentData,
-} from '../../../store/order/orderSelectors'
+import { getActiveStep } from '../../../store/order/orderSelectors'
 
 import {
   setActiveStep,
@@ -21,9 +17,6 @@ export default function NovaPoshta() {
 
   const activeStep = useSelector(getActiveStep)
 
-  // const isPaymentSet = useSelector(getIsPaymentSet)
-  // const payment = useSelector(getPaymentData)
-
   const back = () => {
     handleSubmit()
     dispatch(setActiveStep(activeStep - 1))
@@ -33,13 +26,6 @@ export default function NovaPoshta() {
     handleSubmit()
     dispatch(setActiveStep(activeStep + 1))
   }
-
-  // useEffect(() => {
-  //   if (isPaymentSet) {
-  //     // Set cash payment data if exist
-  //     setCash(payment.value)
-  //   }
-  // }, [isPaymentSet, payment.value])
 
   const handleSubmit = () => {
     dispatch(
