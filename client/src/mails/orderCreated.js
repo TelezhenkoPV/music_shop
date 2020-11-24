@@ -53,8 +53,8 @@ export const MailBody = (order) => {
             <center>
                 <table cellspacing="0" cellpadding="10px" border="0" width="600" height="80px" bgcolor="#112667">
                     <tr>
-                        <td height="72" width="163" margin="0">
-                            <img src="${rootURL}/images/logo.svg" alt="logo" width="163" height="72" border="0" style="display: block">
+                        <td style="padding: 0px 28px" margin="0">
+                            <img src="https://res.cloudinary.com/soundtower/image/upload/v1606226412/logo/logo-footer_buwqog.png" alt="logo" border="0" style="display: block; padding: 50px ">
                         </td>
                         <td align="center" width="300px">
                             <h1 style="font-family: Verdana; color: white; ">Sound Tower</h1>
