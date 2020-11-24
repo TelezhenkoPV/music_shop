@@ -56,3 +56,7 @@ export const getOrderData = (store) => {
     payment: { ...getPaymentData(store) },
   }
 }
+
+export const getOrderProceed = (store) => store.order.isProceed
+export const getOrderCreateSuccess = (store) => store.order.success.create
+export const getOrderCreateError = (store) => store.order.error.create

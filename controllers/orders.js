@@ -14,7 +14,7 @@ const rand = uniqueRandom(1000000, 9999999);
 exports.placeOrder = async (req, res, next) => {
   try {
     const order = _.cloneDeep(req.body);
-    order.orderNo = String(rand());
+    // order.orderNo = String(rand());
     let cartProducts = [];
 
     if (req.body.deliveryAddress) {
@@ -36,6 +36,7 @@ exports.placeOrder = async (req, res, next) => {
     }
 
     if (!req.body.products && cartProducts.length < 1) {
+    // if ((!req.body.products || req.body.products.length < 1) && cartProducts.length < 1) {
       res
         .status(400)
         .json({ message: "The list of products is required, but absent!" });
