@@ -16,6 +16,8 @@ import {
   CHANGE_PASSWORD_SUCCESS,
   CHANGE_PASSWORD_PROCEED,
   CHANGE_PASSWORD_ERROR,
+  GET_USER_ORDERS_PROCEED,
+  SAVE_USER_ORDERS,
 } from './userConstants'
 
 const initialStore = {
@@ -25,6 +27,7 @@ const initialStore = {
   isUpdateProceed: false,
   isChangePasswordProceed: false,
   isGetCustomerProceed: false,
+  isGetUserOrdersProceed: false,
   isProfileEdit: false,
   token: null,
   data: {},
@@ -35,6 +38,7 @@ const initialStore = {
     changePassword: null,
     getCustomer: null,
   },
+  orders: [],
 }
 
 const reducer = (store = initialStore, action) => {
@@ -163,7 +167,16 @@ const reducer = (store = initialStore, action) => {
         ...store,
         errors: { ...store.errors, changePassword: action.payload },
       }
-
+    case GET_USER_ORDERS_PROCEED:
+      return {
+        ...store,
+        isGetUserOrdersProceed: action.payload,
+      }
+    case SAVE_USER_ORDERS:
+      return {
+        ...store,
+        orders: [...action.payload],
+      }
     default:
       return store
   }
