@@ -20,6 +20,8 @@ import {
   CHANGE_PASSWORD_SUCCESS,
   CHANGE_PASSWORD_PROCEED,
   CHANGE_PASSWORD_ERROR,
+  GET_USER_ORDERS_PROCEED,
+  SAVE_USER_ORDERS,
 } from './userConstants'
 
 export const checkToken = (token = null) => (dispatch) => {
@@ -61,7 +63,7 @@ export const signUp = (userData) => (dispatch) => {
         dispatch({ type: SIGNUP_SUCCESS })
       }
     })
-    .catch(({ response: { status, data } }) => {
+    .catch(({ response: { data } }) => {
       dispatch({ type: SIGNUP_ERROR, payload: data })
     })
     .finally(() => {
@@ -97,7 +99,7 @@ export const signIn = ({ loginOrEmail, password, rememberMe }) => (
         }
       }
     })
-    .catch(({ response: { status, data } }) => {
+    .catch(({ response: { data } }) => {
       dispatch({ type: SIGNIN_ERROR, payload: data })
     })
     .finally(() => {
@@ -161,7 +163,7 @@ export const update = (userData) => (dispatch) => {
         )
       }
     })
-    .catch(({ response: { status, data } }) => {
+    .catch(({ response: { data } }) => {
       dispatch({ type: UPDATE_ERROR, payload: data })
       dispatch(notificate({ variant: 'error', data }))
     })
@@ -188,7 +190,7 @@ export const changePassword = (passwords) => (dispatch) => {
         )
       }
     })
-    .catch(({ response: { status, data } }) => {
+    .catch(({ response: { data } }) => {
       dispatch({ type: CHANGE_PASSWORD_ERROR, payload: data })
       dispatch(notificate({ variant: 'error', data }))
     })
@@ -197,5 +199,28 @@ export const changePassword = (passwords) => (dispatch) => {
       setTimeout(() => {
         dispatch({ type: CHANGE_PASSWORD_PROCEED, payload: false })
       }, 3000)
+    })
+}
+
+export const getUserOrders = () => (dispatch) => {
+  dispatch({ type: GET_USER_ORDERS_PROCEED, payload: true })
+  axios
+    .get('/api/orders')
+    .then((result) => {
+      if (result.status === 200) {
+        const { data } = result
+
+        dispatch({ type: SAVE_USER_ORDERS, payload: data })
+        notificate({
+          variant: 'success',
+          data: 'Customer orders recieved.',
+        })
+      }
+    })
+    .catch(({ response: { data } }) => {
+      dispatch(notificate({ variant: 'error', data }))
+    })
+    .finally(() => {
+      dispatch({ type: GET_USER_ORDERS_PROCEED, payload: false })
     })
 }

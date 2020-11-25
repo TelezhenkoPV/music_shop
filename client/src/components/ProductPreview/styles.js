@@ -1,13 +1,15 @@
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({
+  productPreview: {
+    borderBottom: '3px solid purple',
+  },
   card_wrapper: {
     display: 'flex',
     justifyContent: 'space-around',
     alignItems: 'center',
-    borderBottom: '3px solid purple',
     boxSizing: 'border-box',
-    padding: '20px',
+    padding: '10px',
   },
   card_content: {
     display: 'flex',
@@ -42,6 +44,13 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: 'underline',
     color: 'purple',
     cursor: 'pointer',
+  },
+  error: {
+    padding: theme.spacing(1),
+    color: 'red',
+    fontSize: '14px',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 }))
 

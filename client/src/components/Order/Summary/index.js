@@ -8,6 +8,7 @@ import {
   totalCountSelector,
   totalPriceSelector,
 } from '../../../store/basket/basketSelectors'
+import { getOrderCreateError } from '../../../store/order/orderSelectors'
 import { removeCartItem } from '../../../store/basket/basketAction'
 import ProductPreview from '../../ProductPreview'
 import Container from '@material-ui/core/Container'
@@ -21,12 +22,31 @@ export default function Summary() {
   const totalPrice = useSelector(totalPriceSelector)
   const totalCount = useSelector(totalCountSelector)
 
+  const error = useSelector(getOrderCreateError)
+
   const onRemoveItem = (_id) => {
     dispatch(removeCartItem(_id))
   }
 
   const productPreview = () => {
     return basket.map((elem) => {
+      let errorMessage = ''
+      if (
+        error &&
+        error.productAvailibilityInfo &&
+        !error.productAvailibilityInfo.productsAvailibilityStatus
+      ) {
+        const prodwithError = error.productAvailibilityInfo.productsAvailibilityDetails.find(
+          (prod) => prod.productId === elem.product._id
+        )
+        if (prodwithError) {
+          errorMessage = `Error: there is only ${
+            prodwithError.realQuantity
+          } pcs on stock. Please reduce it by ${Math.abs(
+            prodwithError.diff
+          )} pcs`
+        }
+      }
       return (
         <ProductPreview
           key={elem.product._id}
@@ -37,6 +57,7 @@ export default function Summary() {
           price={elem.product.currentPrice}
           totalCount={elem.cartQuantity}
           onRemove={onRemoveItem}
+          error={errorMessage}
         />
       )
     })

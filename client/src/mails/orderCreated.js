@@ -22,13 +22,14 @@ export const MailBody = (order) => {
     },
     shipping: { type: shippingType, data: shippingData },
     payment: { type: paymentType },
+    products,
   } = order
 
   const orderTrack = isAuthenticated
     ? `<h5 style="font-family: Verdana; color: #112667; padding: 10px 20px">Order status you can track in Order tab of you <a href="${rootURL}/customer/profile">Profile</a></h5>`
     : `<h5 style="font-family: Verdana; color: #112667; padding: 10px 20px">Order status you can track folowing by <a href="${rootURL}/order/${orderNo}">Link</a></h5>`
 
-  const formStringsFromArray = (array) => {
+  const shippingStringsFromArray = (array) => {
     let result = ''
     array.forEach(
       ({ label, value }) =>
@@ -45,6 +46,41 @@ export const MailBody = (order) => {
     )
     return result
   }
+
+  const productsStringsFromArray = (array) => {
+    let result = ''
+    array.forEach(
+      ({ product: { imageUrls, name, color, currentPrice }, cartQuantity }) =>
+        (result = `${result}
+                <tr>
+                    <td>
+                        <img src="${
+                          imageUrls ? rootURL / imageUrls : '#'
+                        }" alt="Product image" />
+                    </td>
+                    <td>
+                        <h4 style="font-family: Verdana; color: #112667">Name: ${name}</h4>
+                        <h4 style="font-family: Verdana; color: #112667">Color: ${
+                          color || ''
+                        }</h4>
+                        <h4 style="font-family: Verdana; color: #112667">Price: ₴${currentPrice}</h4>
+                        <h4 style="font-family: Verdana; color: #112667">Qty: ${cartQuantity}</h4>
+                        <h4 style="font-family: Verdana; color: #112667">Summary: ₴${
+                          currentPrice * cartQuantity
+                        }</h4>
+                    </td>
+                </tr>
+        `)
+    )
+    return result
+  }
+
+  const OrderTotal = (products) =>
+    products.reduce(
+      (total, current) =>
+        total + current.cartQuantity * current.product.currentPrice,
+      0
+    )
 
   return `
 <table cellspacing="0" cellpadding="0" border="1px solid #112667" width="600">
@@ -88,7 +124,7 @@ export const MailBody = (order) => {
                             }</h4>
                         </td>
                     </tr>
-                    ${formStringsFromArray(shippingData)}
+                    ${shippingStringsFromArray(shippingData)}
                     
                 </table>
                 <table  style="cellspacing="0" width="600">
@@ -143,24 +179,15 @@ export const MailBody = (order) => {
                 <tr>
                     <h2 style="font-family: Verdana; color: #112667">Products:</h2>
                 </tr>
+                ${productsStringsFromArray(products)}
                 <tr>
                     <td>
-                        <img src="#" alt="ProdImg" />
-                    </td>
-                    <td>
-                        <h4 style="font-family: Verdana; color: #112667">Name: ProductName</h4>
-                        <h4 style="font-family: Verdana; color: #112667">Color: red</h4>
-                        <h4 style="font-family: Verdana; color: #112667">Price: ₴1234</h4>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <h4 style="font-family: Verdana; color: #112667">Products price:</h4>
                         <h4 style="font-family: Verdana; color: #112667">Total:</h4>
                     </td>
                     <td>
-                        <h4 style="font-family: Verdana; color: #112667">₴123456</h4>
-                        <h4 style="font-family: Verdana; color: #112667">₴123466</h4>
+                        <h4 style="font-family: Verdana; color: #112667">₴${OrderTotal(
+                          products
+                        )}</h4>
                     </td>
                 </tr>
 
@@ -203,5 +230,17 @@ MailBody.propTypes = {
         value: PropTypes.string.isRequired,
       }).isRequired,
     }),
+    products: PropTypes.arrayOf(
+      PropTypes.shape({
+        _id: PropTypes.string.isRequired,
+        product: PropTypes.shape({
+          name: PropTypes.string.isRequired,
+          currentPrice: PropTypes.number.isRequired,
+          color: PropTypes.string,
+          imageUrls: PropTypes.arrayOf(PropTypes.string),
+        }).isRequired,
+        cartQuantity: PropTypes.number.isRequired,
+      })
+    ),
   }),
 }
