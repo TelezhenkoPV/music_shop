@@ -34,13 +34,17 @@ const PDP = () => {
   }, [id])
 
   useEffect(() => {
+    if (product.quantity === 0) {
+      setProductAmount(0)
+    }
+
     if (productAmount < 1) {
       setProductAmount(1)
     }
     if (productAmount > product.quantity) {
       setProductAmount(productAmount - 1)
     }
-  }, [productAmount, product])
+  }, [productAmount])
 
   const handleFavorite = () => {
     setFavorite(!isFavorite)
@@ -56,6 +60,7 @@ const PDP = () => {
 
   return (
     <>
+      {console.log(product)}
       <Container className={classes.root}>
         <Grid container className={classes.mainContainer}>
           <Grid className={classes.infoBlock}>
@@ -83,7 +88,7 @@ const PDP = () => {
             >
               Brand: {product.brand}
             </Typography>
-            <div style={{ height: 1, width: '100%', background: 'grey' }} />
+            <div style={{ height: 1, width: '100%', background: 'grey' }}/>
             <Grid style={{ display: 'flex', marginTop: 20 }}>
               <Typography variant="body2" style={{ fontSize: '16px' }}>
                 Color:{' '}
@@ -100,35 +105,38 @@ const PDP = () => {
             >
               Amount:
               <IconButton
+                disabled={product.quantity === 0}
                 aria-label="down"
                 className={classes.margin}
                 size="small"
                 onClick={() => setProductAmount(productAmount - 1)}
               >
-                <ArrowDownwardIcon fontSize="inherit" />
+                <ArrowDownwardIcon fontSize="inherit"/>
               </IconButton>
               {productAmount}
               <IconButton
+                disabled={product.quantity === 0}
                 aria-label="up"
                 className={classes.margin}
                 size="small"
                 onClick={() => setProductAmount(productAmount + 1)}
               >
-                <ArrowUpwardIcon fontSize="inherit" />
+                <ArrowUpwardIcon fontSize="inherit"/>
               </IconButton>
             </Typography>
-            <div style={{ height: 1, width: '100%', background: 'grey' }} />
+            <div style={{ height: 1, width: '100%', background: 'grey' }}/>
             <Typography variant="h6" className={classes.paddingStyle}>
               Total: $ {productAmount * product.currentPrice}{' '}
             </Typography>
             <Grid>
               <Button
+                disabled={product.quantity === 0}
                 variant="contained"
                 color="primary"
                 size="small"
                 className={classes.button}
                 onClick={onAddProduct}
-                startIcon={<ShoppingCartIcon style={{ color: '#fff' }} />}
+                startIcon={<ShoppingCartIcon style={{ color: '#fff' }}/>}
               >
                 Add to cart
               </Button>
@@ -137,9 +145,9 @@ const PDP = () => {
                 onClick={handleFavorite}
                 startIcon={
                   isFavorite ? (
-                    <FavoriteIcon style={{ color: '#C22A2A' }} />
+                    <FavoriteIcon style={{ color: '#C22A2A' }}/>
                   ) : (
-                    <FavoriteIcon />
+                    <FavoriteIcon/>
                   )
                 }
               >
@@ -147,25 +155,25 @@ const PDP = () => {
               </Button>
             </Grid>
             <Grid style={{ display: 'flex', marginTop: 20 }}>
-              <DoneIcon style={{ color: 'green' }} />
+              <DoneIcon style={{ color: 'green' }}/>
               <Typography variant="body2">
                 Available:({product.quantity}){' '}
               </Typography>
             </Grid>
           </Grid>
           <Grid style={{ width: '35%' }}>
-            <ProductCardSlide data={product.imageUrls} main />
+            <ProductCardSlide data={product.imageUrls} main/>
           </Grid>
         </Grid>
       </Container>
-      <Youtube videoLink={product.videoLink} />
+      <Youtube videoLink={product.videoLink}/>
       <Typography
         variant="h3"
         style={{ textAlign: 'center', margin: '30px 0 20px' }}
       >
         Why i choose it?
       </Typography>
-      <Comment productId={product._id} />
+      <Comment productId={product._id}/>
     </>
   )
 }
