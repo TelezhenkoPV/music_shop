@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
     right: '5px',
     [theme.breakpoints.down('md')]: {
       width: '300px',
+      margin: '0 auto',
     },
     [theme.breakpoints.down('sm')]: {
       width: '200px',
@@ -39,10 +40,11 @@ const useStyles = makeStyles((theme) => ({
     top: '-56px',
     left: '340px',
     [theme.breakpoints.down('md')]: {
-      left: '183px',
+      left: '0px',
       height: '40px',
       top: '-45px',
       padding: '7px',
+      margin: '0 auto',
     },
     [theme.breakpoints.down('sm')]: {
       width: '117px',
@@ -56,6 +58,7 @@ const useStyles = makeStyles((theme) => ({
       width: '300px',
     },
     width: '557px',
+    margin: 'auto',
   },
   goTo: {
     fontSize: '20px',
@@ -67,6 +70,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    width: '100%',
   },
   line: {
     border: '1px solid #112667',

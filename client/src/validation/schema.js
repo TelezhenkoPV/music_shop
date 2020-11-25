@@ -139,3 +139,7 @@ export const schemaOrderCustomer = Yup.object().shape({
   ),
   email: Yup.string().email('Email is incorrect'),
 })
+
+export const schemaOrderShippingAddress = Yup.object().shape({
+  address: Yup.string().required('Please provide delivery address'),
+})

@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
+import { useDispatch, useSelector } from 'react-redux'
 import useStyles from './styles'
 import { useTheme } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
@@ -18,8 +19,10 @@ import FavoriteIcon from '@material-ui/icons/Favorite'
 import LocalMallIcon from '@material-ui/icons/LocalMall'
 
 import PersonalInformation from '../../../components/PersonalInformation'
+import OrdersList from '../../../components/Order/OrdersList'
 
 import { getUserData } from '../../../store/user/userSelectors'
+import { getCustomer } from '../../../store/user/userActions'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props
@@ -32,13 +35,25 @@ function TabPanel(props) {
       aria-labelledby={`vertical-tab-${index}`}
       {...other}
     >
-      {value === index && <div>{children}</div>}
+      {value === index && children}
     </div>
   )
 }
 
+TabPanel.propTypes = {
+  cheldren: PropTypes.element,
+  value: PropTypes.number,
+  index: PropTypes.number,
+}
+
 function UserProfile() {
   const classes = useStyles()
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getCustomer())
+  }, [dispatch])
+
   const upMD = useMediaQuery(useTheme().breakpoints.up('md'))
   const upSM = useMediaQuery('(min-width:500px)')
 
@@ -144,7 +159,7 @@ function UserProfile() {
           <PersonalInformation />
         </TabPanel>
         <TabPanel value={tabIndex} index={1} className={classes.tabPanel}>
-          My orders
+          <OrdersList />
         </TabPanel>
         <TabPanel value={tabIndex} index={2} className={classes.tabPanel}>
           Favorites

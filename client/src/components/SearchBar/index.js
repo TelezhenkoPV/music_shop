@@ -28,13 +28,13 @@ export default function Search() {
 
   const handleClickItem = (item) => {
     handleClose()
-    history.push(`/products/${item.categories}/${item.itemNo}`)
+    history.push(`/product/${item.itemNo}`)
   }
 
   useEffect(() => {
     const timeout = setTimeout(() => {
       if (inputValue && inputValue.length > 2) dispatch(search(inputValue))
-    }, 2000)
+    }, 500)
     setSearchWidth(anchorRef.current.clientWidth)
     return () => clearTimeout(timeout)
   }, [dispatch, inputValue])
@@ -46,15 +46,16 @@ export default function Search() {
         key={id}
         onClick={() => handleClickItem(item)}
       >
-        <div style={{ display: 'flex' }}>
-          <img
-            style={{ height: '50px' }}
-            src={'/images/carousel/product/1.png'}
-            alt={item.name}
-          />
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <span>{item.categories}</span>
-            <span>{item.name}</span>
+        <div className={classes.searchResult}>
+          {item.imageUrls.length > 0 ? (
+            <div
+              className={classes.searchResultImage}
+              style={{ backgroundImage: `url(${item.imageUrls[0]})` }}
+            />
+          ) : null}
+          <div className={classes.searchResultData}>
+            <span>Category: {item.categories}</span>
+            <span>Product: : {item.name}</span>
           </div>
         </div>
       </MenuItem>

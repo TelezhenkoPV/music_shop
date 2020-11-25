@@ -1,8 +1,9 @@
 import {
-  SIGNUP,
+  SET_AUTHENTICATED,
+  SIGNUP_SUCCESS,
   SIGNUP_PROCEED,
   SIGNUP_ERROR,
-  SIGNIN,
+  SIGNIN_SUCCESS,
   SIGNIN_PROCEED,
   SIGNIN_ERROR,
   SIGNOUT,
@@ -15,14 +16,18 @@ import {
   CHANGE_PASSWORD_SUCCESS,
   CHANGE_PASSWORD_PROCEED,
   CHANGE_PASSWORD_ERROR,
+  GET_USER_ORDERS_PROCEED,
+  SAVE_USER_ORDERS,
 } from './userConstants'
 
 const initialStore = {
+  isAuthenticated: false,
   isSignInProceed: false,
   isSignUpProceed: false,
   isUpdateProceed: false,
   isChangePasswordProceed: false,
   isGetCustomerProceed: false,
+  isGetUserOrdersProceed: false,
   isProfileEdit: false,
   token: null,
   data: {},
@@ -33,12 +38,27 @@ const initialStore = {
     changePassword: null,
     getCustomer: null,
   },
+  orders: [],
 }
 
 const reducer = (store = initialStore, action) => {
   switch (action.type) {
+    // Изменения признака авторизованности пользователя
+    case SET_AUTHENTICATED:
+      // const {isAuthenticated, token, data: {isAdmin, firstName, lastName}} = action.payload
+      return {
+        ...store,
+        isAuthenticated: action.payload.isAuthenticated,
+        token: action.payload.token,
+        data: {
+          ...store.data,
+          isAdmin: action.payload.data.isAdmin,
+          firstName: action.payload.data.firstName,
+          lastName: action.payload.data.lastName,
+        },
+      }
     // Регистрация пользователя успешна
-    case SIGNUP:
+    case SIGNUP_SUCCESS:
       return {
         ...store,
         errors: { ...store.errors, signUp: null },
@@ -59,10 +79,9 @@ const reducer = (store = initialStore, action) => {
       }
 
     // Авторизация пользователя успешна, получен токен
-    case SIGNIN:
+    case SIGNIN_SUCCESS:
       return {
         ...store,
-        token: action.payload,
         errors: { ...store.errors, signIn: null },
       }
 
@@ -148,7 +167,16 @@ const reducer = (store = initialStore, action) => {
         ...store,
         errors: { ...store.errors, changePassword: action.payload },
       }
-
+    case GET_USER_ORDERS_PROCEED:
+      return {
+        ...store,
+        isGetUserOrdersProceed: action.payload,
+      }
+    case SAVE_USER_ORDERS:
+      return {
+        ...store,
+        orders: [...action.payload],
+      }
     default:
       return store
   }

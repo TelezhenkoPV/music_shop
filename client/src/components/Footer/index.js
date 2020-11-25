@@ -12,11 +12,11 @@ import MailOutlineIcon from '@material-ui/icons/MailOutline'
 
 const Footer = () => {
   const classes = useStyles()
-  const [allLinks, setLinks] = useState([{ links: [] }])
+  const [allLinks, setLinks] = useState(null)
 
   useEffect(() => {
     axios
-      .get('http://localhost:5000/api/links')
+      .get('/api/links')
       .then((res) => {
         setLinks(res.data)
       })
@@ -35,54 +35,83 @@ const Footer = () => {
             </Typography>
             <img alt="company logo" src={logo} className={classes.logo} />
             <Typography className={classes.logoName} variant="subtitle2">
-              Музыкальный интернет-гипермаркет
+              Music Internet Hypermarket
             </Typography>
           </Grid>
-          {allLinks.map((item) => {
-            const links = item.links.map((link) => (
-              <Typography
-                key={link.id}
-                style={{
-                  color: 'white',
-                  textDecoration: 'none',
-                  fontSize: '13px',
-                  padding: '3px',
-                }}
-                component={Link}
-                to={link.url}
-              >
-                {link.description}
-              </Typography>
-            ))
-            return (
-              <Grid item key={item._id}>
-                <Typography className={classes.titleLinks}>
-                  {item.title}
-                </Typography>
-                <Grid container>
-                  {item.title === 'Контакты' ? (
+          {allLinks &&
+            allLinks.map((item) => {
+              const links = item.links.map((link) => {
+                if (item.title === 'Contacts') {
+                  return (
+                    <Typography
+                      key={link._id}
+                      style={{
+                        color: 'white',
+                        textDecoration: 'none',
+                        fontSize: '13px',
+                        padding: '3px',
+                      }}
+                    >
+                      {link.description}
+                    </Typography>
+                  )
+                }
+                return (
+                  <Typography
+                    key={link._id}
+                    style={{
+                      color: 'white',
+                      textDecoration: 'none',
+                      fontSize: '13px',
+                      padding: '3px',
+                    }}
+                    component={Link}
+                    to={link.url}
+                  >
+                    {link.description}
+                  </Typography>
+                )
+              })
+              return (
+                <Grid item key={item._id}>
+                  {item.title === 'Contacts' ? (
+                    <Typography
+                      className={classes.titleLinks}
+                      component={Link}
+                      style={{ textDecoration: 'none' }}
+                      to="/contacts"
+                    >
+                      {item.title}
+                    </Typography>
+                  ) : (
+                    <Typography className={classes.titleLinks}>
+                      {item.title}
+                    </Typography>
+                  )}
+                  <Grid container>
+                    {item.title === 'Contacts' ? (
+                      <Grid item className={classes.boxLinks}>
+                        <RoomIcon
+                          style={{ margin: '2px', color: '#fff' }}
+                          fontSize="small"
+                        />
+                        <PhoneIcon
+                          style={{ margin: '2px', color: '#fff' }}
+                          fontSize="small"
+                        />
+                        <MailOutlineIcon
+                          style={{ margin: '2px', color: '#fff' }}
+                          fontSize="small"
+                        />
+                      </Grid>
+                    ) : null}
                     <Grid item className={classes.boxLinks}>
-                      <RoomIcon
-                        style={{ margin: '2px', color: '#fff' }}
-                        fontSize="small"
-                      />
-                      <PhoneIcon
-                        style={{ margin: '2px', color: '#fff' }}
-                        fontSize="small"
-                      />
-                      <MailOutlineIcon
-                        style={{ margin: '2px', color: '#fff' }}
-                        fontSize="small"
-                      />
+                      {links}
                     </Grid>
-                  ) : null}
-                  <Grid item className={classes.boxLinks}>
-                    {links}
                   </Grid>
                 </Grid>
-              </Grid>
-            )
-          })}
+              )
+            })}
         </Grid>
       </Container>
     </footer>

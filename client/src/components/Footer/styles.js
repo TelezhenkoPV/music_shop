@@ -9,6 +9,7 @@ const useStyles = makeStyles((theme) => ({
   container: {
     [theme.breakpoints.down('sm')]: {
       padding: '24px',
+      width: '232px',
     },
     padding: '72px',
   },

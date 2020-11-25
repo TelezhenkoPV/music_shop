@@ -24,8 +24,27 @@ const useStyles = makeStyles((theme) => ({
   clearIcon: {
     color: '#ffffff',
   },
+  searchResult: {
+    width: '100%',
+    display: 'flex',
+    border: `1px solid ${theme.palette.primary.dark}`,
+  },
   searchDropDown: {
     zIndex: '1400!important',
+  },
+  searchResultImage: {
+    height: '50px',
+    width: '50px',
+    margin: theme.spacing(1, 2, 1, 1),
+    backgroundSize: 'contain',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
+  },
+  searchResultData: {
+    display: 'flex',
+    flexDirection: 'column',
+    flexGrow: 1,
+    justifyContent: 'center',
   },
 }))
 

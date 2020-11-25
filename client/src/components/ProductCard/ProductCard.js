@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography'
 import FavoriteIcon from '@material-ui/icons/Favorite'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import ProductCardSlide from '../ProductCardSlide/ProductCardSlide'
+import { NavLink } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -80,9 +81,17 @@ export const ProductCard = (props) => {
             {element.name}
           </Typography>
         </div>
-        <Typography variant="body2">Цена: {element.currentPrice}</Typography>
-        <Typography variant="body2">Код товара: {element.itemNo}</Typography>
-        <Typography variant="body2">Бренд: {element.brand}</Typography>
+        <Typography variant="body2">Price: {element.currentPrice}</Typography>
+        <Typography variant="body2">Vendor code: {element.itemNo}</Typography>
+        <Typography variant="body2">Brand: {element.brand}</Typography>
+        <NavLink
+          to={{
+            pathname: `/product/${element.itemNo}`,
+            state: { product: element },
+          }}
+        >
+          Details
+        </NavLink>
       </CardContent>
       <div className={classes.rightCardBlock}>
         <div className={classes.actionsBlock}>
@@ -94,7 +103,7 @@ export const ProductCard = (props) => {
             startIcon={<ShoppingCartIcon style={{ color: '#fff' }} />}
             onClick={onAddProduct}
           >
-            В корзину
+            Add to cart
           </Button>
 
           <IconButton
@@ -110,7 +119,7 @@ export const ProductCard = (props) => {
           </IconButton>
         </div>
         <Typography variant="body1" className={classes.status}>
-          {element.enabled ? `В наличии: ${element.quantity}` : 'Отсутствует'}
+          {element.enabled ? `Available: ${element.quantity}` : 'Out of stock'}
         </Typography>
       </div>
     </Card>

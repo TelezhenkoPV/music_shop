@@ -1,4 +1,4 @@
-export const getIsAuthenticated = (store) => !!store.user.token
+export const getIsAuthenticated = (store) => store.user.isAuthenticated
 export const getIsAdmin = (store) => store.user.data.isAdmin
 export const getUserData = (store) => store.user.data
 
@@ -23,3 +23,7 @@ export const getChangePasswordError = (store) =>
   store.user.errors.changePassword
 export const getIsChangePasswordSuccessful = (store) =>
   store.user.errors.changePassword === null
+
+export const isGetUserOrdersProceed = (store) =>
+  store.user.isGetUserOrdersProceed
+export const userOrders = (store) => store.user.orders

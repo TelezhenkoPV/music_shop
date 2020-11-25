@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
+import { useDispatch, useSelector } from 'react-redux'
 
 import clsx from 'clsx'
 import useStyles, { useStepIconStyles } from './styles'
@@ -15,28 +16,33 @@ import Stepper from '@material-ui/core/Stepper'
 import Step from '@material-ui/core/Step'
 import StepLabel from '@material-ui/core/StepLabel'
 import StepConnector from '@material-ui/core/StepConnector'
-// import Button from '@material-ui/core/Button'
 
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import LocalShippingIcon from '@material-ui/icons/LocalShipping'
 import PaymentIcon from '@material-ui/icons/Payment'
-import DoneAllIcon from '@material-ui/icons/DoneAll'
+import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck'
+import DoneOutlineIcon from '@material-ui/icons/DoneOutline'
 
+import Summary from '../../components/Order/Summary'
 import Customer from '../../components/Order/Customer'
 import Shipping from '../../components/Order/Shipping'
 import Payment from '../../components/Order/Payment'
 import Confirm from '../../components/Order/Confirm'
-import Summary from '../../components/Order/Summary'
+import Finish from '../../components/Order/Finish'
+
+import { getActiveStep } from '../../store/order/orderSelectors'
+import { cleanOrder } from '../../store/order/orderActions'
 
 function StepIcon(props) {
   const classes = useStepIconStyles()
-  const { active, completed } = props
+  const { active, completed, icon } = props
 
   const icons = {
     1: <AccountCircle />,
     2: <LocalShippingIcon />,
     3: <PaymentIcon />,
-    4: <DoneAllIcon />,
+    4: <PlaylistAddCheckIcon />,
+    5: <DoneOutlineIcon />,
   }
 
   return (
@@ -46,7 +52,7 @@ function StepIcon(props) {
         [classes.completed]: completed,
       })}
     >
-      {icons[String(props.icon)]}
+      {icons[String(icon)]}
     </div>
   )
 }
@@ -57,16 +63,18 @@ StepIcon.propTypes = {
   icon: PropTypes.node,
 }
 
-function getStepContent({ activeStep, actions }) {
+function getStepContent(activeStep) {
   switch (activeStep) {
     case 0:
-      return <Customer activeStep={activeStep} actions={actions} />
+      return <Customer />
     case 1:
-      return <Shipping activeStep={activeStep} actions={actions} />
+      return <Shipping />
     case 2:
-      return <Payment activeStep={activeStep} actions={actions} />
+      return <Payment />
     case 3:
-      return <Confirm activeStep={activeStep} actions={actions} />
+      return <Confirm />
+    case 4:
+      return <Finish />
     default:
       return null
   }
@@ -74,21 +82,20 @@ function getStepContent({ activeStep, actions }) {
 
 function OrderCheckout() {
   const classes = useStyles()
+  const dispatch = useDispatch()
 
-  const [activeStep, setActiveStep] = useState(0)
-  const steps = ['Customer Information', 'Shipping', 'Payment', 'Confirmation']
+  useEffect(() => {
+    dispatch(cleanOrder())
+  }, [dispatch])
 
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1)
-  }
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1)
-  }
-
-  // const handleReset = () => {
-  //   setActiveStep(0)
-  // }
+  const steps = [
+    'Customer Information',
+    'Shipping',
+    'Payment',
+    'Confirmation',
+    'Finish',
+  ]
+  const activeStep = useSelector(getActiveStep)
 
   return (
     <Container className={classes.root}>
@@ -141,47 +148,14 @@ function OrderCheckout() {
         </Stepper>
 
         <Grid container spacing={2}>
-          <Grid item xs={12} md={8}>
-            {getStepContent({
-              activeStep,
-              actions: { back: handleBack, next: handleNext },
-            })}
-            {/* <div>
-              {activeStep === steps.length ? (
-                <div>
-                  <Typography className={classes.instructions}>
-                    All steps completed - you&apos;re finished
-                  </Typography>
-                  <Button onClick={handleReset} className={classes.button}>
-                    Reset
-                  </Button>
-                </div>
-              ) : (
-                <div className={classes.actions}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    disabled={activeStep === 0}
-                    onClick={handleBack}
-                    className={classes.button}
-                  >
-                    Back
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleNext}
-                    className={classes.button}
-                  >
-                    {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                  </Button>
-                </div>
-              )}
-            </div> */}
+          <Grid item xs={12} md={activeStep < 4 ? 8 : 12}>
+            {getStepContent(activeStep)}
           </Grid>
-          <Grid item xs={12} md={4}>
-            <Summary />
-          </Grid>
+          {activeStep < 4 && (
+            <Grid item xs={12} md={4}>
+              <Summary />
+            </Grid>
+          )}
         </Grid>
       </Paper>
     </Container>

@@ -35,13 +35,10 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   marginBottom: {
-    marginBottom: theme.spacing(4),
-    [theme.breakpoints.down('xs')]: {
-      marginBottom: theme.spacing(2),
-    },
+    marginBottom: theme.spacing(1),
   },
   marginBottomLast: {
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(1),
     [theme.breakpoints.down('xs')]: {
       marginBottom: theme.spacing(1),
     },

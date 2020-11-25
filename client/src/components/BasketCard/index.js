@@ -1,6 +1,5 @@
 import React from 'react'
 import { Box } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
 import ClearIcon from '@material-ui/icons/Clear'
@@ -8,54 +7,23 @@ import Container from '@material-ui/core/Container'
 import AddIcon from '@material-ui/icons/Add'
 import RemoveIcon from '@material-ui/icons/Remove'
 import Grid from '@material-ui/core/Grid'
-
-const useStyles = makeStyles((theme) => ({
-  card_background: {
-    display: 'flex',
-    alignItems: 'center',
-    marginBottom: '15px',
-  },
-  card_content: {
-    border: '1px solid black',
-    boxSizing: 'border-box',
-    padding: '20px 40px',
-    width: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-  },
-  card_radio: {
-    display: 'flex',
-    alignItems: 'center',
-    padding: '0',
-  },
-  count_buttons: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  color_circle: {
-    border: '2px solid black',
-    width: '20px',
-    height: '20px',
-    borderRadius: '35%',
-    marginLeft: '5px',
-  },
-}))
+import useStyles from './styles'
 
 const BasketCard = (props) => {
+  const classes = useStyles()
+
   const {
     id,
     img,
     name,
     price,
     onRemove,
-    // totalPrice,
-    // totalCount,
+    totalPrice,
+    totalCount,
     onPlus,
     onMinus,
     color,
   } = props
-  const classes = useStyles()
 
   const handleRemoveClick = () => {
     onRemove(id)
@@ -81,16 +49,25 @@ const BasketCard = (props) => {
         </IconButton>
         <Grid className={classes.card_content} container direction="row">
           <Grid item xs={2}>
-            <img style={{ height: 120 }} src={`/${img[0]}`} alt="img" />
+            <img
+              className={classes.card_content_items}
+              style={{ height: 120 }}
+              src={`/${img[0]}`}
+              alt="img"
+            />
           </Grid>
-          <Grid item xs={3}>
-            <Typography style={{ textTransform: 'uppercase' }} variant="h6">
+          <Grid item xs={3} style={{ maxWidth: '100%' }}>
+            <Typography
+              className={classes.card_content_name}
+              style={{ textTransform: 'uppercase' }}
+              variant="h6"
+            >
               {name}
             </Typography>
           </Grid>
           <Grid item xs>
             <Box className={classes.card_radio}>
-              <Typography variant="subtitle1">Цвет</Typography>
+              <Typography variant="subtitle1">Color</Typography>
               <div
                 className={classes.color_circle}
                 style={{ backgroundColor: `${color}` }}
@@ -98,21 +75,28 @@ const BasketCard = (props) => {
             </Box>
           </Grid>
           <Grid item xs>
-            <Typography variant="h6">${price}</Typography>
+            <Typography variant="h6" className={classes.card_content_items}>
+              ${price}
+            </Typography>
           </Grid>
           <Grid item xs>
             <Box className={classes.count_buttons}>
               <IconButton aria-label="remove" onClick={handleMinusItem}>
                 <RemoveIcon color="primary" style={{ fontSize: 20 }} />
               </IconButton>
-              <Typography variant="h6">1</Typography>
+              <Typography variant="h6">{totalCount}</Typography>
               <IconButton aria-label="add" onClick={handlePlusItem}>
                 <AddIcon color="primary" style={{ fontSize: 20 }} />
               </IconButton>
             </Box>
           </Grid>
           <Grid item xs>
-            <Typography variant="h5">${price}</Typography>
+            <Typography
+              variant="h5"
+              className={classes.card_content_totalPrice}
+            >
+              $ {totalPrice}
+            </Typography>
           </Grid>
         </Grid>
       </Box>

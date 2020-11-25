@@ -41,6 +41,7 @@ export default function FilterColorsCheckbox() {
 
   const list = colors.map((elem) => (
     <FormControlLabel
+      className={classes.columns}
       key={elem._id}
       control={
         <Checkbox

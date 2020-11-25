@@ -14,7 +14,7 @@ const rand = uniqueRandom(1000000, 9999999);
 exports.placeOrder = async (req, res, next) => {
   try {
     const order = _.cloneDeep(req.body);
-    order.orderNo = String(rand());
+    // order.orderNo = String(rand());
     let cartProducts = [];
 
     if (req.body.deliveryAddress) {
@@ -35,7 +35,8 @@ exports.placeOrder = async (req, res, next) => {
       cartProducts = await subtractProductsFromCart(order.customerId);
     }
 
-    if (!req.body.products && cartProducts.length < 1) {
+    // if (!req.body.products && cartProducts.length < 1) {
+    if ((!req.body.products || req.body.products.length < 1) && cartProducts.length < 1) {
       res
         .status(400)
         .json({ message: "The list of products is required, but absent!" });
@@ -58,10 +59,9 @@ exports.placeOrder = async (req, res, next) => {
     );
 
     if (!productAvailibilityInfo.productsAvailibilityStatus) {
-      res.json({
-        message: "Some of your products are unavailable for now",
-        productAvailibilityInfo
-      });
+      res
+        .status(404)
+        .json({message: "Some of your products are unavailable for now", productAvailibilityInfo });
     } else {
       const subscriberMail = req.body.email;
       const letterSubject = req.body.letterSubject;
