@@ -20,6 +20,7 @@ import CreditCardIcon from '@material-ui/icons/CreditCard'
 import { MailSubject, MailBody } from '../../../mails/orderCreated'
 
 import { getIsAuthenticated } from '../../../store/user/userSelectors'
+import { basketSelector } from '../../../store/basket/basketSelectors'
 import {
   getActiveStep,
   getOrderData,
@@ -66,6 +67,7 @@ export default function Confirm() {
   const isAuthenticated = useSelector(getIsAuthenticated)
 
   const order = useSelector(getOrderData)
+  const products = useSelector(basketSelector)
 
   const {
     customer: {
@@ -150,8 +152,8 @@ export default function Confirm() {
       email: order.customer.email,
       mobile: order.customer.telephone,
       letterSubject: MailSubject({ orderNo }),
-      letterHtml: MailBody({ ...order, orderNo, isAuthenticated }),
-      products: JSON.stringify([]),
+      letterHtml: MailBody({ ...order, orderNo, isAuthenticated, products }),
+      products: JSON.stringify(products),
       shipping: JSON.stringify(order.shipping),
       paymentInfo: JSON.stringify(order.payment),
       customer: JSON.stringify(order.customer),

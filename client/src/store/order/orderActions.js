@@ -62,7 +62,7 @@ export const sendOrder = (order) => (dispatch) => {
     })
     .catch(({ response: { status, data } }) => {
       dispatch({ type: ORDER_CREATE_ERROR, payload: data })
-      dispatch(notificate({ variant: 'error', data }))
+      dispatch(notificate({ variant: 'error', data: data.message }))
     })
     .finally(() => {
       // Фейковая задержка для демонстрации спинера

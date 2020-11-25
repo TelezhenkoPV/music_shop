@@ -1,24 +1,8 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-// import useStyles from './styles'
+import useStyles from './styles'
 
-// import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
-import CircularProgress from '@material-ui/core/CircularProgress'
-// import List from '@material-ui/core/List'
-// import ListItem from '@material-ui/core/ListItem'
-// import ListItemIcon from '@material-ui/core/ListItemIcon'
-// import ListItemText from '@material-ui/core/ListItemText'
-// import Button from '@material-ui/core/Button'
-
-// import PersonIcon from '@material-ui/icons/Person'
-// import CakeIcon from '@material-ui/icons/Cake'
-// import LocationOnIcon from '@material-ui/icons/LocationOn'
-// import CreditCardIcon from '@material-ui/icons/CreditCard'
-// import PhoneIcon from '@material-ui/icons/Phone'
-// import EmailOutlinedIcon from '@material-ui/icons/EmailOutlined'
-// import WcIcon from '@material-ui/icons/Wc'
-// import CheckIcon from '@material-ui/icons/Check'
+import { DataGrid } from '@material-ui/data-grid'
 
 import { getUserOrders } from '../../../store/user/userActions'
 import {
@@ -26,8 +10,17 @@ import {
   isGetUserOrdersProceed,
 } from '../../../store/user/userSelectors'
 
+const columns = [
+  { field: 'orderNo', headerName: 'Order Number' },
+  { field: 'date', headerName: 'Order date' },
+  { field: 'shippingType', headerName: 'Shipping method' },
+  { field: 'prodQty', headerName: 'QTY' },
+  { field: 'totalSum', headerName: 'Total' },
+  { field: 'status', headerName: 'Status' },
+]
+
 export default function OrdersList() {
-  //   const classes = useStyles()
+  const classes = useStyles()
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -37,9 +30,35 @@ export default function OrdersList() {
   const orders = useSelector(userOrders)
   const isLoading = useSelector(isGetUserOrdersProceed)
 
-  console.log('Orders', orders)
+  const rows = orders.map((order, i) => {
+    const {
+      orderNo,
+      date,
+      shipping: {
+        type: { label: shippingType },
+      },
+      totalSum,
+      status,
+      products,
+    } = order
+    const prodQty = products.reduce(
+      (totalQty, prod) => totalQty + prod.cartQuantity,
+      0
+    )
+    return { id: i, orderNo, date, shippingType, prodQty, totalSum, status }
+  })
 
   return (
-    <>{isLoading ? <CircularProgress /> : <Typography>Orders</Typography>}</>
+    <div className={classes.root}>
+      <div style={{ flexGrow: 1 }}>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          pageSize={10}
+          checkboxSelection
+          loading={isLoading}
+        />
+      </div>
+    </div>
   )
 }
