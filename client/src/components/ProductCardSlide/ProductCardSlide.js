@@ -23,13 +23,15 @@ const ProductCardSlide = ({ data, main }) => {
       {!main
         ? data &&
           data.map((e, index) => (
-            <div className={classes.carouselWrapper} key={index} >
+
+            <div className={classes.carouselWrapper} key={index}>
               <img src={`/${e}`} alt={e} style={{ width: '60%' }} />
             </div>
           ))
         : data &&
           data.map((e, index) => (
-            <div className={classes.carouselWrapperMain} key={index} >
+
+            <div className={classes.carouselWrapperMain} key={index}>
               <img src={`/${e}`} alt={e} style={{ width: '60%' }} />
             </div>
           ))}
