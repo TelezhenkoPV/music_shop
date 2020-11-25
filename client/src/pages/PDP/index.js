@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import Container from '@material-ui/core/Container'
-import { useStyles } from './styles'
+
+import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import { useStyles } from './styles'
+
+import Container from '@material-ui/core/Container'
 import { Grid } from '@material-ui/core'
-import ProductCardSlide from '../../components/ProductCardSlide/ProductCardSlide'
-import Youtube from '../../components/YouTube'
 import Typography from '@material-ui/core/Typography'
 import DoneIcon from '@material-ui/icons/Done'
 import Button from '@material-ui/core/Button'
@@ -14,9 +15,12 @@ import FavoriteIcon from '@material-ui/icons/Favorite'
 import IconButton from '@material-ui/core/IconButton'
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward'
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward'
+
+import ProductCardSlide from '../../components/ProductCardSlide/ProductCardSlide'
+import Youtube from '../../components/YouTube'
 import Comment from '../../components/Comment'
+
 import { addProductToBasket } from '../../store/basket/basketAction'
-import { useDispatch } from 'react-redux'
 
 const PDP = () => {
   const classes = useStyles()
@@ -33,14 +37,14 @@ const PDP = () => {
       .catch((e) => console.log(e))
   }, [id])
 
-  useEffect(() => {
-    if (productAmount < 1) {
-      setProductAmount(1)
-    }
-    if (productAmount > product.quantity) {
-      setProductAmount(productAmount - 1)
-    }
-  }, [productAmount, product])
+  // useEffect(() => {
+  //   if (productAmount < 1) {
+  //     setProductAmount(1)
+  //   }
+  //   if (productAmount > product.quantity) {
+  //     setProductAmount(productAmount - 1)
+  //   }
+  // }, [productAmount, product])
 
   const handleFavorite = () => {
     setFavorite(!isFavorite)

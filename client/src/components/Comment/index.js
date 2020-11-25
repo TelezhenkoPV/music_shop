@@ -1,6 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useStylesComment } from './styles'
+import PropTypes from 'prop-types'
 
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
@@ -38,4 +39,8 @@ export default function Comment(props) {
   )
 
   return <div className={classes.root}>{list}</div>
+}
+
+Comment.propTypes = {
+  productId: PropTypes.string,
 }

@@ -1,5 +1,7 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
+import PropTypes from 'prop-types'
+
+import { useStyles } from './styles'
 import Card from '@material-ui/core/Card'
 import IconButton from '@material-ui/core/IconButton'
 import CardContent from '@material-ui/core/CardContent'
@@ -9,47 +11,6 @@ import FavoriteIcon from '@material-ui/icons/Favorite'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import ProductCardSlide from '../ProductCardSlide/ProductCardSlide'
 import { NavLink } from 'react-router-dom'
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    maxWidth: '100%',
-    display: 'flex',
-    padding: 10,
-    margin: 15,
-    border: '1px solid #112667',
-    justifyContent: 'space-between',
-  },
-  media: {
-    width: '150px',
-  },
-  status: {
-    border: '2px solid #112667',
-    borderRadius: '20px',
-    color: '#112667',
-    padding: '4px 20px',
-  },
-  colorBlock: {
-    // width: 30,
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  colorItem: {
-    margin: 4,
-    width: '10px',
-    height: '20px',
-    border: '1px solid #fff',
-    borderRadius: '10px',
-  },
-  actionsBlock: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  rightCardBlock: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-  },
-}))
 
 export const ProductCard = (props) => {
   const classes = useStyles()
@@ -124,4 +85,9 @@ export const ProductCard = (props) => {
       </div>
     </Card>
   )
+}
+
+ProductCard.propTypes = {
+  element: PropTypes.object,
+  onClickAddProduct: PropTypes.func,
 }
