@@ -19,7 +19,7 @@ export const useStyles = makeStyles((theme) => ({
     width: '65%',
   },
   mainContainer: {
-    width: 1200,
+    width: '100%',
     margin: '0 auto',
     display: 'flex',
     justifyContent: 'space-between',
