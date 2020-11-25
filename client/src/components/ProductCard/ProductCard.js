@@ -10,12 +10,13 @@ import Typography from '@material-ui/core/Typography'
 import FavoriteIcon from '@material-ui/icons/Favorite'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import ProductCardSlide from '../ProductCardSlide/ProductCardSlide'
-import { NavLink } from 'react-router-dom'
+import { useHistory } from 'react-router'
 
 export const ProductCard = (props) => {
   const classes = useStyles()
   const { element, onClickAddProduct } = props
   const [isFavorite, setFavorite] = React.useState(false)
+  const history = useHistory()
 
   const handleFavorite = () => {
     setFavorite(!isFavorite)
@@ -23,6 +24,13 @@ export const ProductCard = (props) => {
 
   const onAddProduct = () => {
     onClickAddProduct(element)
+  }
+
+  const forwardToCardDetails = () => {
+    history.push({
+      pathname: `/product/${element.itemNo}`,
+      state: { product: element },
+    })
   }
 
   return (
@@ -36,7 +44,7 @@ export const ProductCard = (props) => {
 
       <ProductCardSlide data={element.imageUrls} />
 
-      <CardContent>
+      <CardContent onClick={forwardToCardDetails} style={{ cursor: 'pointer' }}>
         <div style={{ display: 'flex' }}>
           <Typography variant="h6" style={{ textTransform: 'uppercase' }}>
             {element.name}
@@ -45,19 +53,12 @@ export const ProductCard = (props) => {
         <Typography variant="body2">Price: {element.currentPrice}</Typography>
         <Typography variant="body2">Vendor code: {element.itemNo}</Typography>
         <Typography variant="body2">Brand: {element.brand}</Typography>
-        <NavLink
-          to={{
-            pathname: `/product/${element.itemNo}`,
-            state: { product: element },
-          }}
-        >
-          Details
-        </NavLink>
       </CardContent>
       <div className={classes.rightCardBlock}>
         <div className={classes.actionsBlock}>
           <Button
             variant="contained"
+            disabled={element.quantity === 0}
             color="primary"
             size="small"
             className={classes.button}
@@ -80,7 +81,9 @@ export const ProductCard = (props) => {
           </IconButton>
         </div>
         <Typography variant="body1" className={classes.status}>
-          {element.enabled ? `Available: ${element.quantity}` : 'Out of stock'}
+          {element.quantity !== 0
+            ? `Available: ${element.quantity}`
+            : 'Out of stock'}
         </Typography>
       </div>
     </Card>

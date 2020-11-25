@@ -37,14 +37,19 @@ const PDP = () => {
       .catch((e) => console.log(e))
   }, [id])
 
-  // useEffect(() => {
-  //   if (productAmount < 1) {
-  //     setProductAmount(1)
-  //   }
-  //   if (productAmount > product.quantity) {
-  //     setProductAmount(productAmount - 1)
-  //   }
-  // }, [productAmount, product])
+  useEffect(() => {
+    if (product.quantity === 0) {
+      setProductAmount(0)
+    }
+
+    if (productAmount < 1) {
+      setProductAmount(1)
+    }
+    if (productAmount > product.quantity) {
+      setProductAmount(productAmount - 1)
+    }
+    // eslint-disable-next-line
+  }, [productAmount])
 
   const handleFavorite = () => {
     setFavorite(!isFavorite)
@@ -104,6 +109,7 @@ const PDP = () => {
             >
               Amount:
               <IconButton
+                disabled={product.quantity === 0}
                 aria-label="down"
                 className={classes.margin}
                 size="small"
@@ -113,6 +119,7 @@ const PDP = () => {
               </IconButton>
               {productAmount}
               <IconButton
+                disabled={product.quantity === 0}
                 aria-label="up"
                 className={classes.margin}
                 size="small"
@@ -127,6 +134,7 @@ const PDP = () => {
             </Typography>
             <Grid>
               <Button
+                disabled={product.quantity === 0}
                 variant="contained"
                 color="primary"
                 size="small"
