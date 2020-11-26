@@ -19,6 +19,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite'
 import LocalMallIcon from '@material-ui/icons/LocalMall'
 
 import PersonalInformation from '../../../components/PersonalInformation'
+import OrdersList from '../../../components/Order/OrdersList'
 
 import { getUserData } from '../../../store/user/userSelectors'
 import { getCustomer } from '../../../store/user/userActions'
@@ -34,7 +35,7 @@ function TabPanel(props) {
       aria-labelledby={`vertical-tab-${index}`}
       {...other}
     >
-      {value === index && <div>{children}</div>}
+      {value === index && children}
     </div>
   )
 }
@@ -158,7 +159,7 @@ function UserProfile() {
           <PersonalInformation />
         </TabPanel>
         <TabPanel value={tabIndex} index={1} className={classes.tabPanel}>
-          My orders
+          <OrdersList />
         </TabPanel>
         <TabPanel value={tabIndex} index={2} className={classes.tabPanel}>
           Favorites
