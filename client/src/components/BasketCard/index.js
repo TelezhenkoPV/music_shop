@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Box } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
@@ -102,6 +103,19 @@ const BasketCard = (props) => {
       </Box>
     </Container>
   )
+}
+
+BasketCard.propTypes = {
+  id: PropTypes.string,
+  img: PropTypes.array,
+  name: PropTypes.string,
+  price: PropTypes.number,
+  onRemove: PropTypes.func,
+  totalPrice: PropTypes.number,
+  totalCount: PropTypes.number,
+  onPlus: PropTypes.func,
+  onMinus: PropTypes.func,
+  color: PropTypes.string,
 }
 
 export default BasketCard
