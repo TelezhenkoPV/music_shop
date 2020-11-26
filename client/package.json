@@ -118,6 +118,5 @@
       "prettier --write"
     ]
   },
-
   "proxy": "http://localhost:5000"
 }

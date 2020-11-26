@@ -3,8 +3,6 @@ import axios from 'axios'
 import { Container } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import parse from 'html-react-parser/index'
-// eslint-disable-next-line
-import style from './style.scss'
 
 const FAQ = () => {
   const [html, setHtml] = useState(null)
