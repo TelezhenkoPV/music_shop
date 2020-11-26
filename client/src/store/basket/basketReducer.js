@@ -15,7 +15,6 @@ const reducer = (store = initialStore, action) => {
       }
 
       let alreadyExist = false
-
       store.products.forEach((elem) => {
         if (elem._id === action.payload._id) {
           alreadyExist = true
@@ -40,18 +39,25 @@ const reducer = (store = initialStore, action) => {
         .slice()
         .filter((elem) => elem._id !== action.payload)
 
+      let totalValue = true
       store.products.forEach((elem) => {
         if (elem._id === action.payload) {
-          const totalCount = store.totalCount - elem.cartQuantity
-          const totalPrice = store.totalPrice - elem.productPrice
-
-          console.log(`Count: ${totalCount}, Price: ${totalPrice}`)
+          totalValue = false
         }
+      })
+
+      const tempCount = store.products.forEach((elem) => {
+        return store.totalCount - elem.cartQuantity
+      })
+      const tempPrice = store.products.forEach((elem) => {
+        return store.totalPrice - elem.productPrice
       })
 
       return {
         ...store,
         products: cartItems,
+        totalCount: !totalValue ? tempCount : store.totalCount,
+        totalPrice: !totalValue ? tempPrice : store.totalPrice,
       }
     }
     case 'PLUS_CART_ITEM': {
@@ -69,16 +75,27 @@ const reducer = (store = initialStore, action) => {
         return cartItem
       })
 
-      // const tempTotalCount = store.products.map(cartItem => {
-      //   if (cartItem.cartQuantity < cartItem.product.quantity) {
-      //     store.totalCount++;
-      //   }
-      //   return store.totalCount
-      // })
+      let totalValue = true
+      // eslint-disable-next-line array-callback-return
+      store.products.map((cartItem) => {
+        if (
+          cartItem._id === action.payload &&
+          cartItem.cartQuantity < cartItem.product.quantity
+        ) {
+          totalValue = false
+        }
+      })
+      const tempPrice = store.products.map((cartItem) => {
+        return store.totalPrice + cartItem.product.currentPrice
+      })
 
       return {
         ...store,
         products: tempCart,
+        totalCount: !totalValue ? store.totalCount + 1 : store.totalCount,
+        totalPrice: !totalValue
+          ? tempPrice.reduce((a, b) => a + b, 0)
+          : store.totalPrice,
       }
     }
     case 'MINUS_CART_ITEM': {
@@ -93,9 +110,26 @@ const reducer = (store = initialStore, action) => {
         return cartItem
       })
 
+      let totalValue = true
+
+      // eslint-disable-next-line array-callback-return
+      store.products.map((cartItem) => {
+        if (cartItem._id === action.payload && cartItem.cartQuantity > 1) {
+          totalValue = false
+        }
+      })
+
+      const tempPrice = store.products.map((cartItem) => {
+        return store.totalPrice - cartItem.product.currentPrice
+      })
+
       return {
         ...store,
         products: tempCart,
+        totalCount: !totalValue ? store.totalCount - 1 : store.totalCount,
+        totalPrice: !totalValue
+          ? tempPrice.reduce((a, b) => a + b, 0)
+          : store.totalPrice,
       }
     }
     case 'CLEAN':
