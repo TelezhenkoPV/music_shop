@@ -1,8 +1,11 @@
 import React from 'react'
-import { Box, Typography } from '@material-ui/core'
-import useStyles from './style'
-import Container from '@material-ui/core/Container'
 import { Link } from 'react-router-dom'
+
+import useStyles from './style'
+import PropTypes from 'prop-types'
+
+import { Box, Typography } from '@material-ui/core'
+import Container from '@material-ui/core/Container'
 
 const ProductCardSmall = (props) => {
   const { product } = props
@@ -41,4 +44,16 @@ const ProductCardSmall = (props) => {
     </Link>
   )
 }
+
+ProductCardSmall.propTypes = {
+  product: PropTypes.shape({
+    categories: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    currentPrice: PropTypes.number.isRequired,
+    quantity: PropTypes.number.isRequired,
+    imageUrls: PropTypes.arrayOf(PropTypes.string),
+    brand: PropTypes.string,
+  }),
+}
+
 export default ProductCardSmall

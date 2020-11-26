@@ -41,7 +41,7 @@ function TabPanel(props) {
 }
 
 TabPanel.propTypes = {
-  cheldren: PropTypes.element,
+  children: PropTypes.element,
   value: PropTypes.number,
   index: PropTypes.number,
 }

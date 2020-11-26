@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { ProductCard } from '../ProductCard/ProductCard'
+import PropTypes from 'prop-types'
 
 import CircularProgress from '@material-ui/core/CircularProgress'
 
@@ -85,4 +86,8 @@ export default function ProductsScroll(props) {
       ))}
     </InfiniteScroll>
   )
+}
+
+ProductsScroll.propTypes = {
+  onClickAddProduct: PropTypes.func,
 }
