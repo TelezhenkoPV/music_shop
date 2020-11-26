@@ -1,5 +1,7 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
+import PropTypes from 'prop-types'
+
+import { useStyles } from './styles'
 import Card from '@material-ui/core/Card'
 import IconButton from '@material-ui/core/IconButton'
 import CardContent from '@material-ui/core/CardContent'
@@ -9,47 +11,6 @@ import FavoriteIcon from '@material-ui/icons/Favorite'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import ProductCardSlide from '../ProductCardSlide/ProductCardSlide'
 import { useHistory } from 'react-router'
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    maxWidth: '100%',
-    display: 'flex',
-    padding: 10,
-    margin: 15,
-    border: '1px solid #112667',
-    justifyContent: 'space-between',
-  },
-  media: {
-    width: '150px',
-  },
-  status: {
-    border: '2px solid #112667',
-    borderRadius: '20px',
-    color: '#112667',
-    padding: '4px 20px',
-  },
-  colorBlock: {
-    // width: 30,
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  colorItem: {
-    margin: 4,
-    width: '10px',
-    height: '20px',
-    border: '1px solid #fff',
-    borderRadius: '10px',
-  },
-  actionsBlock: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  rightCardBlock: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-  },
-}))
 
 export const ProductCard = (props) => {
   const classes = useStyles()
@@ -72,7 +33,6 @@ export const ProductCard = (props) => {
     })
   }
 
-
   return (
     <Card className={classes.root}>
       <div className={classes.colorBlock}>
@@ -84,7 +44,7 @@ export const ProductCard = (props) => {
 
       <ProductCardSlide data={element.imageUrls} />
 
-      <CardContent onClick={forwardToCardDetails} style={{cursor: 'pointer'}}>
+      <CardContent onClick={forwardToCardDetails} style={{ cursor: 'pointer' }}>
         <div style={{ display: 'flex' }}>
           <Typography variant="h6" style={{ textTransform: 'uppercase' }}>
             {element.name}
@@ -102,7 +62,7 @@ export const ProductCard = (props) => {
             color="primary"
             size="small"
             className={classes.button}
-            startIcon={<ShoppingCartIcon style={{ color: '#fff' }}/>}
+            startIcon={<ShoppingCartIcon style={{ color: '#fff' }} />}
             onClick={onAddProduct}
           >
             Add to cart
@@ -114,16 +74,23 @@ export const ProductCard = (props) => {
             onClick={handleFavorite}
           >
             {isFavorite ? (
-              <FavoriteIcon style={{ color: '#C22A2A' }}/>
+              <FavoriteIcon style={{ color: '#C22A2A' }} />
             ) : (
-              <FavoriteIcon/>
+              <FavoriteIcon />
             )}
           </IconButton>
         </div>
         <Typography variant="body1" className={classes.status}>
-          {element.quantity !== 0 ? `Available: ${element.quantity}` : 'Out of stock'}
+          {element.quantity !== 0
+            ? `Available: ${element.quantity}`
+            : 'Out of stock'}
         </Typography>
       </div>
     </Card>
   )
+}
+
+ProductCard.propTypes = {
+  element: PropTypes.object,
+  onClickAddProduct: PropTypes.func,
 }

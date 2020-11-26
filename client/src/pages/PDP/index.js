@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import Container from '@material-ui/core/Container'
-import { useStyles } from './styles'
+
+import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import { useStyles } from './styles'
+
+import Container from '@material-ui/core/Container'
 import { Grid } from '@material-ui/core'
-import ProductCardSlide from '../../components/ProductCardSlide/ProductCardSlide'
-import Youtube from '../../components/YouTube'
 import Typography from '@material-ui/core/Typography'
 import DoneIcon from '@material-ui/icons/Done'
 import Button from '@material-ui/core/Button'
@@ -14,9 +15,12 @@ import FavoriteIcon from '@material-ui/icons/Favorite'
 import IconButton from '@material-ui/core/IconButton'
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward'
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward'
+
+import ProductCardSlide from '../../components/ProductCardSlide/ProductCardSlide'
+import Youtube from '../../components/YouTube'
 import Comment from '../../components/Comment'
+
 import { addProductToBasket } from '../../store/basket/basketAction'
-import { useDispatch } from 'react-redux'
 
 const PDP = () => {
   const classes = useStyles()
@@ -44,6 +48,7 @@ const PDP = () => {
     if (productAmount > product.quantity) {
       setProductAmount(productAmount - 1)
     }
+    // eslint-disable-next-line
   }, [productAmount])
 
   const handleFavorite = () => {
@@ -60,7 +65,6 @@ const PDP = () => {
 
   return (
     <>
-      {console.log(product)}
       <Container className={classes.root}>
         <Grid container className={classes.mainContainer}>
           <Grid className={classes.infoBlock}>
@@ -88,7 +92,7 @@ const PDP = () => {
             >
               Brand: {product.brand}
             </Typography>
-            <div style={{ height: 1, width: '100%', background: 'grey' }}/>
+            <div style={{ height: 1, width: '100%', background: 'grey' }} />
             <Grid style={{ display: 'flex', marginTop: 20 }}>
               <Typography variant="body2" style={{ fontSize: '16px' }}>
                 Color:{' '}
@@ -111,7 +115,7 @@ const PDP = () => {
                 size="small"
                 onClick={() => setProductAmount(productAmount - 1)}
               >
-                <ArrowDownwardIcon fontSize="inherit"/>
+                <ArrowDownwardIcon fontSize="inherit" />
               </IconButton>
               {productAmount}
               <IconButton
@@ -121,10 +125,10 @@ const PDP = () => {
                 size="small"
                 onClick={() => setProductAmount(productAmount + 1)}
               >
-                <ArrowUpwardIcon fontSize="inherit"/>
+                <ArrowUpwardIcon fontSize="inherit" />
               </IconButton>
             </Typography>
-            <div style={{ height: 1, width: '100%', background: 'grey' }}/>
+            <div style={{ height: 1, width: '100%', background: 'grey' }} />
             <Typography variant="h6" className={classes.paddingStyle}>
               Total: $ {productAmount * product.currentPrice}{' '}
             </Typography>
@@ -136,7 +140,7 @@ const PDP = () => {
                 size="small"
                 className={classes.button}
                 onClick={onAddProduct}
-                startIcon={<ShoppingCartIcon style={{ color: '#fff' }}/>}
+                startIcon={<ShoppingCartIcon style={{ color: '#fff' }} />}
               >
                 Add to cart
               </Button>
@@ -145,9 +149,9 @@ const PDP = () => {
                 onClick={handleFavorite}
                 startIcon={
                   isFavorite ? (
-                    <FavoriteIcon style={{ color: '#C22A2A' }}/>
+                    <FavoriteIcon style={{ color: '#C22A2A' }} />
                   ) : (
-                    <FavoriteIcon/>
+                    <FavoriteIcon />
                   )
                 }
               >
@@ -155,25 +159,25 @@ const PDP = () => {
               </Button>
             </Grid>
             <Grid style={{ display: 'flex', marginTop: 20 }}>
-              <DoneIcon style={{ color: 'green' }}/>
+              <DoneIcon style={{ color: 'green' }} />
               <Typography variant="body2">
                 Available:({product.quantity}){' '}
               </Typography>
             </Grid>
           </Grid>
           <Grid style={{ width: '35%' }}>
-            <ProductCardSlide data={product.imageUrls} main/>
+            <ProductCardSlide data={product.imageUrls} main />
           </Grid>
         </Grid>
       </Container>
-      <Youtube videoLink={product.videoLink}/>
+      <Youtube videoLink={product.videoLink} />
       <Typography
         variant="h3"
         style={{ textAlign: 'center', margin: '30px 0 20px' }}
       >
         Why i choose it?
       </Typography>
-      <Comment productId={product._id}/>
+      <Comment productId={product._id} />
     </>
   )
 }
