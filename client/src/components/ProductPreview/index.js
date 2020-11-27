@@ -6,10 +6,19 @@ import Typography from '@material-ui/core/Typography'
 
 export default function ProductPreview(props) {
   const classes = useStyles()
-  const { img, id, name, price, color, onRemove, totalCount, error } = props
+  const {
+    img,
+    name,
+    price,
+    color,
+    onRemove,
+    totalCount,
+    error,
+    product,
+  } = props
 
   const handleRemoveClick = () => {
-    onRemove(id)
+    onRemove(product)
   }
 
   return (
@@ -52,4 +61,5 @@ ProductPreview.propTypes = {
   price: PropTypes.number.isRequired,
   color: PropTypes.string.isRequired,
   error: PropTypes.string,
+  product: PropTypes.object,
 }

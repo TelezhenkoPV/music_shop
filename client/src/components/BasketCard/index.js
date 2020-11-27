@@ -14,7 +14,6 @@ const BasketCard = (props) => {
   const classes = useStyles()
 
   const {
-    id,
     img,
     name,
     price,
@@ -23,19 +22,20 @@ const BasketCard = (props) => {
     totalCount,
     onPlus,
     onMinus,
+    product,
     color,
   } = props
 
   const handleRemoveClick = () => {
-    onRemove(id)
+    onRemove(product)
   }
 
   const handlePlusItem = () => {
-    onPlus(id)
+    onPlus(product)
   }
 
   const handleMinusItem = () => {
-    onMinus(id)
+    onMinus(product)
   }
 
   return (
@@ -49,10 +49,10 @@ const BasketCard = (props) => {
           <ClearIcon color="primary" style={{ fontSize: 35 }} />
         </IconButton>
         <Grid className={classes.card_content} container direction="row">
-          <Grid item xs={2}>
+          <Grid item xs={2} style={{ maxWidth: 'none' }}>
             <img
               className={classes.card_content_items}
-              style={{ height: 120 }}
+              style={{ height: 110 }}
               src={`/${img[0]}`}
               alt="img"
             />
@@ -106,7 +106,6 @@ const BasketCard = (props) => {
 }
 
 BasketCard.propTypes = {
-  id: PropTypes.string,
   img: PropTypes.array,
   name: PropTypes.string,
   price: PropTypes.number,
@@ -115,6 +114,7 @@ BasketCard.propTypes = {
   totalCount: PropTypes.number,
   onPlus: PropTypes.func,
   onMinus: PropTypes.func,
+  product: PropTypes.object,
   color: PropTypes.string,
 }
 

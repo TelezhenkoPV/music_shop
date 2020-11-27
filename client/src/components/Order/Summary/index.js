@@ -24,8 +24,8 @@ export default function Summary() {
 
   const error = useSelector(getOrderCreateError)
 
-  const onRemoveItem = (_id) => {
-    dispatch(removeCartItem(_id))
+  const onRemoveItem = (product) => {
+    dispatch(removeCartItem(product))
   }
 
   const productPreview = () => {
@@ -54,9 +54,10 @@ export default function Summary() {
           id={elem.product._id}
           color={elem.product.color}
           name={elem.product.name}
-          price={elem.product.currentPrice}
+          price={elem.productPrice}
           totalCount={elem.cartQuantity}
           onRemove={onRemoveItem}
+          product={elem}
           error={errorMessage}
         />
       )

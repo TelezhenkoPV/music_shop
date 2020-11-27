@@ -4,22 +4,22 @@ export const addProductToBasket = (products) => (dispatch) =>
     payload: products,
   })
 
-export const removeCartItem = (_id) => (dispatch) =>
+export const removeCartItem = (product) => (dispatch) =>
   dispatch({
     type: 'REMOVE_CART_ITEM',
-    payload: _id,
+    payload: product,
   })
 
-export const plusItem = (_id) => (dispatch) =>
+export const plusItem = (product) => (dispatch) =>
   dispatch({
     type: 'PLUS_CART_ITEM',
-    payload: _id,
+    payload: product,
   })
 
-export const minusItem = (_id) => (dispatch) =>
+export const minusItem = (product) => (dispatch) =>
   dispatch({
     type: 'MINUS_CART_ITEM',
-    payload: _id,
+    payload: product,
   })
 
 export const clean = () => (dispatch) => dispatch({ type: 'CLEAN' })

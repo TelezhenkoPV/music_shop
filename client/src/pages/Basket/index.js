@@ -30,16 +30,16 @@ function Basket() {
   const totalPrice = useSelector(totalPriceSelector)
   const totalCount = useSelector(totalCountSelector)
 
-  const onRemoveItem = (_id) => {
-    dispatch(removeCartItem(_id))
+  const onRemoveItem = (product) => {
+    dispatch(removeCartItem(product))
   }
 
-  const onPlusItem = (_id) => {
-    dispatch(plusItem(_id))
+  const onPlusItem = (product) => {
+    dispatch(plusItem(product))
   }
 
-  const onMinusItem = (_id) => {
-    dispatch(minusItem(_id))
+  const onMinusItem = (product) => {
+    dispatch(minusItem(product))
   }
 
   const basketCard = () => {
@@ -57,7 +57,7 @@ function Basket() {
           totalCount={elem.cartQuantity}
           onMinus={onMinusItem}
           onPlus={onPlusItem}
-          product={elem.product}
+          product={elem}
         />
       )
     })
