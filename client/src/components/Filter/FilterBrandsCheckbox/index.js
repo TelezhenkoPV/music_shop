@@ -11,23 +11,32 @@ import CheckBoxIcon from '@material-ui/icons/CheckBox'
 import FormLabel from '@material-ui/core/FormLabel'
 import { objToQueryString, toggleItemInArr } from '../utils'
 import { useHistory } from 'react-router'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { actualFiltersSelector } from '../../../store/filters/filtersSelectors'
+import { notificate } from '../../../store/notification/notificationActions'
 
 export default function FilterBrandsCheckbox() {
   const classes = useStyles()
   const history = useHistory()
+  const dispatch = useDispatch()
 
   const actualFilters = useSelector(actualFiltersSelector)
   const [brands, setBrands] = useState([])
 
   useEffect(() => {
     axios('/api/filters/brand')
-      .then((resp) =>
+      .then((resp) => {
         setBrands(resp.data.sort((a, b) => a.name.localeCompare(b.name)))
-      )
-      .catch((e) => console.log(e))
-  }, [])
+      })
+      .catch((e) => {
+        dispatch(
+          notificate({
+            variant: 'error',
+            data: e,
+          })
+        )
+      })
+  }, [dispatch])
 
   const handleChange = (event) => {
     const newActualFilters = toggleItemInArr(

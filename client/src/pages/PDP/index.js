@@ -165,7 +165,7 @@ const PDP = () => {
               </Typography>
             </Grid>
           </Grid>
-          <Grid style={{ width: '35%' }}>
+          <Grid className={classes.sliderStiles}>
             <ProductCardSlide data={product.imageUrls} main />
           </Grid>
         </Grid>

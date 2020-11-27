@@ -6,23 +6,27 @@ export const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    flexWrap: 'wrap',
   },
   filterWrapper: {
     padding: 15,
   },
   filterBlock: {
-    width: '30%',
-    height: '30%',
+    width: 360,
     padding: 15,
   },
   productBlock: {
-    width: '65%',
+    width: '60%',
+    minWidth: 350,
+    display: 'flex',
+    justifyContent: 'center',
   },
   mainContainer: {
     width: '100%',
     margin: '0 auto',
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
+    flexWrap: 'wrap',
   },
   pageHeader: {
     width: '100%',
