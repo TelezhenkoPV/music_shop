@@ -43,7 +43,8 @@ const Footer = () => {
               const links = item.links.map((link) => {
                 if (item.title === 'Contacts') {
                   return (
-                    <Typography
+                    <a
+                      href={link.url}
                       key={link._id}
                       style={{
                         color: 'white',
@@ -53,7 +54,7 @@ const Footer = () => {
                       }}
                     >
                       {link.description}
-                    </Typography>
+                    </a>
                   )
                 }
                 return (

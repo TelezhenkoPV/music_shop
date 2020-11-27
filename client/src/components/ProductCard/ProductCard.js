@@ -1,5 +1,7 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
+import PropTypes from 'prop-types'
+
+import { useStyles } from './styles'
 import Card from '@material-ui/core/Card'
 import IconButton from '@material-ui/core/IconButton'
 import CardContent from '@material-ui/core/CardContent'
@@ -8,53 +10,13 @@ import Typography from '@material-ui/core/Typography'
 import FavoriteIcon from '@material-ui/icons/Favorite'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import ProductCardSlide from '../ProductCardSlide/ProductCardSlide'
-import { NavLink } from 'react-router-dom'
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    maxWidth: '100%',
-    display: 'flex',
-    padding: 10,
-    margin: 15,
-    border: '1px solid #112667',
-    justifyContent: 'space-between',
-  },
-  media: {
-    width: '150px',
-  },
-  status: {
-    border: '2px solid #112667',
-    borderRadius: '20px',
-    color: '#112667',
-    padding: '4px 20px',
-  },
-  colorBlock: {
-    // width: 30,
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  colorItem: {
-    margin: 4,
-    width: '10px',
-    height: '20px',
-    border: '1px solid #fff',
-    borderRadius: '10px',
-  },
-  actionsBlock: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  rightCardBlock: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-  },
-}))
+import { useHistory } from 'react-router'
 
 export const ProductCard = (props) => {
   const classes = useStyles()
   const { element, onClickAddProduct } = props
   const [isFavorite, setFavorite] = React.useState(false)
+  const history = useHistory()
 
   const handleFavorite = () => {
     setFavorite(!isFavorite)
@@ -62,6 +24,13 @@ export const ProductCard = (props) => {
 
   const onAddProduct = () => {
     onClickAddProduct(element)
+  }
+
+  const forwardToCardDetails = () => {
+    history.push({
+      pathname: `/product/${element.itemNo}`,
+      state: { product: element },
+    })
   }
 
   return (
@@ -75,7 +44,7 @@ export const ProductCard = (props) => {
 
       <ProductCardSlide data={element.imageUrls} />
 
-      <CardContent>
+      <CardContent onClick={forwardToCardDetails} style={{ cursor: 'pointer' }}>
         <div style={{ display: 'flex' }}>
           <Typography variant="h6" style={{ textTransform: 'uppercase' }}>
             {element.name}
@@ -84,19 +53,12 @@ export const ProductCard = (props) => {
         <Typography variant="body2">Price: {element.currentPrice}</Typography>
         <Typography variant="body2">Vendor code: {element.itemNo}</Typography>
         <Typography variant="body2">Brand: {element.brand}</Typography>
-        <NavLink
-          to={{
-            pathname: `/product/${element.itemNo}`,
-            state: { product: element },
-          }}
-        >
-          Details
-        </NavLink>
       </CardContent>
       <div className={classes.rightCardBlock}>
         <div className={classes.actionsBlock}>
           <Button
             variant="contained"
+            disabled={element.quantity === 0}
             color="primary"
             size="small"
             className={classes.button}
@@ -119,9 +81,16 @@ export const ProductCard = (props) => {
           </IconButton>
         </div>
         <Typography variant="body1" className={classes.status}>
-          {element.enabled ? `Available: ${element.quantity}` : 'Out of stock'}
+          {element.quantity !== 0
+            ? `Available: ${element.quantity}`
+            : 'Out of stock'}
         </Typography>
       </div>
     </Card>
   )
+}
+
+ProductCard.propTypes = {
+  element: PropTypes.object,
+  onClickAddProduct: PropTypes.func,
 }

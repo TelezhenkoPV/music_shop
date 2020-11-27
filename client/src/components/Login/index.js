@@ -1,5 +1,6 @@
 import React from 'react'
 import useStyles from './styles'
+import PropTypes from 'prop-types'
 
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
@@ -74,6 +75,12 @@ function Login() {
       </TabPanel>
     </div>
   )
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.object,
+  value: PropTypes.number,
+  index: PropTypes.number,
 }
 
 export default Login
