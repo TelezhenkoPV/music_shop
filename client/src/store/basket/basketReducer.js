@@ -37,39 +37,25 @@ const reducer = (store = initialStore, action) => {
     case 'REMOVE_CART_ITEM': {
       const cartItems = store.products
         .slice()
-        .filter((elem) => elem._id !== action.payload)
-
-      let totalValue = true
-      store.products.forEach((elem) => {
-        if (elem._id === action.payload) {
-          totalValue = false
-        }
-      })
-
-      const tempCount = store.products.forEach((elem) => {
-        return store.totalCount - elem.cartQuantity
-      })
-      const tempPrice = store.products.forEach((elem) => {
-        return store.totalPrice - elem.productPrice
-      })
-
+        .filter((elem) => elem._id !== action.payload._id)
       return {
         ...store,
         products: cartItems,
-        totalCount: !totalValue ? tempCount : store.totalCount,
-        totalPrice: !totalValue ? tempPrice : store.totalPrice,
+        totalCount: store.totalCount - action.payload.cartQuantity,
+        totalPrice: store.totalPrice - action.payload.productPrice,
       }
     }
     case 'PLUS_CART_ITEM': {
       const tempCart = store.products.map((cartItem) => {
         if (
-          cartItem._id === action.payload &&
-          cartItem.cartQuantity < cartItem.product.quantity
+          cartItem._id === action.payload._id &&
+          cartItem.cartQuantity < action.payload.product.quantity
         ) {
           cartItem = {
             ...cartItem,
             cartQuantity: cartItem.cartQuantity + 1,
-            productPrice: cartItem.productPrice + cartItem.product.currentPrice,
+            productPrice:
+              cartItem.productPrice + action.payload.product.currentPrice,
           }
         }
         return cartItem
@@ -79,14 +65,11 @@ const reducer = (store = initialStore, action) => {
       // eslint-disable-next-line array-callback-return
       store.products.map((cartItem) => {
         if (
-          cartItem._id === action.payload &&
-          cartItem.cartQuantity < cartItem.product.quantity
+          cartItem._id === action.payload._id &&
+          cartItem.cartQuantity < action.payload.product.quantity
         ) {
           totalValue = false
         }
-      })
-      const tempPrice = store.products.map((cartItem) => {
-        return store.totalPrice + cartItem.product.currentPrice
       })
 
       return {
@@ -94,33 +77,35 @@ const reducer = (store = initialStore, action) => {
         products: tempCart,
         totalCount: !totalValue ? store.totalCount + 1 : store.totalCount,
         totalPrice: !totalValue
-          ? tempPrice.reduce((a, b) => a + b, 0)
+          ? store.totalPrice + action.payload.product.currentPrice
           : store.totalPrice,
       }
     }
     case 'MINUS_CART_ITEM': {
       const tempCart = store.products.map((cartItem) => {
-        if (cartItem._id === action.payload && cartItem.cartQuantity > 1) {
+        if (
+          cartItem._id === action.payload._id &&
+          action.payload.cartQuantity > 1
+        ) {
           cartItem = {
             ...cartItem,
             cartQuantity: cartItem.cartQuantity - 1,
-            productPrice: cartItem.productPrice - cartItem.product.currentPrice,
+            productPrice:
+              cartItem.productPrice - action.payload.product.currentPrice,
           }
         }
         return cartItem
       })
 
       let totalValue = true
-
       // eslint-disable-next-line array-callback-return
       store.products.map((cartItem) => {
-        if (cartItem._id === action.payload && cartItem.cartQuantity > 1) {
+        if (
+          cartItem._id === action.payload._id &&
+          action.payload.cartQuantity > 1
+        ) {
           totalValue = false
         }
-      })
-
-      const tempPrice = store.products.map((cartItem) => {
-        return store.totalPrice - cartItem.product.currentPrice
       })
 
       return {
@@ -128,7 +113,7 @@ const reducer = (store = initialStore, action) => {
         products: tempCart,
         totalCount: !totalValue ? store.totalCount - 1 : store.totalCount,
         totalPrice: !totalValue
-          ? tempPrice.reduce((a, b) => a + b, 0)
+          ? store.totalPrice - action.payload.product.currentPrice
           : store.totalPrice,
       }
     }

@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   totalPrice_box: {
     boxSizing: 'border-box',
     padding: '22px',
-    borderTop: '3px solid purple',
+    // borderTop: '3px solid purple',
   },
 }))
 
