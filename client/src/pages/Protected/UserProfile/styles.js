@@ -31,6 +31,9 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: 'nowrap',
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.primary.contrastText,
+    [theme.breakpoints.down('sm')]: {
+      marginBottom: theme.spacing(2),
+    },
   },
   tabs: {
     borderRight: `1px solid ${theme.palette.divider}`,

@@ -30,7 +30,7 @@ export default function Summary() {
 
   const productPreview = () => {
     return basket.map((elem) => {
-      let errorMessage = ''
+      let errorMessage = null
       if (
         error &&
         error.productAvailibilityInfo &&
@@ -39,7 +39,7 @@ export default function Summary() {
         const prodwithError = error.productAvailibilityInfo.productsAvailibilityDetails.find(
           (prod) => prod.productId === elem.product._id
         )
-        if (prodwithError) {
+        if (prodwithError.diff < 0) {
           errorMessage = `Error: there is only ${
             prodwithError.realQuantity
           } pcs on stock. Please reduce it by ${Math.abs(
