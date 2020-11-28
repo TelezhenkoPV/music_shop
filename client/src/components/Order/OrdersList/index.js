@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import useStyles from './styles'
-
+import { useTheme } from '@material-ui/core/styles'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 import Tooltip from '@material-ui/core/Tooltip'
+
 import { getUserOrders } from '../../../store/user/userActions'
 import {
   PagingState,
@@ -10,36 +12,32 @@ import {
   SortingState,
   IntegratedSorting,
   DataTypeProvider,
-  // GroupingState,
-  // IntegratedGrouping,
+  RowDetailState,
 } from '@devexpress/dx-react-grid'
 import {
   Grid,
   Table,
   TableHeaderRow,
   PagingPanel,
-  // TableGroupRow,
-  // GroupingPanel,
-  // DragDropProvider,
+  TableRowDetail,
+  TableColumnVisibility,
   // Toolbar,
 } from '@devexpress/dx-react-grid-material-ui'
 
 import {
+  formatDate,
+  formatCurrency,
   TableComponent,
   HeadComponent,
   Cell,
   SortLabel,
-} from './gridComponents'
+  OrderDetail,
+} from '../gridComponents'
 
 import {
   userOrders,
   isGetUserOrdersProceed,
 } from '../../../store/user/userSelectors'
-
-const formatDate = (date) =>
-  `${date.substring(8, 10)}.${date.substring(5, 7)}.${date.substring(0, 4)}`
-const formatCurrency = (value) =>
-  value.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
 
 const columns = [
   { name: 'orderNo', title: 'Order Number' },
@@ -57,16 +55,6 @@ const columns = [
   },
   { name: 'status', title: 'Status' },
 ]
-
-const CurrencyFormatter = ({ value }) => (
-  <b style={{ color: 'darkblue' }}>
-    {value.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
-  </b>
-)
-
-const CurrencyTypeProvider = (props) => (
-  <DataTypeProvider formatterComponent={CurrencyFormatter} {...props} />
-)
 
 const TooltipFormatter = ({
   row: { date, shippingType, prodQty, totalSum, status },
@@ -99,9 +87,20 @@ const CellTooltip = (props) => (
   />
 )
 
+const RowDetail = ({ row }) => {
+  const { customer, shipping, payment, products, totalSum } = row
+  return (
+    <OrderDetail data={{ customer, shipping, payment, products, totalSum }} />
+  )
+}
+
 export default function OrdersList() {
   const classes = useStyles()
   const dispatch = useDispatch()
+
+  const theme = useTheme()
+  const bpXS = useMediaQuery(theme.breakpoints.only('xs'))
+  const bpSM = useMediaQuery(theme.breakpoints.only('sm'))
 
   useEffect(() => {
     dispatch(getUserOrders())
@@ -109,29 +108,27 @@ export default function OrdersList() {
 
   const orders = useSelector(userOrders)
   const isLoading = useSelector(isGetUserOrdersProceed)
-  const [currencyColumns] = useState(['totalSum'])
   const [pageSizes] = useState([5, 10, 15, 0])
-  // const [grouping, setGrouping] = useState([{columnName: 'status'}])
 
   const [tableColumnExtensions] = useState([
     {
       columnName: 'orderNo',
       align: 'left',
-      width: '22%',
+      width: '25%',
       wordWrapEnabled: true,
       groupingEnabled: false,
     },
     {
       columnName: 'date',
       align: 'center',
-      width: '14%',
+      width: 'auto',
       wordWrapEnabled: true,
       groupingEnabled: false,
     },
     {
       columnName: 'shippingType',
       align: 'center',
-      width: '19%',
+      width: '14%',
       wordWrapEnabled: true,
     },
     {
@@ -143,66 +140,77 @@ export default function OrdersList() {
     {
       columnName: 'totalSum',
       align: 'right',
-      width: '14%',
+      width: 'auto',
       groupingEnabled: false,
     },
-    { columnName: 'status', align: 'center', width: '14%' },
+    { columnName: 'status', align: 'center', width: 'auto' },
   ])
 
-  const rows = orders.map((order, i) => {
+  const rows = orders.map((order) => {
     const {
       orderNo,
       date,
-      shipping: {
-        type: { label: shippingType },
-      },
       totalSum,
       status,
       products,
+      customer,
+      shipping,
+      paymentInfo,
+      shipping: {
+        type: { label: shippingType },
+      },
     } = order
     const prodQty = products.reduce(
       (totalQty, prod) => totalQty + prod.cartQuantity,
       0
     )
-    return { orderNo, date, shippingType, prodQty, totalSum, status }
+    return {
+      orderNo,
+      date,
+      shippingType,
+      prodQty,
+      totalSum,
+      status,
+      customer: JSON.parse(customer),
+      shipping,
+      payment: paymentInfo,
+      products,
+    }
   })
 
   return (
     <div className={classes.root}>
       <div style={{ flexGrow: 1 }}>
         <Grid rows={rows} columns={columns} loading={isLoading}>
-          <CurrencyTypeProvider for={currencyColumns} />
-          {/* <DragDropProvider /> */}
           <SortingState
             defaultSorting={[{ columnName: 'date', direction: 'desc' }]}
           />
-          {/* <GroupingState
-              defaultGrouping={grouping}
-              grouping={grouping}
-              onGroupingChange={setGrouping}
-              columnExtensions={tableColumnExtensions}
-            /> */}
           <PagingState defaultCurrentPage={0} defaultPageSize={5} />
           <IntegratedSorting />
-          {/* <IntegratedGrouping /> */}
-
           <IntegratedPaging />
-
           <CellTooltip />
+          <RowDetailState />
           <Table
             tableComponent={TableComponent}
             headComponent={HeadComponent}
             cellComponent={Cell}
             columnExtensions={tableColumnExtensions}
           />
-          <TableHeaderRow
-            showSortingControls
-            sortLabelComponent={SortLabel}
-            // showGroupingControls
-          />
-          {/* <TableGroupRow /> */}
+          <TableHeaderRow showSortingControls sortLabelComponent={SortLabel} />
+          {bpSM && (
+            <TableColumnVisibility
+              hiddenColumnNames={['shippingType', 'prodQty']}
+            />
+          )}
+          {bpXS && (
+            <TableColumnVisibility
+              hiddenColumnNames={['orderNo', 'shippingType', 'prodQty']}
+            />
+          )}
+
+          <TableRowDetail contentComponent={RowDetail} />
+
           {/* <Toolbar /> */}
-          {/* <GroupingPanel showGroupingControls /> */}
           <PagingPanel pageSizes={pageSizes} />
         </Grid>
       </div>

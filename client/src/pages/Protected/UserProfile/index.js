@@ -20,6 +20,7 @@ import LocalMallIcon from '@material-ui/icons/LocalMall'
 
 import PersonalInformation from '../../../components/PersonalInformation'
 import OrdersList from '../../../components/Order/OrdersList'
+import Favorites from '../../../components/Favorites'
 
 import { getUserData } from '../../../store/user/userSelectors'
 import { getCustomer } from '../../../store/user/userActions'
@@ -162,7 +163,7 @@ function UserProfile() {
           <OrdersList />
         </TabPanel>
         <TabPanel value={tabIndex} index={2} className={classes.tabPanel}>
-          Favorites
+          <Favorites />
         </TabPanel>
       </Paper>
     </Container>
