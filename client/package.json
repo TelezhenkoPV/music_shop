@@ -58,6 +58,8 @@
     "@material-ui/styles": "^4.10.0",
     "@material-ui/system": "^4.9.14",
     "axios": "^0.20.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.5",
     "date-fns": "^2.16.1",
     "formik": "^2.2.1",
     "formik-material-ui": "^3.0.0",
