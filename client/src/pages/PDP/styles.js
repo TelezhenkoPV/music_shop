@@ -23,9 +23,14 @@ export const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    height: '100%',
   },
   paddingStyle: {
     padding: '10px 0',
+  },
+  sliderStiles: {
+    width: '35%',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
   },
 }))
