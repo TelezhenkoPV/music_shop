@@ -17,35 +17,6 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.primary.dark,
     },
   },
-  fildGroupTitle: {
-    padding: '8px',
-    margin: '4px -4px',
-    backgroundColor: theme.palette.primary.dark,
-    color: theme.palette.primary.contrastText,
-  },
-  info: {
-    fontSize: '14px',
-    [theme.breakpoints.down('xs')]: {
-      fontSize: '12px',
-    },
-  },
-  infoLabel: {
-    border: `1px solid ${theme.palette.primary.contrastText}`,
-    backgroundColor: theme.palette.primary.light,
-    color: theme.palette.primary.contrastText,
-  },
-  infoData: {
-    border: `1px solid ${theme.palette.primary.light}`,
-  },
-  infoText: {
-    fontSize: '14px',
-    [theme.breakpoints.down('xs')]: {
-      fontSize: '12px',
-    },
-  },
-  iconInline: {
-    margin: theme.spacing(0, 1),
-  },
   orderData: {
     margin: theme.spacing(1, 1, 2, 1),
   },
