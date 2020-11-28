@@ -18,6 +18,7 @@ import {
   actualFiltersSelector,
   actualFiltersCategoriesSelector,
 } from '../../../store/filters/filtersSelectors'
+import { notificate } from '../../../store/notification/notificationActions'
 
 export default function FilterCategoryCheckbox() {
   const classes = useStyles()
@@ -34,8 +35,15 @@ export default function FilterCategoryCheckbox() {
         const arr = resp.data.map((elem) => [elem.name, elem.id])
         setCategoriesData(arr)
       })
-      .catch((e) => console.log(e))
-  }, [])
+      .catch((e) => {
+        dispatch(
+          notificate({
+            variant: 'error',
+            data: e,
+          })
+        )
+      })
+  }, [dispatch])
 
   const handleChange = (event) => {
     const newActualFilters = toggleItemInArr(

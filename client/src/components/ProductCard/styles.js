@@ -2,10 +2,12 @@ import { makeStyles } from '@material-ui/core/styles'
 
 export const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: '100%',
+    width: '100%',
+    minWidth: 350,
     display: 'flex',
+    flexWrap: 'wrap',
     padding: 10,
-    margin: 15,
+    marginBottom: 15,
     border: '1px solid #112667',
     justifyContent: 'space-between',
   },

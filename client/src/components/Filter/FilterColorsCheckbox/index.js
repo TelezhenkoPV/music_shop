@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useStyles } from './styles'
 
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import FormGroup from '@material-ui/core/FormGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
@@ -14,10 +14,12 @@ import FormLabel from '@material-ui/core/FormLabel'
 import { actualFiltersSelector } from '../../../store/filters/filtersSelectors'
 import { objToQueryString, toggleItemInArr } from '../utils'
 import { useHistory } from 'react-router'
+import { notificate } from '../../../store/notification/notificationActions'
 
 export default function FilterColorsCheckbox() {
   const classes = useStyles()
   const history = useHistory()
+  const dispatch = useDispatch()
 
   const actualFilters = useSelector(actualFiltersSelector)
   const [colors, setColors] = useState([])
@@ -25,8 +27,15 @@ export default function FilterColorsCheckbox() {
   useEffect(() => {
     axios('/api/colors')
       .then((resp) => setColors(resp.data))
-      .catch((e) => console.log(e))
-  }, [])
+      .catch((e) => {
+        dispatch(
+          notificate({
+            variant: 'error',
+            data: e,
+          })
+        )
+      })
+  }, [dispatch])
 
   const handleChange = (event) => {
     const newActualFilters = toggleItemInArr(
