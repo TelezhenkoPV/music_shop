@@ -25,7 +25,7 @@ import { openModal } from '../../store/modal/modalAction'
 import ChangePassword from './changePassword'
 
 export default function ViewPersonalInformation({
-  data1: {
+  data: {
     firstName,
     lastName,
     middleName = '',
