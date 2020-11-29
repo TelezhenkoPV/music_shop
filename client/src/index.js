@@ -10,6 +10,16 @@ import { ThemeProvider } from '@material-ui/core/styles'
 import theme from './theme/Theme'
 import { SnackbarProvider } from 'notistack'
 import { PersistGate } from 'redux-persist/integration/react'
+import * as Sentry from '@sentry/react'
+import { Integrations } from '@sentry/tracing'
+import ErrorBoundary from './ErrorBoundary'
+
+Sentry.init({
+  dsn:
+    'https://b4f69a9d94854c54bc86777caa983f68@o483901.ingest.sentry.io/5536443',
+  integrations: [new Integrations.BrowserTracing()],
+  tracesSampleRate: 1.0,
+})
 
 ReactDOM.render(
   <Provider store={store}>
@@ -18,7 +28,9 @@ ReactDOM.render(
         <CssBaseline>
           <ThemeProvider theme={theme}>
             <SnackbarProvider maxSnack={10}>
-              <App />
+              <ErrorBoundary>
+                <App />
+              </ErrorBoundary>
             </SnackbarProvider>
           </ThemeProvider>
         </CssBaseline>
