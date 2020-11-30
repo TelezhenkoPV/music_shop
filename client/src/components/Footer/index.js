@@ -28,7 +28,12 @@ const Footer = () => {
   return (
     <footer className={classes.root}>
       <Container className={classes.container}>
-        <Grid container spacing={10} direction={'row'} justify={'center'}>
+        <Grid
+          container
+          direction={'row'}
+          justify={'center'}
+          className={classes.gridContainer}
+        >
           <Grid item className={classes.box}>
             <Typography className={classes.title} noWrap>
               Sound Tower
@@ -43,16 +48,7 @@ const Footer = () => {
               const links = item.links.map((link) => {
                 if (item.title === 'Contacts') {
                   return (
-                    <a
-                      href={link.url}
-                      key={link._id}
-                      style={{
-                        color: 'white',
-                        textDecoration: 'none',
-                        fontSize: '13px',
-                        padding: '3px',
-                      }}
-                    >
+                    <a href={link.url} key={link._id} className={classes.links}>
                       {link.description}
                     </a>
                   )
@@ -60,12 +56,7 @@ const Footer = () => {
                 return (
                   <Typography
                     key={link._id}
-                    style={{
-                      color: 'white',
-                      textDecoration: 'none',
-                      fontSize: '13px',
-                      padding: '3px',
-                    }}
+                    className={classes.links}
                     component={Link}
                     to={link.url}
                   >
@@ -74,7 +65,7 @@ const Footer = () => {
                 )
               })
               return (
-                <Grid item key={item._id}>
+                <Grid item key={item._id} className={classes.gridItem}>
                   {item.title === 'Contacts' ? (
                     <Typography
                       className={classes.titleLinks}
@@ -92,16 +83,10 @@ const Footer = () => {
                   <Grid container>
                     {item.title === 'Contacts' ? (
                       <Grid item className={classes.boxLinks}>
-                        <RoomIcon
-                          style={{ margin: '2px', color: '#fff' }}
-                          fontSize="small"
-                        />
-                        <PhoneIcon
-                          style={{ margin: '2px', color: '#fff' }}
-                          fontSize="small"
-                        />
+                        <RoomIcon className={classes.icon} fontSize="small" />
+                        <PhoneIcon className={classes.icon} fontSize="small" />
                         <MailOutlineIcon
-                          style={{ margin: '2px', color: '#fff' }}
+                          className={classes.icon}
                           fontSize="small"
                         />
                       </Grid>
