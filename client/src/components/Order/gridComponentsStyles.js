@@ -35,7 +35,6 @@ const useStyles = makeStyles((theme) => ({
   orderProduct: {
     width: '100%',
     display: 'flex',
-    // borderBottom: `1px solid ${theme.palette.primary.dark}`,
   },
   orderProductImage: {
     width: '100px',
@@ -61,6 +60,11 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-beetwen',
+    [theme.breakpoints.down('xs')]: {
+      fontSize: '12px',
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+    },
   },
   orderProductDivider: {
     background:

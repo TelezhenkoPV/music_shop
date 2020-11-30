@@ -8,6 +8,7 @@ import MainRoutes from './routes/MainRoutes'
 import Footer from './components/Footer'
 import Modal from './components/Modal'
 import Notifier from './components/Notifier'
+import ErrorBoundary from './ErrorBoundary'
 
 const useStyles = makeStyles((theme) => ({
   mainBlock: {
@@ -21,7 +22,9 @@ function App() {
   return (
     <Box component={'div'} className={classes.mainBlock} bgcolor="garys.gray">
       <Header />
-      <MainRoutes />
+      <ErrorBoundary>
+        <MainRoutes />
+      </ErrorBoundary>
       <Footer />
       <Modal />
       <Notifier />
