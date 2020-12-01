@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useDispatch, useSelector } from 'react-redux'
+import { useParams, Link as RouterLink } from 'react-router-dom'
 import useStyles from './styles'
 import { useTheme } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import Link from '@material-ui/core/Link'
-import { Link as RouterLink } from 'react-router-dom'
 import Container from '@material-ui/core/Container'
 import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box'
@@ -51,6 +51,7 @@ TabPanel.propTypes = {
 function UserProfile() {
   const classes = useStyles()
   const dispatch = useDispatch()
+  const { slug } = useParams()
 
   useEffect(() => {
     dispatch(getCustomer())
@@ -59,7 +60,9 @@ function UserProfile() {
   const upMD = useMediaQuery(useTheme().breakpoints.up('md'))
   const upSM = useMediaQuery('(min-width:500px)')
 
-  const [tabIndex, setTabIndex] = useState(0)
+  const [tabIndex, setTabIndex] = useState(
+    slug === 'orders' ? 1 : slug === 'favorites' ? 2 : 0
+  )
 
   const { firstName: userFirstName, lastName: userLastName } = useSelector(
     getUserData

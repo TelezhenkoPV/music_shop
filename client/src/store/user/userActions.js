@@ -51,7 +51,7 @@ export const checkToken = (token = null) => (dispatch) => {
     if (exp < Date.now() / 1000) {
       dispatch(signOut())
       // window.location.href = '/'
-      useHistory.push('/')
+      useHistory().push('/')
     }
   }
 }
