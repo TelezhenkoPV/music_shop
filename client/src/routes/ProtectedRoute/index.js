@@ -1,8 +1,8 @@
-import React from 'react'
-import { Redirect, Route } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Route } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { getIsAuthenticated, getIsAdmin } from '../../store/user/userSelectors'
-import { openModal } from '../../store/modal/modalAction'
+import { openModal, closeModal } from '../../store/modal/modalAction'
 import Prohibited from '../../pages/Prohibited'
 import Login from '../../components/Login'
 
@@ -11,7 +11,13 @@ const ProtectedRoute = ({ children, adminOnly = false, ...rest }) => {
   const isAuthenticated = useSelector(getIsAuthenticated)
   const isAdmin = useSelector(getIsAdmin)
 
-  if (!isAuthenticated) dispatch(openModal(<Login />))
+  useEffect(() => {
+    if (!isAuthenticated) {
+      dispatch(openModal(<Login />))
+    } else {
+      dispatch(closeModal())
+    }
+  }, [dispatch, isAuthenticated, isAdmin])
 
   return (
     <Route
@@ -27,9 +33,8 @@ const ProtectedRoute = ({ children, adminOnly = false, ...rest }) => {
           ) : (
             children
           )
-        ) : (
-          <Redirect to="/" />
-        )
+        ) : null
+        // <Redirect to="/" />
       }}
     />
   )

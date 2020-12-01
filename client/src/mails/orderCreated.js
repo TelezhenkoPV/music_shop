@@ -26,8 +26,8 @@ export const MailBody = (order) => {
   } = order
 
   const orderTrack = isAuthenticated
-    ? `<h5 style="font-family: Verdana; color: #112667; padding: 10px 20px">Order status you can track in Order tab of you <a href="${rootURL}/customer/profile">Profile</a></h5>`
-    : `<h5 style="font-family: Verdana; color: #112667; padding: 10px 20px">Order status you can track folowing by <a href="${rootURL}/order/${orderNo}">Link</a></h5>`
+    ? `<h4 style="font-family: Verdana; color: #112667; padding: 10px 20px">Order status you can track in Order tab of you <a href="${rootURL}/customer/profile">Profile</a></h4>`
+    : `<h4 style="font-family: Verdana; color: #112667; padding: 10px 20px">Order status you can track folowing by <a href="${rootURL}/order/${orderNo}">Link</a></h4>`
 
   const shippingStringsFromArray = (array) => {
     let result = ''
@@ -35,11 +35,11 @@ export const MailBody = (order) => {
       ({ label, value }) =>
         (result = `${result}
         <tr>
-            <td>
-                <h4 style="font-family: Verdana; color: #112667">${label}:</h4>
+            <td style="border: 1px solid #112667;">
+                <div style="font-family: Verdana; color: #112667"><b>${label}:</b></div>
             </td>
-            <td>
-                <h4 style="font-family: Verdana; color: #112667">${value}</h4>
+            <td style="border: 1px solid #112667;">
+                <div style="font-family: Verdana; color: #112667">${value}</div>
             </td>
         </tr>
         `)
@@ -53,21 +53,23 @@ export const MailBody = (order) => {
       ({ product: { imageUrls, name, color, currentPrice }, cartQuantity }) =>
         (result = `${result}
                 <tr>
-                    <td>
+                    <td style="border: 1px solid #112667;">
                         <img src="${
-                          imageUrls ? rootURL / imageUrls : '#'
-                        }" alt="Product image" />
+                          imageUrls.length > 0
+                            ? `${rootURL}/${imageUrls[0]}`
+                            : '#'
+                        }" alt="Product image" style="display: inline-block; width: 100px;"/>
                     </td>
-                    <td>
-                        <h4 style="font-family: Verdana; color: #112667">Name: ${name}</h4>
-                        <h4 style="font-family: Verdana; color: #112667">Color: ${
+                    <td style="border: 1px solid #112667;">
+                        <div style="font-family: Verdana; color: #112667"><b>Name:</b> ${name}</div>
+                        <div style="font-family: Verdana; color: #112667"><b>Color:</b> ${
                           color || ''
-                        }</h4>
-                        <h4 style="font-family: Verdana; color: #112667">Price: ₴${currentPrice}</h4>
-                        <h4 style="font-family: Verdana; color: #112667">Qty: ${cartQuantity}</h4>
-                        <h4 style="font-family: Verdana; color: #112667">Summary: ₴${
+                        }</div>
+                        <div style="font-family: Verdana; color: #112667"><b>Price:</b> ₴${currentPrice}</div>
+                        <div style="font-family: Verdana; color: #112667"><b>Qty:</b> ${cartQuantity}</div>
+                        <div style="font-family: Verdana; color: #112667"><b>Summary:</b> ₴${
                           currentPrice * cartQuantity
-                        }</h4>
+                        }</div>
                     </td>
                 </tr>
         `)
@@ -110,84 +112,78 @@ export const MailBody = (order) => {
                     </tr>
                 </table>
             </center>
-                <table cellspacing="0" style="border-top: 1px solid #112667" width="600">
-                    <tr>
-                        <h2 style="font-family: Verdana; color: #112667">Shipping details:</h2>
+                <table cellspacing="0" cellpadding="10px" style="border-top: 1px solid #112667" width="600">
+                    <tr >
+                        <h4 style="font-family: Verdana; color: #112667">Shipping details:</h4>
                     </tr>
-                    <tr>
-                        <td>
-                            <h4 style="font-family: Verdana; color: #112667">Method:</h4>
+                    <tr >
+                        <td style="border: 1px solid #112667;">
+                            <div style="font-family: Verdana; color: #112667"><b>Method:</b></div>
                         </td>
-                        <td>
-                            <h4 style="font-family: Verdana; color: #112667">${
+                        <td style="border: 1px solid #112667;">
+                            <div style="font-family: Verdana; color: #112667">${
                               shippingType.label
-                            }</h4>
+                            }</div>
                         </td>
                     </tr>
                     ${shippingStringsFromArray(shippingData)}
-                    
-                </table>
-                <table  style="cellspacing="0" width="600">
-                    <tr>
-                        <h2 style="font-family: Verdana; color: #112667;">Payment details:</h2>
+
+                    <tr >
+                        <h4 style="font-family: Verdana; color: #112667;"><b>Payment details:</b></h4>
                     </tr>
-                    <tr>
-                        <td>
-                            <h4 style="font-family: Verdana; color: #112667">Method:</h4>
+                    <tr >
+                        <td style="border: 1px solid #112667;">
+                            <div style="font-family: Verdana; color: #112667"><b>Method:</b></div>
                         </td>
-                        <td>
-                            <h4 style="font-family: Verdana; color: #112667">${
+                        <td style="border: 1px solid #112667;">
+                            <div style="font-family: Verdana; color: #112667">${
                               paymentType.label
-                            }</h4>
+                            }</div>
                         </td>
                     </tr>
-                </table>
 
-            <table  style="border-bottom: 1px solid #112667" cellspacing="0" width="600">
-                <tr>
-                    <h2 style="font-family: Verdana; color: #112667">Customer:</h2>
+                <tr >
+                    <h4 style="font-family: Verdana; color: #112667"><b>Customer:</b></h4>
                 </tr>
-                <tr>
-                    <td>
-                        <h4 style="font-family: Verdana; color: #112667">Name:</h4>
+                <tr >
+                    <td style="border: 1px solid #112667;">
+                        <div style="font-family: Verdana; color: #112667"><b>Name:</b></div>
                     </td>
-                    <td>
-                        <h4 style="font-family: Verdana; color: #112667">${firstName}${
+                    <td style="border: 1px solid #112667;">
+                        <div style="font-family: Verdana; color: #112667">${firstName}${
     middleName && ' ' + middleName
-  }${lastName && ' ' + lastName}</h4>
+  }${lastName && ' ' + lastName}</div>
                     </td>
                 </tr>
-                <tr>
-                    <td>
-                        <h4 style="font-family: Verdana; color: #112667">Email:</h4>
+                <tr >
+                    <td style="border: 1px solid #112667;">
+                        <div style="font-family: Verdana; color: #112667"><b>Email:</b></div>
                     </td>
-                    <td>
-                        <h4 style="font-family: Verdana; color: #112667">${email}</h4>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <h4 style="font-family: Verdana; color: #112667">Telephone:</h4>
-                    </td>
-                    <td>
-                        <h4 style="font-family: Verdana; color: #112667">${telephone}</h4>
+                    <td style="border: 1px solid #112667;">
+                        <div style="font-family: Verdana; color: #112667">${email}</div>
                     </td>
                 </tr>
-            </table>
+                <tr >
+                    <td style="border: 1px solid #112667;">
+                        <div style="font-family: Verdana; color: #112667"><b>Telephone:</b></div>
+                    </td>
+                    <td style="border: 1px solid #112667;">
+                        <div style="font-family: Verdana; color: #112667">${telephone}</div>
+                    </td>
+                </tr>
 
-            <table cellspacing="0" width="600">
-                <tr>
-                    <h2 style="font-family: Verdana; color: #112667">Products:</h2>
+                <tr >
+                    <h4 style="font-family: Verdana; color: #112667">Products:</h4>
                 </tr>
-                ${productsStringsFromArray(products)}
-                <tr>
-                    <td>
-                        <h4 style="font-family: Verdana; color: #112667">Total:</h4>
+                  <b>${productsStringsFromArray(products)}</b>
+                <tr >
+                    <td style="border: 1px solid #112667;">
+                        <div style="font-family: Verdana; color: #112667"><b>Total:</b></div>
                     </td>
-                    <td>
-                        <h4 style="font-family: Verdana; color: #112667">₴${OrderTotal(
+                    <td style="border: 1px solid #112667;">
+                        <div style="font-family: Verdana; color: #112667"><b>₴${OrderTotal(
                           products
-                        )}</h4>
+                        )}</b></div>
                     </td>
                 </tr>
 
