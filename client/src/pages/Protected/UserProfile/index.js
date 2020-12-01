@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams, Link as RouterLink } from 'react-router-dom'
+import { useHistory, useParams, Link as RouterLink } from 'react-router-dom'
 import useStyles from './styles'
 import { useTheme } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
@@ -51,6 +51,7 @@ TabPanel.propTypes = {
 function UserProfile() {
   const classes = useStyles()
   const dispatch = useDispatch()
+  const history = useHistory()
   const { slug } = useParams()
 
   useEffect(() => {
@@ -64,6 +65,10 @@ function UserProfile() {
     slug === 'orders' ? 1 : slug === 'favorites' ? 2 : 0
   )
 
+  useEffect(() => {
+    setTabIndex(slug === 'orders' ? 1 : slug === 'favorites' ? 2 : 0)
+  }, [slug])
+
   const { firstName: userFirstName, lastName: userLastName } = useSelector(
     getUserData
   )
@@ -71,6 +76,13 @@ function UserProfile() {
 
   const handleChangeTab = (event, newTabIndex) => {
     setTabIndex(newTabIndex)
+    history.push(
+      newTabIndex === 1
+        ? '/customer/profile/orders'
+        : newTabIndex === 2
+        ? '/customer/profile/favorites'
+        : '/customer/profile/user'
+    )
   }
 
   return (
