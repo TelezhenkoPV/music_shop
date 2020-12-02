@@ -17,7 +17,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   productBlock: {
     width: '60%',
-    minWidth: 350,
+    minWidth: 300,
     display: 'flex',
     justifyContent: 'center',
   },
@@ -26,7 +26,9 @@ export const useStyles = makeStyles((theme) => ({
     margin: '0 auto',
     display: 'flex',
     justifyContent: 'space-evenly',
-    flexWrap: 'wrap',
+    [theme.breakpoints.down('xs')]: {
+      flexWrap: 'wrap',
+    },
   },
   pageHeader: {
     width: '100%',

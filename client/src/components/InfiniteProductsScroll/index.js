@@ -7,6 +7,8 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import { ProductCard } from '../ProductCard/ProductCard'
 import PropTypes from 'prop-types'
 
+import { useStyles } from './styles'
+
 import CircularProgress from '@material-ui/core/CircularProgress'
 
 import { getUrlParams, objToQueryString } from '../Filter/utils'
@@ -18,6 +20,7 @@ export default function ProductsScroll(props) {
   const { params } = useParams()
 
   const dispatch = useDispatch()
+  const classes = useStyles()
 
   const [page, setPage] = useState(0)
   const [cards, setCards] = useState([])
@@ -78,12 +81,14 @@ export default function ProductsScroll(props) {
 
   return (
     <InfiniteScroll
+      className={classes.root}
+      style={{ overflow: 'unset' }}
       dataLength={cards.length}
       next={LoadMorePosts}
       hasMore={filteredProductsQuantity > cards.length}
       loader={<CircularProgress />}
       endMessage={
-        <p style={{ textAlign: 'center' }}>
+        <p className={classes.noItems_text}>
           <b>Yay! You have seen it all</b>
         </p>
       }

@@ -8,6 +8,7 @@ import basket from './basket/basketReducer'
 import search from './search/searchReducer'
 import order from './order/orderReducer'
 import catalog from './categories/categoriesReducer'
+import favorites from './favorites/favoritesReducer'
 
 const rootReducer = combineReducers({
   user,
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   search,
   order,
   catalog,
+  favorites,
 })
 
 export default rootReducer
