@@ -50,7 +50,7 @@ export default function Search() {
           {item.imageUrls.length > 0 ? (
             <div
               className={classes.searchResultImage}
-              style={{ backgroundImage: `url(${item.imageUrls[0]})` }}
+              style={{ backgroundImage: `url(/${item.imageUrls[0]})` }}
             />
           ) : null}
           <div className={classes.searchResultData}>

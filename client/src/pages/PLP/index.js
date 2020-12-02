@@ -1,5 +1,5 @@
-import React from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { useStyles } from './styles'
 import { Grid, Typography } from '@material-ui/core'
@@ -11,14 +11,21 @@ import { addProductToBasket } from '../../store/basket/basketAction'
 import FilterColorsCheckbox from '../../components/Filter/FilterColorsCheckbox'
 import ProductsScroll from '../../components/InfiniteProductsScroll'
 import FilterBrandsCheckbox from '../../components/Filter/FilterBrandsCheckbox'
+import { getIsAuthenticated } from '../../store/user/userSelectors'
+import { getFavorites } from '../../store/favorites/favoritesActions'
 
 function PLP() {
   const dispatch = useDispatch()
   const classes = useStyles()
+  const isAuthenticated = useSelector(getIsAuthenticated)
 
   const handleAddProductToBasket = (elem) => {
     dispatch(addProductToBasket(elem))
   }
+
+  useEffect(() => {
+    if (isAuthenticated) dispatch(getFavorites())
+  }, [dispatch, isAuthenticated])
 
   return (
     (

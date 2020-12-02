@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { useStyles } from './styles'
 
@@ -21,14 +21,24 @@ import Youtube from '../../components/YouTube'
 import Comment from '../../components/Comment'
 
 import { addProductToBasket } from '../../store/basket/basketAction'
+import { getIsAuthenticated } from '../../store/user/userSelectors'
+import { getIsInFavorites } from '../../store/favorites/favoritesSelectors'
+import {
+  getFavorites,
+  toggleFavorites,
+} from '../../store/favorites/favoritesActions'
 
 const PDP = () => {
   const classes = useStyles()
   const dispatch = useDispatch()
   const { id } = useParams()
+  const isAuthenticated = useSelector(getIsAuthenticated)
 
   const [product, setProduct] = useState({})
-  const [isFavorite, setFavorite] = useState(false)
+  const isInFavorites = useSelector((store) =>
+    getIsInFavorites(store, product._id)
+  )
+  const [isFavorite, setFavorite] = useState(isInFavorites)
   const [productAmount, setProductAmount] = useState(1)
 
   useEffect(() => {
@@ -51,8 +61,16 @@ const PDP = () => {
     // eslint-disable-next-line
   }, [productAmount])
 
-  const handleFavorite = () => {
-    setFavorite(!isFavorite)
+  useEffect(() => {
+    if (isAuthenticated) dispatch(getFavorites())
+  }, [dispatch, isAuthenticated])
+
+  useEffect(() => {
+    setFavorite(isInFavorites)
+  }, [dispatch, isInFavorites])
+
+  const handleFavorite = (id) => {
+    dispatch(toggleFavorites(isFavorite, id))
   }
 
   const handleAddProductToBasket = (elem) => {
@@ -146,7 +164,7 @@ const PDP = () => {
               </Button>
               <Button
                 aria-label="like"
-                onClick={handleFavorite}
+                onClick={() => handleFavorite(product._id)}
                 startIcon={
                   isFavorite ? (
                     <FavoriteIcon style={{ color: '#C22A2A' }} />
@@ -165,7 +183,7 @@ const PDP = () => {
               </Typography>
             </Grid>
           </Grid>
-          <Grid style={{ width: '35%' }}>
+          <Grid className={classes.sliderStiles}>
             <ProductCardSlide data={product.imageUrls} main />
           </Grid>
         </Grid>

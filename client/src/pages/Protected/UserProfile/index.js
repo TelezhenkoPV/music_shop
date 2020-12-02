@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useDispatch, useSelector } from 'react-redux'
+import { useHistory, useParams, Link as RouterLink } from 'react-router-dom'
 import useStyles from './styles'
 import { useTheme } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
@@ -20,6 +21,7 @@ import LocalMallIcon from '@material-ui/icons/LocalMall'
 
 import PersonalInformation from '../../../components/PersonalInformation'
 import OrdersList from '../../../components/Order/OrdersList'
+import Favorites from '../../../components/Favorites'
 
 import { getUserData } from '../../../store/user/userSelectors'
 import { getCustomer } from '../../../store/user/userActions'
@@ -49,6 +51,8 @@ TabPanel.propTypes = {
 function UserProfile() {
   const classes = useStyles()
   const dispatch = useDispatch()
+  const history = useHistory()
+  const { slug } = useParams()
 
   useEffect(() => {
     dispatch(getCustomer())
@@ -57,7 +61,13 @@ function UserProfile() {
   const upMD = useMediaQuery(useTheme().breakpoints.up('md'))
   const upSM = useMediaQuery('(min-width:500px)')
 
-  const [tabIndex, setTabIndex] = useState(0)
+  const [tabIndex, setTabIndex] = useState(
+    slug === 'orders' ? 1 : slug === 'favorites' ? 2 : 0
+  )
+
+  useEffect(() => {
+    setTabIndex(slug === 'orders' ? 1 : slug === 'favorites' ? 2 : 0)
+  }, [slug])
 
   const { firstName: userFirstName, lastName: userLastName } = useSelector(
     getUserData
@@ -66,6 +76,13 @@ function UserProfile() {
 
   const handleChangeTab = (event, newTabIndex) => {
     setTabIndex(newTabIndex)
+    history.push(
+      newTabIndex === 1
+        ? '/customer/profile/orders'
+        : newTabIndex === 2
+        ? '/customer/profile/favorites'
+        : '/customer/profile/user'
+    )
   }
 
   return (
@@ -76,13 +93,13 @@ function UserProfile() {
             Personal profile
           </Typography>
           <Breadcrumbs aria-label="breadcrumb">
-            <Link color="inherit" href="/">
+            <Link color="inherit" component={RouterLink} to="/">
               Main
             </Link>
             <Link
               color="textPrimary"
-              aria-current="page"
-              href="/customer/profile"
+              component={RouterLink}
+              to="/customer/profile"
             >
               Personal profile
             </Link>
@@ -103,7 +120,7 @@ function UserProfile() {
             </div>
             <div className={classes.tabsTitleCart}>
               <ShoppingBasketIcon className={classes.tabsIcon} />
-              <Link color="inherit" href="/basket">
+              <Link color="inherit" component={RouterLink} to="/basket">
                 {`${totalCartCount} products in the cart`}
               </Link>
             </div>
@@ -114,7 +131,6 @@ function UserProfile() {
             value={tabIndex}
             onChange={handleChangeTab}
             aria-label="Vertical tabs"
-            // className={classes.tabs}
             classes={{
               indicator: classes.tabsIndicator,
               flexContainer: classes.tabs,
@@ -162,7 +178,7 @@ function UserProfile() {
           <OrdersList />
         </TabPanel>
         <TabPanel value={tabIndex} index={2} className={classes.tabPanel}>
-          Favorites
+          <Favorites />
         </TabPanel>
       </Paper>
     </Container>

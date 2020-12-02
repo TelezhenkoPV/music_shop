@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
   container: {
     [theme.breakpoints.down('sm')]: {
       padding: '24px',
-      width: '232px',
+      width: '439px',
     },
     padding: '72px',
   },
@@ -40,9 +40,35 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'left',
   },
   titleLinks: {
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '22px',
+    },
     fontSize: '15px',
     fontWeight: 'bold',
     color: 'white',
+  },
+  links: {
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '20px',
+    },
+    color: 'white',
+    textDecoration: 'none',
+    fontSize: '13px',
+    padding: '3px',
+  },
+  gridItem: {
+    [theme.breakpoints.down('sm')]: {
+      padding: '40px 0px',
+      width: '100%',
+    },
+    padding: '40px',
+  },
+  icon: {
+    [theme.breakpoints.down('sm')]: {
+      margin: '7px',
+    },
+    margin: '2px',
+    color: '#fff',
   },
 }))
 

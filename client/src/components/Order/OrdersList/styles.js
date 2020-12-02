@@ -5,5 +5,9 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     height: '100%',
   },
+  tableHeader: {
+    backgroundColor: theme.palette.primary.dark,
+    color: theme.palette.primary.contrastText,
+  },
 }))
 export default useStyles

@@ -11,6 +11,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 
 import { getUrlParams, objToQueryString } from '../Filter/utils'
 import { setFilterActualFiltersParamsAction } from '../../store/filters/filtersAction'
+import { notificate } from '../../store/notification/notificationActions'
 
 export default function ProductsScroll(props) {
   const { onClickAddProduct } = props
@@ -46,18 +47,28 @@ export default function ProductsScroll(props) {
 
     dispatch(setFilterActualFiltersParamsAction(urlData))
 
-    const queryString = objToQueryString(
-      urlData,
-      'http://localhost:5000/api/products/filter?'
-    )
+    const queryString = objToQueryString(urlData, '/api/products/filter?')
 
     setTimeout(() => {
       axios(queryString)
         .then((response) => {
           setCards((oldCards) => [...oldCards, ...response.data.products])
           setFilteredProductsQuantity(response.data.productsQuantity)
+          dispatch(
+            notificate({
+              variant: 'success',
+              data: 'Products data loaded!',
+            })
+          )
         })
-        .catch((e) => console.log(e))
+        .catch((e) => {
+          dispatch(
+            notificate({
+              variant: 'error',
+              data: e,
+            })
+          )
+        })
     }, 200)
   }
 

@@ -1,1 +1,1 @@
-export const rootURL = 'http://soundtower.com'
+export const rootURL = 'https://final-project-music-shop.herokuapp.com'

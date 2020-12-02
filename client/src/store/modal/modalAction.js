@@ -1,4 +1,4 @@
-import { MODAL_TOGGLE, MODAL_CLOSE, MODAL_OPEN } from '../actionTypes'
+import { MODAL_TOGGLE, MODAL_CLOSE, MODAL_OPEN } from './modalConstants'
 
 export const toggleModal = (content) => ({
   type: MODAL_TOGGLE,

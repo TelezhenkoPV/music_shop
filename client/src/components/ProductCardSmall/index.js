@@ -8,20 +8,22 @@ import { Box, Typography } from '@material-ui/core'
 import Container from '@material-ui/core/Container'
 
 const ProductCardSmall = (props) => {
-  const { product } = props
+  const { product, topRightBadge = 'New' } = props
   const style = useStyles()
 
   return (
     <Link style={{ textDecoration: 'none' }} to={`/product/${product.itemNo}`}>
       <Box style={{ width: '250px' }}>
-        <Box zIndex="tooltip" className={style.newBox}>
-          <Typography className={style.new}>New</Typography>
-        </Box>
+        {topRightBadge !== null ? (
+          <Box zIndex="tooltip" className={style.newBox}>
+            <Typography className={style.new}>{topRightBadge}</Typography>
+          </Box>
+        ) : null}
         <Box className={style.imgBox}>
           <img
             className={style.img}
             alt={product.name}
-            src={product.imageUrls[0]}
+            src={`/${product.imageUrls[0]}`}
           />
         </Box>
         <Box className={style.detailsBox}>
@@ -54,6 +56,7 @@ ProductCardSmall.propTypes = {
     imageUrls: PropTypes.arrayOf(PropTypes.string),
     brand: PropTypes.string,
   }),
+  topRightBadge: PropTypes.string,
 }
 
 export default ProductCardSmall
