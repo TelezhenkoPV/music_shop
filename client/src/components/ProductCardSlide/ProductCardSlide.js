@@ -8,18 +8,24 @@ const ProductCardSlide = ({ data, main }) => {
   const classes = useStyles()
 
   return (
-    <Carousel showIndicators={false} showArrows={false} showStatus={false}>
+    <Carousel
+      className={classes.carouselWrapper}
+      thumbWidth={40}
+      showIndicators={false}
+      showArrows={false}
+      showStatus={false}
+    >
       {!main
         ? data &&
           data.map((e, index) => (
-            <div className={classes.carouselWrapper} key={index}>
-              <img src={`/${e}`} alt={e} style={{ width: '60%' }} />
+            <div key={index} className={classes.imageContainer}>
+              <img src={`/${e}`} alt={e} className={classes.image} />
             </div>
           ))
         : data &&
           data.map((e, index) => (
-            <div className={classes.carouselWrapperMain} key={index}>
-              <img src={`/${e}`} alt={e} style={{ width: '60%' }} />
+            <div key={index} className={classes.imageContainer}>
+              <img src={`/${e}`} alt={e} className={classes.image} />
             </div>
           ))}
     </Carousel>
