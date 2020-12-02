@@ -72,7 +72,11 @@ export default function Finish() {
                 align="center"
                 noWrap
               >
-                Go to Orders tab in Profile
+                Go to
+                <Link to={'/customer/profile/orders'}>
+                  {' '}
+                  Orders tab in Profile{' '}
+                </Link>
               </Typography>
               <Typography
                 style={{ fontSize: 'inherit', fontWeight: 'inherit' }}

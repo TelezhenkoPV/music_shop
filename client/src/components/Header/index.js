@@ -47,6 +47,8 @@ import Login from '../Login'
 import { loadCatalog } from '../../store/categories/categoriesAction'
 
 import { totalCountSelector } from '../../store/basket/basketSelectors'
+import { getTotalFavoritesCount } from '../../store/favorites/favoritesSelectors'
+import { getFavorites } from '../../store/favorites/favoritesActions'
 
 export default function Header() {
   const classes = useStyles()
@@ -60,9 +62,7 @@ export default function Header() {
   const [anchorEl, setAnchorEl] = useState(null)
 
   const totalCount = useSelector(totalCountSelector)
-  const totalFavoriteCount = useSelector(
-    ({ favorite }) => Boolean(favorite) || 0
-  )
+  const totalFavoriteCount = useSelector(getTotalFavoritesCount)
   const isAuthenticated = useSelector(getIsAuthenticated)
   const { firstName: userFirstName, lastName: userLastName } = useSelector(
     getUserData
@@ -73,6 +73,10 @@ export default function Header() {
   useEffect(() => {
     dispatch(loadCatalog())
   }, [dispatch])
+
+  useEffect(() => {
+    if (isAuthenticated) dispatch(getFavorites())
+  }, [dispatch, isAuthenticated])
 
   const handleChangeCategoryTab = (event, newValue) => {
     setValue(newValue)
@@ -140,7 +144,7 @@ export default function Header() {
           <MenuItem
             key="menu-auth-favorites"
             component={Link}
-            to="/favorites"
+            to="/customer/profile/favorites"
             onClick={handleMenuClose}
           >
             <IconButton
@@ -156,7 +160,7 @@ export default function Header() {
           <MenuItem
             key="menu-auth-profile"
             component={Link}
-            to="/customer/profile"
+            to="/customer/profile/user"
             onClick={handleMenuClose}
           >
             <IconButton
@@ -329,7 +333,7 @@ export default function Header() {
             {isAuthenticated ? (
               <IconButton
                 component={Link}
-                to={'/favorites'}
+                to={'/customer/profile/favorites'}
                 aria-label="show qty product in favorites"
                 color="inherit"
               >

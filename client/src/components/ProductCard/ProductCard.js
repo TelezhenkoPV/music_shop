@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-
+import { useDispatch, useSelector } from 'react-redux'
 import { useStyles } from './styles'
 import Card from '@material-ui/core/Card'
 import IconButton from '@material-ui/core/IconButton'
@@ -12,14 +12,26 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import ProductCardSlide from '../ProductCardSlide/ProductCardSlide'
 import { useHistory } from 'react-router'
 
+import { getIsInFavorites } from '../../store/favorites/favoritesSelectors'
+import { toggleFavorites } from '../../store/favorites/favoritesActions'
+
 export const ProductCard = (props) => {
   const classes = useStyles()
+  const dispatch = useDispatch()
+
   const { element, onClickAddProduct } = props
-  const [isFavorite, setFavorite] = React.useState(false)
+  const isInFavorites = useSelector((store) =>
+    getIsInFavorites(store, element._id)
+  )
+  const [isFavorite, setFavorite] = useState(isInFavorites)
   const history = useHistory()
 
-  const handleFavorite = () => {
-    setFavorite(!isFavorite)
+  useEffect(() => {
+    setFavorite(isInFavorites)
+  }, [dispatch, isInFavorites])
+
+  const handleFavorite = (id) => {
+    dispatch(toggleFavorites(isFavorite, id))
   }
 
   const onAddProduct = () => {
@@ -71,7 +83,7 @@ export const ProductCard = (props) => {
           <IconButton
             aria-label="like"
             style={{ width: 50 }}
-            onClick={handleFavorite}
+            onClick={() => handleFavorite(element._id)}
           >
             {isFavorite ? (
               <FavoriteIcon style={{ color: '#C22A2A' }} />
