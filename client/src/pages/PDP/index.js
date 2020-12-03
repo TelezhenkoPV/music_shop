@@ -164,6 +164,7 @@ const PDP = () => {
               </Button>
               <Button
                 aria-label="like"
+                disabled={!isAuthenticated}
                 onClick={() => handleFavorite(product._id)}
                 startIcon={
                   isFavorite ? (
