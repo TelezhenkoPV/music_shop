@@ -12,12 +12,15 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import ProductCardSlide from '../ProductCardSlide/ProductCardSlide'
 import { useHistory } from 'react-router'
 
+import { getIsAuthenticated } from '../../store/user/userSelectors'
 import { getIsInFavorites } from '../../store/favorites/favoritesSelectors'
 import { toggleFavorites } from '../../store/favorites/favoritesActions'
 
 export const ProductCard = (props) => {
   const classes = useStyles()
   const dispatch = useDispatch()
+
+  const isAuthenticated = useSelector(getIsAuthenticated)
 
   const { element, onClickAddProduct } = props
   const isInFavorites = useSelector((store) =>
@@ -83,6 +86,7 @@ export const ProductCard = (props) => {
           <IconButton
             aria-label="like"
             style={{ width: 50 }}
+            disabled={!isAuthenticated}
             onClick={() => handleFavorite(element._id)}
           >
             {isFavorite ? (
