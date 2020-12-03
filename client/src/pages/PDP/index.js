@@ -27,6 +27,7 @@ import {
   getFavorites,
   toggleFavorites,
 } from '../../store/favorites/favoritesActions'
+import LastViewedProducts from '../../components/LastViewedProducts'
 
 const PDP = () => {
   const classes = useStyles()
@@ -197,6 +198,13 @@ const PDP = () => {
         Why i choose it?
       </Typography>
       <Comment productId={product._id} />
+      <Typography
+        variant="h3"
+        style={{ textAlign: 'center', margin: '30px 0 20px' }}
+      >
+        Last viewed products
+      </Typography>
+      <LastViewedProducts />
     </>
   )
 }
