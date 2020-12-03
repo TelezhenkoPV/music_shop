@@ -11,6 +11,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import ProductCardSlide from '../ProductCardSlide/ProductCardSlide'
 import { useHistory } from 'react-router'
+import { setToLastProducts } from '../../store/lastViewedProducts/lastProductsAction'
 
 import { getIsAuthenticated } from '../../store/user/userSelectors'
 import { getIsInFavorites } from '../../store/favorites/favoritesSelectors'
@@ -18,7 +19,6 @@ import { toggleFavorites } from '../../store/favorites/favoritesActions'
 
 export const ProductCard = (props) => {
   const classes = useStyles()
-  const dispatch = useDispatch()
 
   const isAuthenticated = useSelector(getIsAuthenticated)
 
@@ -28,6 +28,7 @@ export const ProductCard = (props) => {
   )
   const [isFavorite, setFavorite] = useState(isInFavorites)
   const history = useHistory()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     setFavorite(isInFavorites)
@@ -41,11 +42,16 @@ export const ProductCard = (props) => {
     onClickAddProduct(element)
   }
 
+  const addToLastProducts = () => {
+    dispatch(setToLastProducts(element))
+  }
+
   const forwardToCardDetails = () => {
     history.push({
       pathname: `/product/${element.itemNo}`,
       state: { product: element },
     })
+    addToLastProducts()
   }
 
   return (

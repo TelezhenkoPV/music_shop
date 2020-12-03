@@ -6,13 +6,24 @@ import PropTypes from 'prop-types'
 
 import { Box, Typography } from '@material-ui/core'
 import Container from '@material-ui/core/Container'
+import { setToLastProducts } from '../../store/lastViewedProducts/lastProductsAction'
+import { useDispatch } from 'react-redux'
 
 const ProductCardSmall = (props) => {
   const { product, topRightBadge = 'New' } = props
   const style = useStyles()
+  const dispatch = useDispatch()
+
+  const addToLastProducts = () => {
+    dispatch(setToLastProducts(product))
+  }
 
   return (
-    <Link style={{ textDecoration: 'none' }} to={`/product/${product.itemNo}`}>
+    <Link
+      style={{ textDecoration: 'none' }}
+      to={`/product/${product.itemNo}`}
+      onClick={addToLastProducts}
+    >
       <Box style={{ width: '250px' }}>
         {topRightBadge !== null ? (
           <Box zIndex="tooltip" className={style.newBox}>
