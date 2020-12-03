@@ -9,6 +9,7 @@ import search from './search/searchReducer'
 import order from './order/orderReducer'
 import catalog from './categories/categoriesReducer'
 import favorites from './favorites/favoritesReducer'
+import lastProducts from './lastViewedProducts/lastProductsReducer'
 
 const rootReducer = combineReducers({
   user,
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   order,
   catalog,
   favorites,
+  lastProducts,
 })
 
 export default rootReducer

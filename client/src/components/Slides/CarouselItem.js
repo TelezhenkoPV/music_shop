@@ -3,10 +3,13 @@ import PropTypes from 'prop-types'
 import { useHistory } from 'react-router-dom'
 import Button from '@material-ui/core/Button'
 import { useStylesItem } from './styles'
+import { useDispatch } from 'react-redux'
+import { setToLastProducts } from '../../store/lastViewedProducts/lastProductsAction'
 
 export const CarouselItem = ({ item }) => {
   const classes = useStylesItem()
   const history = useHistory()
+  const dispatch = useDispatch()
 
   const {
     title,
@@ -16,8 +19,15 @@ export const CarouselItem = ({ item }) => {
     product: { previousPrice = null, currentPrice = null } = {},
   } = item
 
+  const { product } = item
+
+  const addToLastProducts = () => {
+    dispatch(setToLastProducts(product))
+  }
+
   const onBtnClick = () => {
     slideUrl ? history.push(slideUrl) : console.log('There is no slide URL')
+    addToLastProducts()
   }
 
   return (
