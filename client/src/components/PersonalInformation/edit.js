@@ -193,7 +193,6 @@ export default function EditPersonalInformation({
                       id="middleName"
                       name="middleName"
                       label="Middle Name"
-                      required
                       autoComplete="name middle-name"
                       disabled={isSubmitting}
                       FormHelperTextProps={{
