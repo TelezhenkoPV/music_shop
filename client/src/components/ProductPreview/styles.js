@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({
   productPreview: {
-    borderBottom: '3px solid purple',
+    borderBottom: `3px solid ${theme.palette.primary.dark}`,
   },
   card_wrapper: {
     display: 'flex',
@@ -14,14 +14,19 @@ const useStyles = makeStyles((theme) => ({
   card_content: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
     width: '50%',
+  },
+  cardImage: {
+    height: 100,
+    width: 100,
+    backgroundSize: 'contain',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
   },
   card_name: {
     fontWeight: 'bold',
     marginBottom: 20,
     fontSize: 17,
-    width: '120%',
   },
   color_circle: {
     border: '2px solid black',
