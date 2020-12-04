@@ -6,17 +6,16 @@ const useStyles = makeStyles((theme) => ({
   },
   background_box: {
     width: '100%',
-    border: '3px solid purple',
+    border: `3px solid ${theme.palette.primary.dark}`,
   },
   title_box: {
     boxSizing: 'border-box',
     padding: '5px 20px',
-    borderBottom: '3px solid purple',
+    borderBottom: `3px solid ${theme.palette.primary.dark}`,
   },
   totalPrice_box: {
     boxSizing: 'border-box',
     padding: '22px',
-    // borderTop: '3px solid purple',
   },
 }))
 
