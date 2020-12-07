@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Helmet from 'react-helmet'
 
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -84,6 +85,16 @@ const PDP = () => {
 
   return (
     <>
+      <Helmet
+        title="Product detail"
+        meta={[
+          {
+            name: 'description',
+            content:
+              'Name, brand, images, color, quontity, price, coments, videos.',
+          },
+        ]}
+      />
       <Container className={classes.root}>
         <Grid container className={classes.mainContainer}>
           <Grid className={classes.infoBlock}>

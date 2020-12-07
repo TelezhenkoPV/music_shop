@@ -1,4 +1,5 @@
 import React from 'react'
+import Helmet from 'react-helmet'
 import { Box } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
 import Breadcrumbs from '@material-ui/core/Breadcrumbs'
@@ -64,97 +65,103 @@ function Basket() {
   }
 
   return (
-    <Box>
-      <Box className={classes.title_box}>
-        <Typography variant="h4" style={{ marginBottom: '1%' }}>
-          Cart
-        </Typography>
-        <Breadcrumbs aria-label="breadcrumb">
-          <Link color="inherit" href="/">
-            Home
-          </Link>
-          <Link color="textPrimary" href="/basket" aria-current="page">
+    <>
+      <Helmet
+        title="Shopping Cart"
+        meta={[{ name: 'description', content: 'Shopping Cart' }]}
+      />
+      <Box>
+        <Box className={classes.title_box}>
+          <Typography variant="h4" style={{ marginBottom: '1%' }}>
             Cart
-          </Link>
-        </Breadcrumbs>
-      </Box>
-      <Box className={classes.tabs_box}>
-        <Container>
-          <Grid container direction="row">
-            <Grid item xs={5}>
-              <Typography variant="subtitle1">Name</Typography>
+          </Typography>
+          <Breadcrumbs aria-label="breadcrumb">
+            <Link color="inherit" href="/">
+              Home
+            </Link>
+            <Link color="textPrimary" href="/basket" aria-current="page">
+              Cart
+            </Link>
+          </Breadcrumbs>
+        </Box>
+        <Box className={classes.tabs_box}>
+          <Container>
+            <Grid container direction="row">
+              <Grid item xs={5}>
+                <Typography variant="subtitle1">Name</Typography>
+              </Grid>
+              <Grid item xs={1}>
+                <Typography variant="subtitle1">Color</Typography>
+              </Grid>
+              <Grid item xs>
+                <Typography variant="subtitle1">Price</Typography>
+              </Grid>
+              <Grid item xs>
+                <Typography variant="subtitle1">Quantity</Typography>
+              </Grid>
+              <Grid item xs>
+                <Typography variant="subtitle1">Total price</Typography>
+              </Grid>
             </Grid>
-            <Grid item xs={1}>
-              <Typography variant="subtitle1">Color</Typography>
-            </Grid>
-            <Grid item xs>
-              <Typography variant="subtitle1">Price</Typography>
-            </Grid>
-            <Grid item xs>
-              <Typography variant="subtitle1">Quantity</Typography>
-            </Grid>
-            <Grid item xs>
-              <Typography variant="subtitle1">Total price</Typography>
-            </Grid>
-          </Grid>
-        </Container>
-      </Box>
+          </Container>
+        </Box>
 
-      {basketCard()}
+        {basketCard()}
 
-      {totalCount ? (
-        <Container maxWidth="xl" className={classes.end_box}>
-          <div className={classes.wrapper}>
-            <Box className={classes.price_box}>
-              <Typography variant="h5" className={classes.price_box_text}>
-                Total
-              </Typography>
-              <Typography variant="h4" className={classes.price_box_text}>
-                ${totalPrice}
-              </Typography>
+        {totalCount ? (
+          <Container maxWidth="xl" className={classes.end_box}>
+            <div className={classes.wrapper}>
+              <Box className={classes.price_box}>
+                <Typography variant="h5" className={classes.price_box_text}>
+                  Total
+                </Typography>
+                <Typography variant="h4" className={classes.price_box_text}>
+                  ${totalPrice}
+                </Typography>
+              </Box>
+            </div>
+            <Box className={classes.buttons_box}>
+              <Button
+                startIcon={<ArrowBackIcon />}
+                variant="contained"
+                color="secondary"
+                href="/"
+                className={classes.buttons_box_font}
+              >
+                Continue shopping
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                href="/checkout"
+                className={classes.buttons_box_font}
+              >
+                Checkout
+              </Button>
             </Box>
-          </div>
-          <Box className={classes.buttons_box}>
-            <Button
-              startIcon={<ArrowBackIcon />}
-              variant="contained"
-              color="secondary"
-              href="/"
-              className={classes.buttons_box_font}
+          </Container>
+        ) : (
+          <Box className={classes.noitems_box}>
+            <img
+              src={cart_icon}
+              alt="cart icon"
+              className={classes.noitems_box_img}
+              style={{ marginBottom: '2%' }}
+            />
+            <Typography
+              variant="h6"
+              className={classes.noitems_box_text}
+              style={{ marginBottom: '2%' }}
             >
-              Continue shopping
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              href="/checkout"
-              className={classes.buttons_box_font}
-            >
-              Checkout
+              There are no products here yet
+            </Typography>
+            <Button variant="contained" color="primary" href="/">
+              Go to catalog
             </Button>
           </Box>
-        </Container>
-      ) : (
-        <Box className={classes.noitems_box}>
-          <img
-            src={cart_icon}
-            alt="cart icon"
-            className={classes.noitems_box_img}
-            style={{ marginBottom: '2%' }}
-          />
-          <Typography
-            variant="h6"
-            className={classes.noitems_box_text}
-            style={{ marginBottom: '2%' }}
-          >
-            There are no products here yet
-          </Typography>
-          <Button variant="contained" color="primary" href="/">
-            Go to catalog
-          </Button>
-        </Box>
-      )}
-    </Box>
+        )}
+      </Box>
+    </>
   )
 }
 
