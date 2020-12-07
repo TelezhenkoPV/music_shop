@@ -1,4 +1,5 @@
 import React from 'react'
+import Helmet from 'react-helmet'
 import PropTypes from 'prop-types'
 import useStyles from './styles'
 import Grid from '@material-ui/core/Grid'
@@ -12,20 +13,26 @@ function NotFound(props) {
   const { history } = props
 
   return (
-    <Container className={classes.root}>
-      <Grid container spacing={2} className={classes.errorContainer}>
-        <Typography variant="h1">404</Typography>
-        <Typography variant="h6">Page is not exist...</Typography>
-        <Button
-          variant="contained"
-          color="primary"
-          className={classes.btn}
-          onClick={history.goBack}
-        >
-          Go Back
-        </Button>
-      </Grid>
-    </Container>
+    <>
+      <Helmet
+        title="Page not found"
+        meta={[{ name: 'description', content: 'Wrong page route.' }]}
+      />
+      <Container className={classes.root}>
+        <Grid container spacing={2} className={classes.errorContainer}>
+          <Typography variant="h1">404</Typography>
+          <Typography variant="h6">Page is not exist...</Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.btn}
+            onClick={history.goBack}
+          >
+            Go Back
+          </Button>
+        </Grid>
+      </Container>
+    </>
   )
 }
 

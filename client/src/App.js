@@ -1,4 +1,5 @@
 import React from 'react'
+import Helmet from 'react-helmet'
 
 import Box from '@material-ui/core/Box'
 import { makeStyles } from '@material-ui/core/styles'
@@ -21,6 +22,25 @@ function App() {
 
   return (
     <Box component={'div'} className={classes.mainBlock} bgcolor="garys.gray">
+      <Helmet
+        defaultTitle="Sound Tower - music shop"
+        titleTemplate="Sound Tower - %s"
+        title="music shop"
+        htmlAttributes={{ lang: 'en' }}
+        meta={[
+          {
+            name: 'description',
+            content:
+              'Sound Tower - music shop. Guitars, Boosters, Percussions, Basses, Keyboards, Accessories',
+          },
+        ]}
+        links={{
+          rel: 'icon',
+          type: 'image/png',
+          sizes: '16x16',
+          href: '/favicon.ico',
+        }}
+      />
       <Header />
       <ErrorBoundary>
         <MainRoutes />
