@@ -46,7 +46,7 @@ export default function ProductsScroll(props) {
     }
 
     urlData.startPage = page
-    urlData.perPage = 2
+    urlData.perPage = 3
 
     dispatch(setFilterActualFiltersParamsAction(urlData))
 
@@ -57,12 +57,6 @@ export default function ProductsScroll(props) {
         .then((response) => {
           setCards((oldCards) => [...oldCards, ...response.data.products])
           setFilteredProductsQuantity(response.data.productsQuantity)
-          dispatch(
-            notificate({
-              variant: 'success',
-              data: 'Products data loaded!',
-            })
-          )
         })
         .catch((e) => {
           dispatch(

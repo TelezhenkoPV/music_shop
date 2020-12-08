@@ -61,6 +61,11 @@ export const ProductCard = (props) => {
           className={classes.colorItem}
           style={{ background: element.color }}
         />
+        <Typography variant="body1" className={classes.status}>
+          {element.quantity !== 0
+            ? `Available: ${element.quantity}`
+            : 'Out of stock'}
+        </Typography>
       </div>
 
       <ProductCardSlide data={element.imageUrls} />
@@ -72,7 +77,6 @@ export const ProductCard = (props) => {
           </Typography>
         </div>
         <Typography variant="body2">Price: {element.currentPrice}</Typography>
-        <Typography variant="body2">Vendor code: {element.itemNo}</Typography>
         <Typography variant="body2">Brand: {element.brand}</Typography>
       </CardContent>
       <div className={classes.rightCardBlock}>
@@ -102,11 +106,6 @@ export const ProductCard = (props) => {
             )}
           </IconButton>
         </div>
-        <Typography variant="body1" className={classes.status}>
-          {element.quantity !== 0
-            ? `Available: ${element.quantity}`
-            : 'Out of stock'}
-        </Typography>
       </div>
     </Card>
   )
