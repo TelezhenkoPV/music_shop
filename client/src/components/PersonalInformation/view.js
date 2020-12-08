@@ -69,7 +69,9 @@ export default function ViewPersonalInformation({
       ? creditCard.map(({ cardNumber, isDefault }, i) => {
           return (
             <ListItem key={cardNumber + i} dense disableGutters divider>
-              <ListItemText primary={`${cardNumber}`} />
+              <ListItemText
+                primary={`XXXX XXXX XXXX ${cardNumber.substring(15)}`}
+              />
               {isDefault && (
                 <ListItemIcon>
                   <CheckIcon className={classes.iconInline} />

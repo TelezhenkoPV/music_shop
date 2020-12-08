@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import Helmet from 'react-helmet'
 import PropTypes from 'prop-types'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -98,67 +99,79 @@ function OrderCheckout() {
   const activeStep = useSelector(getActiveStep)
 
   return (
-    <Container className={classes.root}>
-      <Paper>
-        <Box className={classes.title_box}>
-          <Typography variant="h4" style={{ marginBottom: '1%' }}>
-            Order checkout
-          </Typography>
-          <Breadcrumbs aria-label="breadcrumb">
-            <Link color="inherit" href="/">
-              Main
-            </Link>
-            <Link
-              color="textPrimary"
-              aria-current="page"
-              href="/customer/profile"
-            >
+    <>
+      <Helmet
+        title="Order checkout"
+        meta={[
+          {
+            name: 'description',
+            content:
+              'Checkout new order. Free shiping. Address Delivery. Credit Card payment',
+          },
+        ]}
+      />
+      <Container className={classes.root}>
+        <Paper>
+          <Box className={classes.title_box}>
+            <Typography variant="h4" style={{ marginBottom: '1%' }}>
               Order checkout
-            </Link>
-          </Breadcrumbs>
-        </Box>
-      </Paper>
-
-      <Paper className={classes.checkoutRoot}>
-        <Stepper
-          classes={{ root: classes.stepperRoot }}
-          alternativeLabel
-          activeStep={activeStep}
-          connector={
-            <StepConnector
-              classes={{
-                alternativeLabel: classes.stepConnectorAlternativeLabel,
-                active: classes.stepConnectorActive,
-                completed: classes.stepConnectorCompleted,
-                line: classes.stepConnectorLine,
-              }}
-            />
-          }
-        >
-          {steps.map((label) => (
-            <Step key={label}>
-              <StepLabel
-                classes={{ label: classes.stepLabel }}
-                StepIconComponent={StepIcon}
+            </Typography>
+            <Breadcrumbs aria-label="breadcrumb">
+              <Link color="inherit" href="/">
+                Main
+              </Link>
+              <Link
+                color="textPrimary"
+                aria-current="page"
+                href="/customer/profile"
               >
-                {label}
-              </StepLabel>
-            </Step>
-          ))}
-        </Stepper>
+                Order checkout
+              </Link>
+            </Breadcrumbs>
+          </Box>
+        </Paper>
 
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={activeStep < 4 ? 8 : 12}>
-            {getStepContent(activeStep)}
-          </Grid>
-          {activeStep < 4 && (
-            <Grid item xs={12} md={4}>
-              <Summary />
+        <Paper className={classes.checkoutRoot}>
+          <Stepper
+            classes={{ root: classes.stepperRoot }}
+            alternativeLabel
+            activeStep={activeStep}
+            connector={
+              <StepConnector
+                classes={{
+                  alternativeLabel: classes.stepConnectorAlternativeLabel,
+                  active: classes.stepConnectorActive,
+                  completed: classes.stepConnectorCompleted,
+                  line: classes.stepConnectorLine,
+                }}
+              />
+            }
+          >
+            {steps.map((label) => (
+              <Step key={label}>
+                <StepLabel
+                  classes={{ label: classes.stepLabel }}
+                  StepIconComponent={StepIcon}
+                >
+                  {label}
+                </StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={activeStep < 4 ? 8 : 12}>
+              {getStepContent(activeStep)}
             </Grid>
-          )}
-        </Grid>
-      </Paper>
-    </Container>
+            {activeStep < 4 && (
+              <Grid item xs={12} md={4}>
+                <Summary />
+              </Grid>
+            )}
+          </Grid>
+        </Paper>
+      </Container>
+    </>
   )
 }
 

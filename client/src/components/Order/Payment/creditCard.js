@@ -14,6 +14,11 @@ import MenuItem from '@material-ui/core/MenuItem'
 import MaskedText from 'react-text-mask'
 
 import {
+  luhnCheck,
+  creditCardExpireDateCheck,
+} from '../../../validation/schema'
+
+import {
   getIsAuthenticated,
   getUserData,
 } from '../../../store/user/userSelectors'
@@ -59,6 +64,10 @@ export default function CreditCard() {
   } = useSelector(getUserData)
   const [profileCreditCardNumber, setProfileCreditCardNumber] = useState('')
 
+  const [errors, setErrors] = useState({})
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [action, setAction] = useState(null)
+
   useEffect(() => {
     if (isAuthenticated) dispatch(getCustomer())
   }, [dispatch, isAuthenticated])
@@ -76,13 +85,15 @@ export default function CreditCard() {
   const payment = useSelector(getPaymentData)
 
   const back = () => {
-    handleSubmit()
-    dispatch(setActiveStep(activeStep - 1))
+    setErrors(validate(creditCard))
+    setIsSubmitting(true)
+    setAction(-1)
   }
 
   const next = () => {
-    handleSubmit()
-    dispatch(setActiveStep(activeStep + 1))
+    setErrors(validate(creditCard))
+    setIsSubmitting(true)
+    setAction(1)
   }
 
   useEffect(() => {
@@ -90,15 +101,6 @@ export default function CreditCard() {
       setCreditCard(payment)
     }
   }, [dispatch, isPaymentSet, payment])
-
-  const handleSubmit = () => {
-    dispatch(
-      savePaymentData({
-        type: { key: 'creditCard', label: 'Credit card' },
-        data: creditCard,
-      })
-    )
-  }
 
   const handleCustomChange = (event) => {
     setCreditCard({
@@ -114,16 +116,48 @@ export default function CreditCard() {
         (card) => card.cardNumber === event.target.value
       )
       if (profileCreditCard) {
-        const { cardNumber, expiryDate, cvc } = profileCreditCard
+        const { cardNumber, expiryDate } = profileCreditCard
         setCreditCard({
           cardNumber,
           expiryDate,
-          cvc,
+          cvc: ' ',
           name: `${firstName} ${lastName}`,
         })
       }
     }
   }
+
+  const validate = (values) => {
+    const errors = {}
+    if (!values.cardNumber) {
+      errors.cardNumber = 'Credit Card number is required'
+    } else if (!luhnCheck(values.cardNumber.replace(/\s/g, ''))) {
+      errors.cardNumber = 'Credit Card number is invalid'
+    }
+    if (!values.expiryDate) {
+      errors.expiryDate = 'Credit Card expiration date is required'
+    } else if (!creditCardExpireDateCheck(values.expiryDate)) {
+      errors.expiryDate = 'Invalid Expiration Date'
+    }
+    if (!values.cvc) {
+      errors.cvc = 'CVV is required'
+    } else if (!values.cvc.match(/^[0-9]{3}$/)) {
+      errors.cvc = 'Invalid CVV code'
+    }
+    return errors
+  }
+
+  useEffect(() => {
+    if (Object.keys(errors).length === 0 && isSubmitting) {
+      dispatch(
+        savePaymentData({
+          type: { key: 'creditCard', label: 'Credit card' },
+          data: creditCard,
+        })
+      )
+      dispatch(setActiveStep(activeStep + action))
+    }
+  }, [errors, action, activeStep, dispatch, isSubmitting, creditCard])
 
   return (
     <div className={classes.root}>
@@ -165,8 +199,11 @@ export default function CreditCard() {
                 autoComplete: 'cc-number',
               }}
             />
-            <FormHelperText id="customCardNumber-helper-text">
-              16 digits
+            <FormHelperText
+              id="customCardNumber-helper-text"
+              className={errors.cardNumber && classes.errorText}
+            >
+              {errors.cardNumber ? errors.cardNumber : '16 digits'}
             </FormHelperText>
           </FormControl>
           <FormControl className={classes.creditCardControl}>
@@ -182,12 +219,15 @@ export default function CreditCard() {
                 autoComplete: 'cc-exp',
               }}
             />
-            <FormHelperText id="customCardNumber-helper-text">
-              MM/YY
+            <FormHelperText
+              id="customCardNumber-helper-text"
+              className={errors.expiryDate && classes.errorText}
+            >
+              {errors.expiryDate ? errors.expiryDate : 'MM/YY'}
             </FormHelperText>
           </FormControl>
           <FormControl className={classes.creditCardControl}>
-            <InputLabel htmlFor="customCardCVC">CVC</InputLabel>
+            <InputLabel htmlFor="customCardCVC">CVV</InputLabel>
             <Input
               value={creditCard.cvc}
               onChange={handleCustomChange}
@@ -199,8 +239,11 @@ export default function CreditCard() {
                 autoComplete: 'cc-csc',
               }}
             />
-            <FormHelperText id="customCardCVC-helper-text">
-              3 digits
+            <FormHelperText
+              id="customCardCVC-helper-text"
+              className={errors.cvc && classes.errorText}
+            >
+              {errors.cvc ? errors.cvc : '3 digits'}
             </FormHelperText>
           </FormControl>
         </div>
