@@ -4,6 +4,7 @@ import useStyles from './styles'
 import { Box } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
+import Tooltip from '@material-ui/core/Tooltip'
 import EditIcon from '@material-ui/icons/Edit'
 import {
   basketSelector,
@@ -74,13 +75,15 @@ export default function Summary() {
         <Typography variant="h6" style={{ textTransform: 'uppercase' }}>
           Summary
         </Typography>
-        <IconButton
-          color="primary"
-          aria-label="edit shopping cart"
-          onClick={() => history.push('/basket')}
-        >
-          <EditIcon />
-        </IconButton>
+        <Tooltip title="Cart edit" arrow>
+          <IconButton
+            color="primary"
+            aria-label="edit shopping cart"
+            onClick={() => history.push('/basket')}
+          >
+            <EditIcon />
+          </IconButton>
+        </Tooltip>
       </Box>
       <Container maxWidth="md">
         <Box>
