@@ -19,11 +19,15 @@ const useStyles = makeStyles((theme) => ({
       width: '300px',
       margin: '0 auto',
     },
-    [theme.breakpoints.down('sm')]: {
-      width: '200px',
+    [theme.breakpoints.down('xs')]: {
+      width: '100px',
     },
   },
   title: {
+    [theme.breakpoints.down('xs')]: {
+      fontSize: '12px',
+      padding: '9px',
+    },
     fontSize: '20px',
     fontWeight: 'bold',
     color: 'white',
@@ -46,21 +50,26 @@ const useStyles = makeStyles((theme) => ({
       padding: '7px',
       margin: '0 auto',
     },
-    [theme.breakpoints.down('sm')]: {
-      width: '117px',
+    [theme.breakpoints.down('xs')]: {
+      width: '57px',
+      height: '30px',
+      top: '-22px',
     },
   },
   img: {
     [theme.breakpoints.down('md')]: {
       width: '400px',
     },
-    [theme.breakpoints.down('sm')]: {
-      width: '300px',
+    [theme.breakpoints.down('xs')]: {
+      width: '200px',
     },
     width: '557px',
     margin: 'auto',
   },
   goTo: {
+    [theme.breakpoints.down('xs')]: {
+      fontSize: '12px',
+    },
     fontSize: '20px',
     fontWeight: 'bold',
     color: 'white',

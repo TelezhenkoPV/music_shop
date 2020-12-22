@@ -9,7 +9,10 @@ const useStyles = makeStyles((theme) => ({
   container: {
     [theme.breakpoints.down('sm')]: {
       padding: '24px',
-      width: '439px',
+      maxWidth: '439px',
+    },
+    [theme.breakpoints.down('md')]: {
+      padding: '24px',
     },
     padding: '72px',
   },
@@ -41,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
   },
   titleLinks: {
     [theme.breakpoints.down('sm')]: {
-      fontSize: '22px',
+      fontSize: '20px',
     },
     fontSize: '15px',
     fontWeight: 'bold',
@@ -49,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
   },
   links: {
     [theme.breakpoints.down('sm')]: {
-      fontSize: '20px',
+      fontSize: '18px',
     },
     color: 'white',
     textDecoration: 'none',
