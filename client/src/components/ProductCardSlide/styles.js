@@ -6,6 +6,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   imageContainer: {
     height: 300,
+    marginTop: 5,
   },
   image: {
     objectFit: 'scale-down',

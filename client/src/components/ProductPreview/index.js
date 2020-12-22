@@ -6,30 +6,18 @@ import Typography from '@material-ui/core/Typography'
 
 export default function ProductPreview(props) {
   const classes = useStyles()
-  const {
-    img,
-    name,
-    price,
-    color,
-    onRemove,
-    totalCount,
-    error,
-    product,
-  } = props
-
-  const handleRemoveClick = () => {
-    onRemove(product)
-  }
+  const { img, name, price, color, totalCount, error } = props
 
   return (
     <div className={classes.productPreview}>
       <Box className={classes.card_wrapper}>
-        <Box>
-          <img style={{ height: 90 }} src={`/${img[0]}`} alt="img" />
-        </Box>
+        <Box
+          className={classes.cardImage}
+          style={{ backgroundImage: `url(/${img[0]})` }}
+        />
         <Box className={classes.card_content}>
           <Typography className={classes.card_name}>{name}</Typography>
-          <Box className={classes.flex_styled} style={{ marginBottom: 40 }}>
+          <Box className={classes.flex_styled}>
             <Box className={classes.card_radio}>
               <Typography variant="subtitle1">Color</Typography>
               <div
@@ -37,12 +25,6 @@ export default function ProductPreview(props) {
                 style={{ backgroundColor: `${color}` }}
               />
             </Box>
-            <Typography
-              className={classes.card_link_delete}
-              onClick={handleRemoveClick}
-            >
-              Delete
-            </Typography>
           </Box>
           <Box className={classes.flex_styled}>
             <Typography>{totalCount} pc</Typography>
@@ -61,5 +43,4 @@ ProductPreview.propTypes = {
   price: PropTypes.number.isRequired,
   color: PropTypes.string.isRequired,
   error: PropTypes.string,
-  product: PropTypes.object,
 }

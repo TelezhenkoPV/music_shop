@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import Helmet from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { useStyles } from './styles'
@@ -29,28 +30,40 @@ function PLP() {
 
   return (
     (
-      <div className={classes.root}>
-        <div className={classes.pageHeader}>
-          <Typography variant={'h4'} style={{ padding: 10 }} align="center" />
-          <Typography variant={'body2'} style={{ padding: 10 }} align="center">
-            {' '}
-          </Typography>
+      <>
+        <Helmet
+          title="Catalog"
+          meta={[
+            { name: 'description', content: 'Catalog. Categories. Filters.' },
+          ]}
+        />
+        <div className={classes.root}>
+          <div className={classes.pageHeader}>
+            <Typography variant={'h4'} style={{ padding: 10 }} align="center" />
+            <Typography
+              variant={'body2'}
+              style={{ padding: 10 }}
+              align="center"
+            >
+              {' '}
+            </Typography>
+          </div>
+          <Grid className={classes.mainContainer}>
+            <div className={classes.filterBlock}>
+              <Paper className={classes.filterWrapper}>
+                <FilterCategoryCheckbox />
+                <FilterPriceSlider />
+                <FilterColorsCheckbox />
+                <FilterBrandsCheckbox />
+              </Paper>
+            </div>
+            <div className={classes.productBlock}>
+              <Typography variant={'body2'} style={{ padding: 10 }} />
+              <ProductsScroll onClickAddProduct={handleAddProductToBasket} />
+            </div>
+          </Grid>
         </div>
-        <Grid className={classes.mainContainer}>
-          <div className={classes.filterBlock}>
-            <Paper className={classes.filterWrapper}>
-              <FilterCategoryCheckbox />
-              <FilterPriceSlider />
-              <FilterColorsCheckbox />
-              <FilterBrandsCheckbox />
-            </Paper>
-          </div>
-          <div className={classes.productBlock}>
-            <Typography variant={'body2'} style={{ padding: 10 }} />
-            <ProductsScroll onClickAddProduct={handleAddProductToBasket} />
-          </div>
-        </Grid>
-      </div>
+      </>
     ) || <div>Nothing to render</div>
   )
 }

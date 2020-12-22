@@ -5,6 +5,7 @@ export const useStyles = makeStyles((theme) => ({
     marginTop: 50,
     display: 'flex',
     justifyContent: 'center',
+    marginBottom: 20,
   },
   mainContainer: {
     display: 'flex',

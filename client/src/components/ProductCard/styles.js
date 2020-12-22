@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core/styles'
 
 export const useStyles = makeStyles((theme) => ({
   root: {
-    width: 300,
+    width: 270,
     display: 'flex',
     flexWrap: 'wrap',
     padding: 10,
@@ -22,9 +22,8 @@ export const useStyles = makeStyles((theme) => ({
     padding: '4px 20px',
   },
   colorBlock: {
-    // width: 30,
     display: 'flex',
-    flexDirection: 'column',
+    justifyContent: 'space-between',
   },
   colorItem: {
     margin: 4,
@@ -34,8 +33,7 @@ export const useStyles = makeStyles((theme) => ({
     borderRadius: '10px',
   },
   actionsBlock: {
-    display: 'flex',
-    flexDirection: 'column',
+    textAlign: 'center',
   },
   rightCardBlock: {
     display: 'flex',

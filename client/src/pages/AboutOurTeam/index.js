@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import Helmet from 'react-helmet'
 import axios from 'axios'
 import { Container } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
@@ -21,7 +22,21 @@ const AboutOurTeam = () => {
     })
   })
 
-  return <Container className={classes.root}>{parse(`${html}`)}</Container>
+  return (
+    <>
+      <Helmet
+        title="Our Team"
+        meta={[
+          {
+            name: 'description',
+            content:
+              'We are students of DAN.IT Education, FrontEnd course. Year 2020.',
+          },
+        ]}
+      />
+      <Container className={classes.root}>{parse(`${html}`)}</Container>
+    </>
+  )
 }
 
 export default AboutOurTeam

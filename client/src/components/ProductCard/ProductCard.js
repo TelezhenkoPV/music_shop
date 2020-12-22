@@ -11,13 +11,16 @@ import FavoriteIcon from '@material-ui/icons/Favorite'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import ProductCardSlide from '../ProductCardSlide/ProductCardSlide'
 import { useHistory } from 'react-router'
+import { setToLastProducts } from '../../store/lastViewedProducts/lastProductsAction'
 
+import { getIsAuthenticated } from '../../store/user/userSelectors'
 import { getIsInFavorites } from '../../store/favorites/favoritesSelectors'
 import { toggleFavorites } from '../../store/favorites/favoritesActions'
 
 export const ProductCard = (props) => {
   const classes = useStyles()
-  const dispatch = useDispatch()
+
+  const isAuthenticated = useSelector(getIsAuthenticated)
 
   const { element, onClickAddProduct } = props
   const isInFavorites = useSelector((store) =>
@@ -25,6 +28,7 @@ export const ProductCard = (props) => {
   )
   const [isFavorite, setFavorite] = useState(isInFavorites)
   const history = useHistory()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     setFavorite(isInFavorites)
@@ -38,11 +42,16 @@ export const ProductCard = (props) => {
     onClickAddProduct(element)
   }
 
+  const addToLastProducts = () => {
+    dispatch(setToLastProducts(element))
+  }
+
   const forwardToCardDetails = () => {
     history.push({
       pathname: `/product/${element.itemNo}`,
       state: { product: element },
     })
+    addToLastProducts()
   }
 
   return (
@@ -52,6 +61,11 @@ export const ProductCard = (props) => {
           className={classes.colorItem}
           style={{ background: element.color }}
         />
+        <Typography variant="body1" className={classes.status}>
+          {element.quantity !== 0
+            ? `Available: ${element.quantity}`
+            : 'Out of stock'}
+        </Typography>
       </div>
 
       <ProductCardSlide data={element.imageUrls} />
@@ -63,7 +77,6 @@ export const ProductCard = (props) => {
           </Typography>
         </div>
         <Typography variant="body2">Price: {element.currentPrice}</Typography>
-        <Typography variant="body2">Vendor code: {element.itemNo}</Typography>
         <Typography variant="body2">Brand: {element.brand}</Typography>
       </CardContent>
       <div className={classes.rightCardBlock}>
@@ -83,6 +96,7 @@ export const ProductCard = (props) => {
           <IconButton
             aria-label="like"
             style={{ width: 50 }}
+            disabled={!isAuthenticated}
             onClick={() => handleFavorite(element._id)}
           >
             {isFavorite ? (
@@ -92,11 +106,6 @@ export const ProductCard = (props) => {
             )}
           </IconButton>
         </div>
-        <Typography variant="body1" className={classes.status}>
-          {element.quantity !== 0
-            ? `Available: ${element.quantity}`
-            : 'Out of stock'}
-        </Typography>
       </div>
     </Card>
   )

@@ -9,7 +9,7 @@ export const getFavorites = () => (dispatch) => {
     .then((response) => {
       if (response.status === 200) {
         const { data } = response
-        dispatch({ type: SAVE_FAVORITES, payload: data })
+        dispatch({ type: SAVE_FAVORITES, payload: data || { products: [] } })
       }
     })
     .catch(({ response: { data } }) => {

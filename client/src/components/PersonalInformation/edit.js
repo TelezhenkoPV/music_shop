@@ -127,7 +127,14 @@ export default function EditPersonalInformation({
           validationSchema={schemaPersonalInformation}
           onSubmit={handleSubmit}
         >
-          {({ values, submitForm, isValid, isSubmitting, setFieldValue }) => (
+          {({
+            values,
+            submitForm,
+            isValid,
+            isSubmitting,
+            setFieldValue,
+            errors,
+          }) => (
             <Form className={classes.form}>
               <Grid container spacing={10}>
                 <Grid item xs={12} md={6}>
@@ -193,7 +200,6 @@ export default function EditPersonalInformation({
                       id="middleName"
                       name="middleName"
                       label="Middle Name"
-                      required
                       autoComplete="name middle-name"
                       disabled={isSubmitting}
                       FormHelperTextProps={{
@@ -422,7 +428,13 @@ export default function EditPersonalInformation({
                           {values.creditCard && values.creditCard.length > 0
                             ? values.creditCard.map((card, index) => (
                                 <div key={index} className={classes.listItem}>
-                                  <div className={classes.creditCard}>
+                                  <div
+                                    className={`${classes.creditCard} ${
+                                      errors.creditCard &&
+                                      errors.creditCard[index] &&
+                                      classes.ErrorField
+                                    }`}
+                                  >
                                     <img
                                       src={creditCard_icon}
                                       alt="Credit-card icon"
@@ -494,22 +506,6 @@ export default function EditPersonalInformation({
                                         />
                                       )}
                                     </Field>
-                                    <Field
-                                      classes={{ root: classes.creditCardCVC }}
-                                      name={`creditCard.${index}.cvc`}
-                                    >
-                                      {({ field }) => (
-                                        <MaskedText
-                                          {...field}
-                                          className={classes.creditCardCVCText}
-                                          mask={[/\d/, /\d/, /\d/]}
-                                          placeholder="CVV"
-                                          type="text"
-                                          disabled={isSubmitting}
-                                          showMask
-                                        />
-                                      )}
-                                    </Field>
                                     <Tooltip
                                       title="Set default credit card"
                                       arrow
@@ -542,6 +538,12 @@ export default function EditPersonalInformation({
                                       <DeleteForeverIcon />
                                     </IconButton>
                                   </Tooltip>
+                                  <div className={classes.listItemError}>
+                                    {errors.creditCard &&
+                                      errors.creditCard[index] &&
+                                      (errors.creditCard[index].cardNumber ||
+                                        errors.creditCard[index].expiryDate)}
+                                  </div>
                                 </div>
                               ))
                             : null}
@@ -554,7 +556,7 @@ export default function EditPersonalInformation({
                                   arrayHelpers.push({
                                     cardNumber: '',
                                     expiryDate: '',
-                                    cvc: '',
+                                    // cvc: '',
                                   })
                                 }
                               >

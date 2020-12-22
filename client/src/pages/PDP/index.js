@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Helmet from 'react-helmet'
 
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -27,6 +28,7 @@ import {
   getFavorites,
   toggleFavorites,
 } from '../../store/favorites/favoritesActions'
+import LastViewedProducts from '../../components/LastViewedProducts'
 
 const PDP = () => {
   const classes = useStyles()
@@ -83,6 +85,16 @@ const PDP = () => {
 
   return (
     <>
+      <Helmet
+        title="Product detail"
+        meta={[
+          {
+            name: 'description',
+            content:
+              'Name, brand, images, color, quontity, price, coments, videos.',
+          },
+        ]}
+      />
       <Container className={classes.root}>
         <Grid container className={classes.mainContainer}>
           <Grid className={classes.infoBlock}>
@@ -164,6 +176,7 @@ const PDP = () => {
               </Button>
               <Button
                 aria-label="like"
+                disabled={!isAuthenticated}
                 onClick={() => handleFavorite(product._id)}
                 startIcon={
                   isFavorite ? (
@@ -196,6 +209,13 @@ const PDP = () => {
         Why i choose it?
       </Typography>
       <Comment productId={product._id} />
+      <Typography
+        variant="h3"
+        style={{ textAlign: 'center', margin: '30px 0 20px' }}
+      >
+        Last viewed products
+      </Typography>
+      <LastViewedProducts />
     </>
   )
 }

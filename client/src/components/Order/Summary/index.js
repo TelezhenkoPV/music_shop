@@ -1,32 +1,30 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import useStyles from './styles'
 import { Box } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
+import IconButton from '@material-ui/core/IconButton'
+import Tooltip from '@material-ui/core/Tooltip'
+import EditIcon from '@material-ui/icons/Edit'
 import {
   basketSelector,
   totalCountSelector,
   totalPriceSelector,
 } from '../../../store/basket/basketSelectors'
 import { getOrderCreateError } from '../../../store/order/orderSelectors'
-import { removeCartItem } from '../../../store/basket/basketAction'
 import ProductPreview from '../../ProductPreview'
 import Container from '@material-ui/core/Container'
-import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 export default function Summary() {
   const classes = useStyles()
-  const dispatch = useDispatch()
+  const history = useHistory()
 
   const basket = useSelector(basketSelector)
   const totalPrice = useSelector(totalPriceSelector)
   const totalCount = useSelector(totalCountSelector)
 
   const error = useSelector(getOrderCreateError)
-
-  const onRemoveItem = (product) => {
-    dispatch(removeCartItem(product))
-  }
 
   const productPreview = () => {
     return basket.map((elem) => {
@@ -56,7 +54,6 @@ export default function Summary() {
           name={elem.product.name}
           price={elem.productPrice}
           totalCount={elem.cartQuantity}
-          onRemove={onRemoveItem}
           product={elem}
           error={errorMessage}
         />
@@ -70,7 +67,7 @@ export default function Summary() {
         className={classes.title_box}
         style={{
           display: 'flex',
-          justifyContent: 'space-around',
+          justifyContent: 'space-between',
           alignItems: 'center',
           width: '100%',
         }}
@@ -78,9 +75,15 @@ export default function Summary() {
         <Typography variant="h6" style={{ textTransform: 'uppercase' }}>
           Summary
         </Typography>
-        <Link to="/basket" style={{ color: 'grey', textDecoration: 'none' }}>
-          Edit cart
-        </Link>
+        <Tooltip title="Cart edit" arrow>
+          <IconButton
+            color="primary"
+            aria-label="edit shopping cart"
+            onClick={() => history.push('/basket')}
+          >
+            <EditIcon />
+          </IconButton>
+        </Tooltip>
       </Box>
       <Container maxWidth="md">
         <Box>

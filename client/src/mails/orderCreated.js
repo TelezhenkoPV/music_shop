@@ -26,7 +26,7 @@ export const MailBody = (order) => {
   } = order
 
   const orderTrack = isAuthenticated
-    ? `<h4 style="font-family: Verdana; color: #112667; padding: 10px 20px">Order status you can track in Order tab of you <a href="${rootURL}/customer/profile">Profile</a></h4>`
+    ? `<h4 style="font-family: Verdana; color: #112667; padding: 10px 20px">Order status you can track in Order tab of you <a href="${rootURL}/customer/profile/orders">Profile</a></h4>`
     : `<h4 style="font-family: Verdana; color: #112667; padding: 10px 20px">Order status you can track folowing by <a href="${rootURL}/order/${orderNo}">Link</a></h4>`
 
   const shippingStringsFromArray = (array) => {
@@ -54,11 +54,10 @@ export const MailBody = (order) => {
         (result = `${result}
                 <tr>
                     <td style="border: 1px solid #112667;">
-                        <img src="${
-                          imageUrls.length > 0
-                            ? `${rootURL}/${imageUrls[0]}`
-                            : '#'
-                        }" alt="Product image" style="display: inline-block; width: 100px;"/>
+                      ${
+                        imageUrls.length > 0 &&
+                        `<div style="width: 100px; height: 100px; margin: 5px auto; background-image: url(${rootURL}/${imageUrls[0]}); background-size: contain; background-repeat: no-repeat; background-position: center"></div>`
+                      }
                     </td>
                     <td style="border: 1px solid #112667;">
                         <div style="font-family: Verdana; color: #112667"><b>Name:</b> ${name}</div>
