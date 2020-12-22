@@ -282,7 +282,9 @@ export default function CreditCard() {
           >
             {profileCreditCardList.map((option) => (
               <MenuItem key={option.cardNumber} value={option.cardNumber}>
-                {option.cardNumber} Exp: {option.expiryDate}
+                {`XXXX XXXX XXXX ${option.cardNumber.substring(15)} Exp: ${
+                  option.expiryDate
+                }`}
               </MenuItem>
             ))}
           </TextField>
