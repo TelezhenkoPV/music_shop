@@ -19,6 +19,7 @@ import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import FavoriteIcon from '@material-ui/icons/Favorite'
 import LocalMallIcon from '@material-ui/icons/LocalMall'
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
 
 import PersonalInformation from '../../../components/PersonalInformation'
 import OrdersList from '../../../components/Order/OrdersList'
@@ -83,6 +84,12 @@ function UserProfile() {
         : newTabIndex === 2
         ? '/customer/profile/favorites'
         : '/customer/profile/user'
+    )
+  }
+
+  const DemoError = () => {
+    throw new Error(
+      'This is speccialy generated Error for demonstrate ErrorBoundary'
     )
   }
 
@@ -180,6 +187,17 @@ function UserProfile() {
                   selected: classes.tabSelected,
                 }}
               />
+              <Tab
+                icon={<ErrorOutlineIcon className={classes.tabsIcon} />}
+                label={upSM ? 'DemoError' : null}
+                id="vertical-tab-1"
+                aria-controls="vertical-tabpanel-2"
+                classes={{
+                  root: classes.tabRoot,
+                  wrapper: classes.tabLabelIconWrapper,
+                  selected: classes.tabSelected,
+                }}
+              />
             </Tabs>
           </div>
           <TabPanel value={tabIndex} index={0} className={classes.tabPanel}>
@@ -190,6 +208,9 @@ function UserProfile() {
           </TabPanel>
           <TabPanel value={tabIndex} index={2} className={classes.tabPanel}>
             <Favorites />
+          </TabPanel>
+          <TabPanel value={tabIndex} index={3} className={classes.tabPanel}>
+            {tabIndex === 3 ? DemoError() : null}
           </TabPanel>
         </Paper>
       </Container>
