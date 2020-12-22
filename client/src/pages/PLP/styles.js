@@ -13,7 +13,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   filterBlock: {
     width: 360,
-    padding: 15,
+    padding: ' 0 15px 15px',
   },
   productBlock: {
     width: '60%',
