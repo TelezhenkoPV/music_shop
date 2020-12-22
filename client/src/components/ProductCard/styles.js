@@ -11,6 +11,9 @@ export const useStyles = makeStyles((theme) => ({
     border: '1px solid #112667',
     justifyContent: 'space-between',
     flexDirection: 'column',
+    [theme.breakpoints.down('xs')]: {
+      marginLeft: 0,
+    },
   },
   media: {
     width: '150px',
