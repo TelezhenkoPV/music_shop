@@ -58,7 +58,6 @@ function PLP() {
               </Paper>
             </div>
             <div className={classes.productBlock}>
-              <Typography variant={'body2'} style={{ padding: 10 }} />
               <ProductsScroll onClickAddProduct={handleAddProductToBasket} />
             </div>
           </Grid>
