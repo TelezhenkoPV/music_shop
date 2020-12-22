@@ -1,5 +1,47 @@
 import * as Yup from 'yup'
 
+export const luhnCheck = (val) => {
+  let sum = 0
+  for (let i = 0; i < val.length; i++) {
+    let intVal = parseInt(val.substr(i, 1))
+    if (i % 2 === 0) {
+      intVal *= 2
+      if (intVal > 9) {
+        intVal = 1 + (intVal % 10)
+      }
+    }
+    sum += intVal
+  }
+  return sum % 10 === 0
+}
+
+export const creditCardExpireDateCheck = (expirationDate) => {
+  if (!expirationDate) {
+    return false
+  }
+
+  const today = new Date()
+  const monthToday = today.getMonth() + 1
+  const yearToday = today.getFullYear().toString().substr(-2)
+
+  const [expMonth, expYear] = expirationDate.split('/')
+
+  if (Number(expMonth) > 12) {
+    return false
+  }
+
+  if (Number(expYear) < Number(yearToday)) {
+    return false
+  } else if (
+    Number(expMonth) < monthToday &&
+    Number(expYear) === Number(yearToday)
+  ) {
+    return false
+  }
+
+  return true
+}
+
 export const schemaSignIn = Yup.object().shape({
   loginOrEmail: Yup.string()
     .required('Please provide Login or Email')
@@ -106,6 +148,24 @@ export const schemaPersonalInformation = Yup.object().shape({
     'Use template +380XXXXXXXXX'
   ),
   email: Yup.string().required('Email is required').email('Email is incorrect'),
+  creditCard: Yup.array().of(
+    Yup.object().shape({
+      cardNumber: Yup.string()
+        .required('Card number is required')
+        .test(
+          'test-credit-card-number',
+          'Credit Card number is invalid',
+          (value) => luhnCheck(value.replace(/\s/g, ''))
+        ),
+      expiryDate: Yup.string()
+        .required('Credit Card expiration date is required')
+        .test(
+          'test-credit-card-expiration-date',
+          'Invalid Expiration Date',
+          (expirationDate) => creditCardExpireDateCheck(expirationDate)
+        ),
+    })
+  ),
 })
 
 export const schemaOrderCustomer = Yup.object().shape({

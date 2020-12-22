@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
+import Helmet from 'react-helmet'
 import * as Sentry from '@sentry/react'
 import useStyles from './styles'
+import './sentryStyle.scss'
 import clsx from 'clsx'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
@@ -28,76 +30,87 @@ export default function Error(props) {
   }
 
   return (
-    <Card className={classes.root}>
-      <CardHeader
-        avatar={
-          <Avatar aria-label="error" className={classes.avatar}>
-            Err
-          </Avatar>
-        }
-        title="Oooops..., Error!!!"
-        titleTypographyProps={{
-          variant: 'h6',
-          color: 'primary',
-        }}
-      />
-      <CardMedia
-        className={classes.media}
-        image="/images/error/error.gif"
+    <>
+      <Helmet
         title="Error"
+        meta={[
+          {
+            name: 'description',
+            content: 'Something went wrong. But we already fix it...',
+          },
+        ]}
       />
-      <CardContent>
-        <Typography variant="subtitle2" color="primary">
-          Something went wrong. But we already sent droids to fix it...
-        </Typography>
-      </CardContent>
-
-      <CardActions disableSpacing>
-        <Tooltip title="Try to reload page">
-          <IconButton
-            aria-label="reload..."
-            onClick={() => {
-              window.location.reload()
-            }}
-          >
-            <ReplayIcon />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Go to Home page">
-          <IconButton aria-label="main page" href="/">
-            <HomeIcon />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Leave feedback">
-          <IconButton
-            aria-label="feedback"
-            onClick={() => Sentry.showReportDialog({ eventId })}
-          >
-            <FeedbackIcon />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Show additional technical information">
-          <IconButton
-            className={clsx(classes.expand, {
-              [classes.expandOpen]: expanded,
-            })}
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label="show more"
-          >
-            <ExpandMoreIcon />
-          </IconButton>
-        </Tooltip>
-      </CardActions>
-
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
+      <Card className={classes.root}>
+        <CardHeader
+          avatar={
+            <Avatar aria-label="error" className={classes.avatar}>
+              Err
+            </Avatar>
+          }
+          title="Oooops..., Error!!!"
+          titleTypographyProps={{
+            variant: 'h6',
+            color: 'primary',
+          }}
+        />
+        <CardMedia
+          className={classes.media}
+          image="/images/error/error.gif"
+          title="Error"
+        />
         <CardContent>
-          <Typography paragraph>Call Stack Info:</Typography>
-          <Typography paragraph>
-            {errorInfo && errorInfo.componentStack.toString()}
+          <Typography variant="subtitle2" color="primary">
+            Something went wrong. But we already sent droids to fix it...
           </Typography>
         </CardContent>
-      </Collapse>
-    </Card>
+
+        <CardActions disableSpacing>
+          <Tooltip title="Try to reload page">
+            <IconButton
+              aria-label="reload..."
+              onClick={() => {
+                window.location.reload()
+              }}
+            >
+              <ReplayIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Go to Home page">
+            <IconButton aria-label="main page" href="/">
+              <HomeIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Leave feedback">
+            <IconButton
+              aria-label="feedback"
+              onClick={() => Sentry.showReportDialog({ eventId })}
+            >
+              <FeedbackIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Show additional technical information">
+            <IconButton
+              className={clsx(classes.expand, {
+                [classes.expandOpen]: expanded,
+              })}
+              onClick={handleExpandClick}
+              aria-expanded={expanded}
+              aria-label="show more"
+            >
+              <ExpandMoreIcon />
+            </IconButton>
+          </Tooltip>
+        </CardActions>
+
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <CardContent>
+            <Typography paragraph>Call Stack Info:</Typography>
+            <Typography paragraph>
+              {errorInfo && errorInfo.componentStack.toString()}
+            </Typography>
+          </CardContent>
+        </Collapse>
+      </Card>
+    </>
   )
 }

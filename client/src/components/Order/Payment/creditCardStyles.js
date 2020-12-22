@@ -32,6 +32,12 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'space-between',
   },
+  errorText: {
+    color: 'red',
+  },
+  errorField: {
+    border: '1px solid red',
+  },
 }))
 
 export default useStyles

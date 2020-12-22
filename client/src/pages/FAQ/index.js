@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import Helmet from 'react-helmet'
 import axios from 'axios'
 import { Container } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
@@ -21,6 +22,19 @@ const FAQ = () => {
     })
   })
 
-  return <Container className={classes.div}>{parse(`${html}`)}</Container>
+  return (
+    <>
+      <Helmet
+        title="FAQ"
+        meta={[
+          {
+            name: 'description',
+            content: 'How-To. FAQ. Frequently Asked Questions.',
+          },
+        ]}
+      />
+      <Container className={classes.div}>{parse(`${html}`)}</Container>
+    </>
+  )
 }
 export default FAQ

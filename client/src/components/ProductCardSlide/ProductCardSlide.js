@@ -10,9 +10,8 @@ const ProductCardSlide = ({ data, main }) => {
   return (
     <Carousel
       className={classes.carouselWrapper}
-      thumbWidth={40}
-      showIndicators={false}
-      showArrows={false}
+      showArrows={true}
+      showThumbs={false}
       showStatus={false}
     >
       {!main

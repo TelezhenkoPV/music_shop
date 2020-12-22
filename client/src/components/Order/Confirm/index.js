@@ -65,7 +65,6 @@ export default function Confirm() {
     orderCreateSuccess && setIsSuccess(true)
     isSuccess && dispatch(setActiveStep(activeStep + 1))
   }, [orderCreateSuccess, isSuccess, activeStep, dispatch])
-  console.log('Order: ', order)
   return (
     <div className={classes.root}>
       <div className={classes.title}>
@@ -99,6 +98,7 @@ export default function Confirm() {
           size="large"
           onClick={handleSubmit}
           className={classes.button}
+          disabled={products.length < 1}
         >
           Confirm
         </Button>

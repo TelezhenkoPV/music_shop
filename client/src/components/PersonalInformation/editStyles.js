@@ -35,12 +35,20 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-around',
   },
   listItem: {
+    marginBottom: theme.spacing(2),
+    position: 'relative',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
-
+  listItemError: {
+    position: 'absolute',
+    bottom: '-14px',
+    left: '8px',
+    color: 'red',
+    fontSize: '0.75rem',
+  },
   textField: {
     '&>.MuiInputLabel-root': {
       [theme.breakpoints.down('xs')]: {
@@ -140,7 +148,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   creditCardNumberText: {
-    width: '165px',
+    width: '173px',
     [theme.breakpoints.only('md')]: {
       width: '130px',
     },
@@ -165,6 +173,9 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.only('xs')]: {
       width: '30px',
     },
+  },
+  ErrorField: {
+    border: '1px solid red',
   },
 }))
 

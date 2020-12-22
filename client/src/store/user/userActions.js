@@ -1,4 +1,4 @@
-import { useHistory } from 'react-router-dom'
+// import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 import jwt_decode from 'jwt-decode'
 import setAuthToken from '../../util/setAuthToken'
@@ -50,8 +50,8 @@ export const checkToken = (token = null) => (dispatch) => {
     })
     if (exp < Date.now() / 1000) {
       dispatch(signOut())
-      // window.location.href = '/'
-      useHistory().push('/')
+      window.location.href = '/'
+      // useHistory().push('/')
     }
   }
 }

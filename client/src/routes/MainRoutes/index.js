@@ -68,7 +68,10 @@ const MainRoutes = () => {
         <Route exact path="/product-details" render={() => <PDP />} />
         <Route exact path="/products-list" render={() => <PLP />} />
         <Route exact path="/checkout" render={() => <OrderCheckout />} />
-        <ProtectedRoute exact path="/customer/profile/:slug">
+        <ProtectedRoute path="/customer/profile/:slug">
+          <UserProfile />
+        </ProtectedRoute>
+        <ProtectedRoute path="/customer/profile">
           <UserProfile />
         </ProtectedRoute>
         <ProtectedRoute exact path="/admin" adminOnly>

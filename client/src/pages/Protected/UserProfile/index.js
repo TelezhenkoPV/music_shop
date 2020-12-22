@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import Helmet from 'react-helmet'
 import PropTypes from 'prop-types'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useParams, Link as RouterLink } from 'react-router-dom'
@@ -18,6 +19,7 @@ import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import FavoriteIcon from '@material-ui/icons/Favorite'
 import LocalMallIcon from '@material-ui/icons/LocalMall'
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
 
 import PersonalInformation from '../../../components/PersonalInformation'
 import OrdersList from '../../../components/Order/OrdersList'
@@ -85,103 +87,134 @@ function UserProfile() {
     )
   }
 
-  return (
-    <Container className={classes.root}>
-      <Paper>
-        <Box className={classes.title_box}>
-          <Typography variant="h4" style={{ marginBottom: '1%' }}>
-            Personal profile
-          </Typography>
-          <Breadcrumbs aria-label="breadcrumb">
-            <Link color="inherit" component={RouterLink} to="/">
-              Main
-            </Link>
-            <Link
-              color="textPrimary"
-              component={RouterLink}
-              to="/customer/profile"
-            >
-              Personal profile
-            </Link>
-          </Breadcrumbs>
-        </Box>
-      </Paper>
+  const DemoError = () => {
+    throw new Error(
+      'This is speccialy generated Error for demonstrate ErrorBoundary'
+    )
+  }
 
-      <Paper className={classes.tabsRoot}>
-        <div className={classes.tabsWrapper}>
-          <div value={tabIndex} index={-1} className={classes.tabsTitle}>
-            <div className={classes.tabsTitleNameWrapper}>
-              <Typography className={classes.tabsTitleNameLabel}>
-                Welcome,
-              </Typography>
-              <Typography className={classes.tabsTitleName}>
-                {userFirstName} {userLastName}
-              </Typography>
-            </div>
-            <div className={classes.tabsTitleCart}>
-              <ShoppingBasketIcon className={classes.tabsIcon} />
-              <Link color="inherit" component={RouterLink} to="/basket">
-                {`${totalCartCount} products in the cart`}
+  return (
+    <>
+      <Helmet
+        title="Customer Profile"
+        meta={[
+          {
+            name: 'description',
+            content: 'Customer information. Orders. Favorites.',
+          },
+        ]}
+      />
+      <Container className={classes.root}>
+        <Paper>
+          <Box className={classes.title_box}>
+            <Typography variant="h4" style={{ marginBottom: '1%' }}>
+              Personal profile
+            </Typography>
+            <Breadcrumbs aria-label="breadcrumb">
+              <Link color="inherit" component={RouterLink} to="/">
+                Main
               </Link>
+              <Link
+                color="textPrimary"
+                component={RouterLink}
+                to="/customer/profile"
+              >
+                Personal profile
+              </Link>
+            </Breadcrumbs>
+          </Box>
+        </Paper>
+
+        <Paper className={classes.tabsRoot}>
+          <div className={classes.tabsWrapper}>
+            <div value={tabIndex} index={-1} className={classes.tabsTitle}>
+              <div className={classes.tabsTitleNameWrapper}>
+                <Typography className={classes.tabsTitleNameLabel}>
+                  Welcome,
+                </Typography>
+                <Typography className={classes.tabsTitleName}>
+                  {userFirstName} {userLastName}
+                </Typography>
+              </div>
+              <div className={classes.tabsTitleCart}>
+                <ShoppingBasketIcon className={classes.tabsIcon} />
+                <Link color="inherit" component={RouterLink} to="/basket">
+                  {`${totalCartCount} products in the cart`}
+                </Link>
+              </div>
             </div>
+            <Tabs
+              orientation={upMD ? 'vertical' : 'horizontal'}
+              variant="scrollable"
+              value={tabIndex}
+              onChange={handleChangeTab}
+              aria-label="Vertical tabs"
+              classes={{
+                indicator: classes.tabsIndicator,
+                flexContainer: classes.tabs,
+              }}
+            >
+              <Tab
+                icon={<AccountCircle className={classes.tabsIcon} />}
+                label={upSM ? 'Personal Information' : null}
+                id="vertical-tab-0"
+                aria-controls="vertical-tabpanel-2"
+                classes={{
+                  root: classes.tabRoot,
+                  wrapper: classes.tabLabelIconWrapper,
+                  selected: classes.tabSelected,
+                }}
+              />
+              <Tab
+                icon={<LocalMallIcon className={classes.tabsIcon} />}
+                label={upSM ? 'Orders' : null}
+                id="vertical-tab-1"
+                aria-controls="vertical-tabpanel-2"
+                classes={{
+                  root: classes.tabRoot,
+                  wrapper: classes.tabLabelIconWrapper,
+                  selected: classes.tabSelected,
+                }}
+              />
+              <Tab
+                icon={<FavoriteIcon className={classes.tabsIcon} />}
+                label={upSM ? 'Favorites' : null}
+                id="vertical-tab-1"
+                aria-controls="vertical-tabpanel-2"
+                classes={{
+                  root: classes.tabRoot,
+                  wrapper: classes.tabLabelIconWrapper,
+                  selected: classes.tabSelected,
+                }}
+              />
+              <Tab
+                icon={<ErrorOutlineIcon className={classes.tabsIcon} />}
+                label={upSM ? 'DemoError' : null}
+                id="vertical-tab-1"
+                aria-controls="vertical-tabpanel-2"
+                classes={{
+                  root: classes.tabRoot,
+                  wrapper: classes.tabLabelIconWrapper,
+                  selected: classes.tabSelected,
+                }}
+              />
+            </Tabs>
           </div>
-          <Tabs
-            orientation={upMD ? 'vertical' : 'horizontal'}
-            variant="scrollable"
-            value={tabIndex}
-            onChange={handleChangeTab}
-            aria-label="Vertical tabs"
-            classes={{
-              indicator: classes.tabsIndicator,
-              flexContainer: classes.tabs,
-            }}
-          >
-            <Tab
-              icon={<AccountCircle className={classes.tabsIcon} />}
-              label={upSM ? 'Personal Information' : null}
-              id="vertical-tab-0"
-              aria-controls="vertical-tabpanel-2"
-              classes={{
-                root: classes.tabRoot,
-                wrapper: classes.tabLabelIconWrapper,
-                selected: classes.tabSelected,
-              }}
-            />
-            <Tab
-              icon={<LocalMallIcon className={classes.tabsIcon} />}
-              label={upSM ? 'Orders' : null}
-              id="vertical-tab-1"
-              aria-controls="vertical-tabpanel-2"
-              classes={{
-                root: classes.tabRoot,
-                wrapper: classes.tabLabelIconWrapper,
-                selected: classes.tabSelected,
-              }}
-            />
-            <Tab
-              icon={<FavoriteIcon className={classes.tabsIcon} />}
-              label={upSM ? 'Favorites' : null}
-              id="vertical-tab-1"
-              aria-controls="vertical-tabpanel-2"
-              classes={{
-                root: classes.tabRoot,
-                wrapper: classes.tabLabelIconWrapper,
-                selected: classes.tabSelected,
-              }}
-            />
-          </Tabs>
-        </div>
-        <TabPanel value={tabIndex} index={0} className={classes.tabPanel}>
-          <PersonalInformation />
-        </TabPanel>
-        <TabPanel value={tabIndex} index={1} className={classes.tabPanel}>
-          <OrdersList />
-        </TabPanel>
-        <TabPanel value={tabIndex} index={2} className={classes.tabPanel}>
-          <Favorites />
-        </TabPanel>
-      </Paper>
-    </Container>
+          <TabPanel value={tabIndex} index={0} className={classes.tabPanel}>
+            <PersonalInformation />
+          </TabPanel>
+          <TabPanel value={tabIndex} index={1} className={classes.tabPanel}>
+            <OrdersList />
+          </TabPanel>
+          <TabPanel value={tabIndex} index={2} className={classes.tabPanel}>
+            <Favorites />
+          </TabPanel>
+          <TabPanel value={tabIndex} index={3} className={classes.tabPanel}>
+            {tabIndex === 3 ? DemoError() : null}
+          </TabPanel>
+        </Paper>
+      </Container>
+    </>
   )
 }
 
