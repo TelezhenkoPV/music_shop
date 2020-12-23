@@ -283,7 +283,7 @@ export default function Header() {
       <div className={classes.searchPopperContent}>
         <ClickAwayListener onClickAway={() => setSearchPopperOpen(false)}>
           <div>
-            <SearchBar />
+            <SearchBar close={() => setSearchPopperOpen(false)} />
           </div>
         </ClickAwayListener>
       </div>
