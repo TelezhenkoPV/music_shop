@@ -10,7 +10,7 @@ import ClearIcon from '@material-ui/icons/Clear'
 import { search, clearSearch } from '../../store/search/searchActions'
 import { searchIsLoading, searchData } from '../../store/search/searchSelectors'
 
-export default function Search() {
+export default function Search({ close = () => {} }) {
   const classes = useStyles()
   const dispatch = useDispatch()
   const history = useHistory()
@@ -24,6 +24,7 @@ export default function Search() {
   const handleClose = () => {
     setInputValue('')
     dispatch(clearSearch())
+    close()
   }
 
   const handleClickItem = (item) => {
